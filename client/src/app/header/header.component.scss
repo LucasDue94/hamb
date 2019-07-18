@@ -1,0 +1,35 @@
+@import '../../assets/mixins';
+@import '../../assets/colors';
+
+$header-height: 70px;
+.header {
+  display: flex;
+  align-items: center;
+  height: $header-height;
+
+  & {
+    background-color: $green-default;
+    color: $white;
+    box-shadow: 0 3px 6px $gray-90;
+  }
+
+  .user-information, .system-name, #exit {
+    flex: 1;
+    margin: 0 20px;
+    text-align: left;
+    text-transform: capitalize;
+  }
+
+  .system-name {
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  #exit {
+    @include icons-hover(0.3s, $white);
+    text-align: right;
+    transition: 0.3s;
+    font-size: 25px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}

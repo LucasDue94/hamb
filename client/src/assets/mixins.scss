@@ -1,0 +1,17 @@
+
+@mixin container-form($display, $height, $width, $background, $color) {
+  display: $display;
+  height: $height;
+  width: $width;
+  background-color: $background;
+  color: $color;
+}
+
+@mixin icons-hover($time, $color) {
+  & {
+    :hover {
+      color: $color;
+      transition: $time;
+    }
+  }
+}
