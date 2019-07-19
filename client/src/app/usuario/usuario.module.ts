@@ -1,20 +1,22 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MainComponent} from './main.component';
-import {RouterModule} from "@angular/router";
+import {UsuarioComponent} from './usuario.component';
+import {UsuarioListComponent} from "./usuario-list.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [
+    UsuarioComponent,
+    UsuarioListComponent
+  ],
   imports: [
     CommonModule,
-    RouterModule,
     FontAwesomeModule
   ],
   exports: [
-    MainComponent
+    UsuarioComponent
   ]
 })
-export class MainModule {
+export class UsuarioModule {
 }

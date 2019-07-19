@@ -1,20 +1,16 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MainComponent} from './main.component';
-import {RouterModule} from "@angular/router";
+import {TableComponent} from './table.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [TableComponent],
   imports: [
     CommonModule,
-    RouterModule,
     FontAwesomeModule
   ],
-  exports: [
-    MainComponent
-  ]
+  exports: [TableComponent]
 })
-export class MainModule {
+export class TableModule {
 }

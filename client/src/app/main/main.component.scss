@@ -1,0 +1,21 @@
+@import '../../assets/colors';
+@import '../../assets/mixins';
+
+.main-container {
+  @include container-form(flex, calc(100% - 70px), calc(100% - 80px), $gray-20, $gray-80);
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 70px;
+  left: 80px;
+  color: $gray-100;
+  font-size: 18px;
+}
+
+.main-content {
+  display: flex;
+  width: 90%;
+  height: 90%;
+  border-radius: 6px;
+}
