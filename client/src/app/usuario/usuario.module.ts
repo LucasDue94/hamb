@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {UsuarioComponent} from './usuario.component';
 import {UsuarioListComponent} from "./usuario-list.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
   ],
   imports: [
     CommonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    PerfectScrollbarModule
   ],
   exports: [
     UsuarioComponent

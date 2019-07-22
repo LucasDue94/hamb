@@ -15,8 +15,8 @@ import {RouterModule} from "@angular/router";
 import {AgendaModule} from "./agenda/agenda.module";
 import {BuscaModule} from "./busca/busca.module";
 import {UsuarioModule} from "./usuario/usuario.module";
-import { UsuarioShowComponent } from './usuario/usuario-show.component';
-
+import {UsuarioShowComponent} from './usuario/usuario-show.component';
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 @NgModule({
   declarations: [
@@ -35,7 +35,8 @@ import { UsuarioShowComponent } from './usuario/usuario-show.component';
     RouterModule,
     AgendaModule,
     BuscaModule,
-    UsuarioModule
+    UsuarioModule,
+    PerfectScrollbarModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
