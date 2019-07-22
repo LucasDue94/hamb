@@ -1,0 +1,47 @@
+@import '../../assets/colors';
+
+.table, .thead, .tbody, .options, .row {
+  display: flex;
+}
+
+.table {
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  color: $white;
+  font-size: 20px;
+
+  .thead, .row {
+    margin-bottom: 2px;
+    padding: 5px 0;
+    background-color: $gray-70;
+    border-radius: 8px;
+    border: 1px solid $gray-70;
+  }
+
+  .thead{
+    border: 1px solid $gray-100;
+  }
+
+  .row {
+    background-color: $white;
+  }
+
+  .tbody {
+    flex-direction: column;
+    color: $gray-100;
+  }
+
+  .th, .td {
+    flex: 3;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .options {
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+  }
+}
