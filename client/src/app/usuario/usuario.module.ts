@@ -4,6 +4,7 @@ import {UsuarioComponent} from './usuario.component';
 import {UsuarioListComponent} from "./usuario-list.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
@@ -14,8 +15,9 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
   imports: [
     CommonModule,
     FontAwesomeModule,
-    PerfectScrollbarModule
-  ],
+    PerfectScrollbarModule,
+    CoreModule
+],
   exports: [
     UsuarioComponent
   ]

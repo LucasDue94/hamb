@@ -90,7 +90,7 @@ dataSource:
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
             url: jdbc:postgresql://10.10.1.23:5432/hamb_dev
             username: hamb
             password: 'hamb@123-hcor'
