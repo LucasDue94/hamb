@@ -4,20 +4,33 @@ import {UsuarioComponent} from './usuario.component';
 import {UsuarioListComponent} from "./usuario-list.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
-import { CoreModule } from '../core/core.module';
+import {CoreModule} from '../core/core.module';
+import {UsuarioEditComponent} from "./usuario-edit.component";
+import {UsuarioShowComponent} from "./usuario-show.component";
+import {RouterModule} from "@angular/router";
+import {UsuarioRoutingModule} from "./usuario-routing.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
   declarations: [
     UsuarioComponent,
-    UsuarioListComponent
+    UsuarioListComponent,
+    UsuarioEditComponent,
+    UsuarioShowComponent
   ],
   imports: [
     CommonModule,
     FontAwesomeModule,
     PerfectScrollbarModule,
-    CoreModule
-],
+    CoreModule,
+    RouterModule,
+    UsuarioRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxSpinnerModule
+  ],
   exports: [
     UsuarioComponent
   ]

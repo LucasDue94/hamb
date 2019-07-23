@@ -21,7 +21,7 @@ export class UsuarioService {
 
   list(max?: any, offset?: any): Observable<Usuario[]> {
     let subject = new Subject<Usuario[]>();
-    this.http.get(this.baseUrl + `usuario?offset=${offset}&max${max}`, {headers: this.httpOptions.headers})
+    this.http.get(this.baseUrl + `usuario?offset=${offset}&max=${max}`, {headers: this.httpOptions.headers})
       .subscribe((json: any[]) => {
         subject.next(json.map((usuario: any) => new Usuario(usuario)))
       });
@@ -37,16 +37,29 @@ export class UsuarioService {
     return subject.asObservable();
   }
 
+  search(searchTerm, offset?: any, max?): Observable<any[]> {
+    const url = this.baseUrl + 'usuario';
+    let subject = new Subject<Usuario[]>();
+    this.http.get(url + `?offset=${offset}&max=${max}`, {
+      headers: this.httpOptions.headers,
+      params: {termo: searchTerm}
+    }).subscribe((json: any) => {
+      console.log(json);
+      subject.next(json.map((usuario: any) => new Usuario(usuario)))
+    });
+    return subject.asObservable();
+  }
+
   save(usuario: Usuario): Observable<Usuario> {
     let url;
     if (usuario.id) {
-      url = this.baseUrl + 'solicitacao/' + usuario.id;
+      url = this.baseUrl + 'usuario/' + usuario.id;
       return this.http.put<Usuario>(url, usuario, {
         headers: this.httpOptions.headers,
         responseType: 'json'
       });
     } else {
-      url = this.baseUrl + 'solicitacao';
+      url = this.baseUrl + 'usuario';
       return this.http.post<Usuario>(url, usuario, {
         headers: this.httpOptions.headers,
         responseType: 'json'

@@ -7,11 +7,17 @@ import {UsuarioListComponent} from "../usuario/usuario-list.component";
 const routes: Routes = [
   {path: '', redirectTo: 'index', pathMatch: 'full'},
   {path: 'usuario', component: UsuarioListComponent},
+  // {path: 'agenda', component: AgendaListComponent},
   {path: 'busca', component: BuscaComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports:
+    [RouterModule]
 })
-export class MenuRoutingModule { }
+
+export class MenuRoutingModule {
+}

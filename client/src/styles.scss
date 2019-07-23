@@ -6,6 +6,9 @@
   margin: 0;
   font-family: Roboto, 'sans-serif';
   text-decoration: none;
+  color: inherit;
+  border: none;
+  outline: transparent;
 }
 
 usuario-list {
@@ -17,13 +20,7 @@ body {
   height: 100vh;
 }
 
-button, input {
-  border: none;
-  outline: transparent;
-}
-
-$nav-height:35px;
-
+$nav-height: 35px;
 .container {
   @include container-form(flex, 100%, 100%, $gray-20, $gray-80);
   flex-direction: column;
@@ -98,12 +95,12 @@ $nav-height:35px;
       }
 
       &:focus {
-        //transition: 1s linear;
         box-shadow: 0 0 6px $blue-default;
-        //border: 1px solid $blue-default;
       }
     }
   }
 }
 
-
+.app-spinner{
+  background-color: red;
+}

@@ -15,13 +15,11 @@ import {RouterModule} from "@angular/router";
 import {AgendaModule} from "./agenda/agenda.module";
 import {BuscaModule} from "./busca/busca.module";
 import {UsuarioModule} from "./usuario/usuario.module";
-import {UsuarioShowComponent} from './usuario/usuario-show.component';
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    UsuarioShowComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

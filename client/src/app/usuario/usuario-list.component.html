@@ -1,40 +1,47 @@
-  <nav class="nav-container">
-    <a href="" class="back">
-      <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
-      Voltar
-    </a>
+<ngx-spinner class="app-spinner" color="#4DC2B3" type="ball-pulse">
+  <p style="color: white;text-align: center">Carregando...</p>
+</ngx-spinner>
+<nav class="nav-container">
+  <a href="" class="back" [ngStyle]="{'visibility': 'hidden'}">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+  <h3>Usuários do sistema</h3>
 
-    <h3>Usuários do sistema</h3>
+  <div [formGroup]="searchForm" class="search-container">
+      <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
+    <button id="search-button">
+      <fa-icon [icon]="['fas','search']"></fa-icon>
+    </button>
+  </div>
+</nav>
 
-    <div class="search-container">
-      <input id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
-      <button id="search-button">
-        <fa-icon [icon]="['fas','search']"></fa-icon>
-      </button>
-    </div>
-  </nav>
-  <perfect-scrollbar class="content-default">
-    <main class="table">
-      <section class="thead">
-        <span class="th login">LOGIN</span>
-        <span class="th nome">NOME</span>
-        <span class="th crm">CRM</span>
-        <div class="th options">
-          <fa-icon [icon]="['fas','cog']"></fa-icon>
-        </div>
-      </section>
-      <section class="tbody">
-        <div *ngFor="let usuario of usuarios;" class="row">
-          <span class="td">{{usuario.login}}</span>
-          <span class="td nome">{{usuario.nome}}</span>
-          <span class="td">{{usuario.crm}}</span>
-          <div class="td options">
+<perfect-scrollbar class="content-default">
+  <main class="table">
+    <section class="thead">
+      <span class="th">LOGIN</span>
+      <span class="th nome">NOME</span>
+      <span class="th">CRM</span>
+      <div class="th options">
+        <fa-icon [icon]="['fas','cog']"></fa-icon>
+      </div>
+    </section>
+    <section class="tbody">
+      <div *ngFor="let usuario of usuarios;" class="row">
+        <span class="td">{{usuario.login}}</span>
+        <span class="td nome">{{usuario.nome}}</span>
+        <span class="td">{{usuario.crm}}</span>
+        <div class="td options">
+          <a [routerLink]="['/usuario','edit',usuario.id]">
             <fa-icon class="icon" [icon]="['fas','edit']"></fa-icon>
-            <fa-icon class="icon" [icon]="['fas','power-off']"></fa-icon>
-            <fa-icon class="icon" [icon]="['fas','trash-alt']"></fa-icon>
+          </a>
+          <fa-icon class="icon" [icon]="['fas','power-off']"></fa-icon>
+          <fa-icon class="icon" [icon]="['fas','trash-alt']"></fa-icon>
+          <a [routerLink]="['/agenda','list',usuario.id]">
             <fa-icon class="icon" [icon]="['fas','calendar-alt']"></fa-icon>
-          </div>
+          </a>
         </div>
-      </section>
-    </main>
-  </perfect-scrollbar>
+      </div>
+    </section>
+  </main>
+</perfect-scrollbar>
