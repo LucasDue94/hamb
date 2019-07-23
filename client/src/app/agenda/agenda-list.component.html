@@ -1,0 +1,21 @@
+<nav class="nav-container">
+  <a href="" class="back">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+</nav>
+<h3 class="agenda-title-main">Julho</h3>
+<perfect-scrollbar class="content-default">
+  <section>
+    <ul class="agenda-list">
+      <li class="agenda-column-list" *ngFor="let agenda of agendas ">
+        <h1 class="agenda-title-list">{{agenda.dia}}</h1>
+        <div class="agenda-column-content-list">
+          <p class="text-line-agenda">Agendados: {{agenda.agendados}} </p>
+          <p class="text-line-agenda">Efetivados: {{agenda.efetivados}} </p>
+          <p class="text-line-agenda">Atendidos: {{agenda.atentidos}} </p>
+        </div>
+      </li>
+    </ul>
+  </section>
+</perfect-scrollbar>
