@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {UsuarioService} from "../core/usuario/usuario.service";
+import {Usuario} from "../core/usuario/usuario";
 
 @Component({
   selector: 'usuario-list',
@@ -7,33 +9,19 @@ import {Component, OnInit} from '@angular/core';
 })
 export class UsuarioListComponent implements OnInit {
 
-  users = [
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '007', name: 'Bond. James bond', crm: '007'},
-    {login: '0017', name: 'Bolsonaro presidente', crm: '0017'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
-    {login: '1156', name: 'Joaquim José da silva xavier', crm: '1156'},
+  usuarios: Usuario[];
+  usuario: Usuario;
 
-  ];
-
-  constructor() {
+  constructor(private usuarioService: UsuarioService) {
   }
 
   ngOnInit() {
+    this.usuarioService.list('','').subscribe(res => this.usuarios = res);
   }
 
-  onScrollDown(){
-    console.log('foi')
+  foon() {
+    console.log(this.usuarios);
+    // this.usuarioService.destroy(this.usuario).subscribe(res => console.log(res));
   }
 
 }

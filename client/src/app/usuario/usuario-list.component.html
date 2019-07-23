@@ -16,18 +16,18 @@
   <perfect-scrollbar class="content-default">
     <main class="table">
       <section class="thead">
-        <span class="th">LOGIN</span>
-        <span class="th">NOME</span>
-        <span class="th">CRM</span>
+        <span class="th login">LOGIN</span>
+        <span class="th nome">NOME</span>
+        <span class="th crm">CRM</span>
         <div class="th options">
           <fa-icon [icon]="['fas','cog']"></fa-icon>
         </div>
       </section>
       <section class="tbody">
-        <div *ngFor="let user of users;" class="row">
-          <span class="td">{{user.login}}</span>
-          <span class="td">{{user.name}}</span>
-          <span class="td">{{user.login}}</span>
+        <div *ngFor="let usuario of usuarios;" class="row">
+          <span class="td">{{usuario.login}}</span>
+          <span class="td nome">{{usuario.nome}}</span>
+          <span class="td">{{usuario.crm}}</span>
           <div class="td options">
             <fa-icon class="icon" [icon]="['fas','edit']"></fa-icon>
             <fa-icon class="icon" [icon]="['fas','power-off']"></fa-icon>

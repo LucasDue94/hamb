@@ -20,7 +20,7 @@
     border: 1px solid $gray-70;
   }
 
-  .thead{
+  .thead {
     border: 1px solid $gray-100;
   }
 
@@ -34,9 +34,13 @@
   }
 
   .th, .td {
-    flex: 3;
+    flex: 1;
     padding: 8px;
     border-radius: 8px;
+  }
+
+  .nome {
+    flex: 3;
   }
 
   .options {

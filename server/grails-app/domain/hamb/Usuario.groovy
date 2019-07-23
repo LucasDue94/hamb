@@ -6,7 +6,7 @@ class Usuario {
     String senha
     String crm
     Date ultimoAcesso
-    static hasOne = [perfil: Perfil]
+    Perfil perfil
     static hasMany = [atendimentos: Atendimento]
 
     static constraints = {
@@ -15,5 +15,6 @@ class Usuario {
         senha nullable: false, blank: false
         crm nullable: true
         ultimoAcesso nullable: true, blank: false
+        perfil nullable: false, blank: false
     }
 }
