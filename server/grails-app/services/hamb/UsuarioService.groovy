@@ -17,6 +17,8 @@ abstract class UsuarioService {
                     ilike('login', "%${termo}%")
                 }
             }
+            order("ativo","desc")
+            order("nome","asc")
         }
         return usuarioList
     }
@@ -26,5 +28,10 @@ abstract class UsuarioService {
     abstract void delete(Serializable id)
 
     abstract Usuario save(Usuario usuario)
+
+    void onOff(Usuario usuario) {
+        usuario.ativo = !usuario.ativo
+        usuario.save flush: true
+    }
 
 }

@@ -48,6 +48,14 @@
 
       .icon {
         margin: 0 7px;
+        color: $gray-80;
+
+        &:hover {
+          cursor: pointer;
+          transition: 0.3s;
+          color: $gray-100;
+
+        }
       }
     }
   }
@@ -62,4 +70,39 @@
   .nome {
     flex: 3;
   }
+
+  .login {
+    margin-left: 5px;
+  }
+}
+
+.noUsersMessage {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & {
+    border-radius: 8px;
+    background-color: $danger;
+    color: $white;
+    font-size:18px;
+  }
+
+  .icon{
+    margin-left: 5px;
+  }
+
+}
+
+.disable {
+  color: $gray-70;
+}
+
+.changeStatus{
+  position: absolute;
+  background-color: $success;
+  color: $white;
+  border-radius: 8px;
+  padding: 10px;
 }

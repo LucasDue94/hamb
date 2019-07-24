@@ -3,10 +3,15 @@ package hamb
 class Perfil {
     public static final Long ADMIN = 1L
     public static final Long MEDICO = 2L
+
     String nome
 
     static constraints = {
         nome nullable: false, blank: false
+    }
+
+    static mapping = {
+        id generator: 'assigned'
     }
 
     static void criarPerfis() {

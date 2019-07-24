@@ -78,4 +78,15 @@ class UsuarioController {
 
         render status: NO_CONTENT
     }
+
+    @Transactional
+    def onOff(Usuario usuario) {
+        if (usuario.id == null) {
+            render status: NOT_FOUND
+            return
+        }
+        usuarioService.onOff(usuario)
+
+        respond status: OK
+    }
 }

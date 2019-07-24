@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
-import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -19,11 +18,14 @@ export class UsuarioListComponent implements OnInit {
   searchControl: FormControl;
   max = 1000;
   offset = 0;
+  messageStatus;
 
   constructor(private usuarioService: UsuarioService, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
+    this.usuarios = null;
+    this.messageStatus = null;
     this.show();
     this.searchControl = new FormControl();
     this.searchForm = new FormGroup({
@@ -47,15 +49,26 @@ export class UsuarioListComponent implements OnInit {
         this.close();
         return this.usuarioService.search(search, this.offset, this.max);
       }),
-    ).subscribe(usuarios => this.usuarios = usuarios)
+    ).subscribe(usuarios => this.usuarios = usuarios);
+    console.log(this.usuarios.length)
   }
 
-  show() {
-    this.spinner.show();
+  show = () => this.spinner.show();
+  close = () => this.spinner.hide();
+
+  changeStatus() {
+    this.messageStatus = null;
+    console.log(this.messageStatus);
   }
 
-  close() {
-    this.spinner.hide();
-
+  onOff(usuario) {
+    this.usuarioService.onOff(usuario).subscribe(res => {
+      if (res.status === "OK") {
+        console.log("status alterado");
+        usuario.ativo = !usuario.ativo;
+        this.messageStatus = 'Status alterado!';
+        setTimeout(this.changeStatus, 1000);
+      }
+    });
   }
 }

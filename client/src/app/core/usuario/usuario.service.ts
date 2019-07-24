@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Usuario} from './usuario';
 
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
+import {subscriptionLogsToBeFn} from "rxjs/internal/testing/TestScheduler";
 
 @Injectable()
 export class UsuarioService {
@@ -30,7 +31,7 @@ export class UsuarioService {
 
   get(id: number): Observable<Usuario> {
     let subject = new Subject<Usuario>();
-    this.http.get(this.baseUrl + 'usuario/' + id)
+    this.http.get(this.baseUrl + 'usuario/' + id, {headers: this.httpOptions.headers})
       .subscribe((json: any) => {
         subject.next(new Usuario(json));
       });
@@ -51,30 +52,30 @@ export class UsuarioService {
   }
 
   save(usuario: Usuario): Observable<Usuario> {
-    let url;
     if (usuario.id) {
-      url = this.baseUrl + 'usuario/' + usuario.id;
-      return this.http.put<Usuario>(url, usuario, {
+      return this.http.put<Usuario>(this.baseUrl + 'usuario/' + usuario.id, usuario, {
         headers: this.httpOptions.headers,
         responseType: 'json'
       });
     } else {
-      url = this.baseUrl + 'usuario';
-      return this.http.post<Usuario>(url, usuario, {
+      return this.http.post<Usuario>(this.baseUrl + 'usuario', usuario, {
         headers: this.httpOptions.headers,
         responseType: 'json'
       });
     }
   }
 
-  destroy(usuario: Usuario): Observable<boolean> {
-    let subject = new Subject<boolean>();
+  onOff(usuario: Usuario): any {
+    return this.http.put<Usuario>(this.baseUrl + 'usuario/onOff/' + usuario.id, {
+      headers: this.httpOptions.headers,
+      observe: 'response'
+    });
+  }
 
-    this.http.delete(this.baseUrl + 'usuario/' + usuario.id, {headers: this.httpOptions.headers})
-      .subscribe((res: Response) => {
-        console.log(res);
-        subject.next(res.ok);
-      });
-    return subject.asObservable();
+  destroy(usuario: Usuario): Observable<Object> {
+    return this.http.delete(this.baseUrl + 'usuario/' + usuario.id, {
+      headers: this.httpOptions.headers,
+      observe: 'response'
+    });
   }
 }
