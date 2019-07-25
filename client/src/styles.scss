@@ -13,10 +13,16 @@ usuario-list {
   height: 100%;
 }
 
-agenda{
+agenda-list{
   width: 100%;
   height: 100%;
 }
+
+agenda-show{
+  width: 100%;
+  height: 100%;
+}
+
 
 body {
   height: 100vh;
@@ -50,7 +56,24 @@ $nav-height:35px;
   box-shadow: 0 0 6px $gray-100;
 }
 
+.nav-top{
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  & .btn-back{
+    color: $gray-80;
+    position: absolute;
+  }
+  & .title-main {
+    text-align: center;
+    width: 100%;
+    font-size: 36px;
+    font-family: Roboto Medium, "sans-serif";
+  }
+}
+
 .nav-container {
+  font-size: 20px;
   height: $nav-height;
   display: flex;
   margin-bottom: 10px;

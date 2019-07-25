@@ -1,21 +1,5 @@
 @import "~src/styles";
 
-.nav-top{
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
-  & .back{
-    color: $gray-80;
-    position: absolute;
-  }
-}
-
-.agenda-title-main {
-  text-align: center;
-  width: 100%;
-  font-size: 36px;
-}
-
 .agenda-list {
   width: 90%;
   margin-left: auto;
@@ -31,7 +15,7 @@
 .agenda-column-list {
   background: $white;
   width: 180px;
-  height: 180px;
+  height: auto;
   border-radius: 5px;
   margin-right: 10px;
   margin-top: 25px;
@@ -40,7 +24,7 @@
   border: 1px solid $gray-90;
 
   .agenda-day-list {
-    font-size: 3em;
+    font-size: 4em;
     margin-top: 25px;
   }
 }
@@ -50,6 +34,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+  letter-spacing: 2px;
   padding: 10px;
   background: $gray-30;
   border: 1px solid $gray-90;
@@ -59,6 +44,7 @@
     width: 100%;
     font-size: 14px;
     line-height: 20px;
+    margin: 5px;
   }
 }
 

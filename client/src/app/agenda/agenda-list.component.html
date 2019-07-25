@@ -1,15 +1,15 @@
 <nav class="nav-top">
-  <a href="" class="back">
+  <a [routerLink]="['/']" class="btn-back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <h3 class="agenda-title-main">Julho</h3>
+  <p class="title-main">Julho</p>
 </nav>
 <perfect-scrollbar class="content-default">
   <section>
     <ul class="agenda-list">
         <li #agendaColumnList class="agenda-column-list" *ngFor="let agenda of agendas">
-          <a href="#"><h1 id="dayColumnAgendaList-{{agenda.id}}" class="agenda-day-list">{{agenda.dia}}</h1></a>
+          <a [routerLink]="['/agenda','show']"><h1 class="agenda-day-list">{{agenda.dia}}</h1></a>
             <div class="agenda-column-content-list">
               <p class="text-line-agenda">Agendados: {{agenda.agendados}} </p>
               <p class="text-line-agenda">Efetivados: {{agenda.efetivados}} </p>

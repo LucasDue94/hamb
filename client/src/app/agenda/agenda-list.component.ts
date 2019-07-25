@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
 
 @Component({
-  selector: 'app-agenda-list',
+  selector: 'agenda-list',
   templateUrl: './agenda-list.component.html',
   styleUrls: ['./agenda-list.component.scss']
 })
@@ -34,12 +34,14 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     this.agendaDayList.forEach(day => {
       if (day.nativeElement.childNodes[0].textContent < 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#A9ABAE');
+        this.render.setStyle(day.nativeElement.childNodes[1], 'color', '#A9ABAE');
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'not-allowed');
       } else if (day.nativeElement.childNodes[0].textContent > 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#5A5B5B');
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'not-allowed');
       } else if (day.nativeElement.childNodes[0].textContent == 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#2B517E');
+        this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'pointer');
       }
     });
   }
