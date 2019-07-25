@@ -39,6 +39,8 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
     PerfectScrollbarModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  exports: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
