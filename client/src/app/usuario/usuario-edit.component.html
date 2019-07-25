@@ -1,1 +1,64 @@
-<p>usuario-edit works!</p>
+<ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
+  <p class="spinner-title">Carregando...</p>
+</ngx-spinner>
+<nav class="nav-container">
+  <div class="offStatus" #status>
+    <p>Status alterado</p>
+    <fa-icon class="icon" [icon]="['fas','check']"></fa-icon>
+  </div>
+  <a href="" class="back">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+  <h3>Usuários do sistema</h3>
+
+  <div [formGroup]="searchForm" [ngStyle]="{'visibility': 'hidden'}" class="search-container">
+    <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
+    <button id="search-button">
+      <fa-icon [icon]="['fas','search']"></fa-icon>
+    </button>
+  </div>
+</nav>
+
+<main class="content-default">
+  <section class="container-edit-usuario">
+    <form class="form-container" [formGroup]="usuarioForm">
+      <div class="form-group">
+        <label class="form-label" for="nome">nome</label>
+        <input class="form-control" id="nome" formControlName="nome" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="crm">crm</label>
+        <input class="form-control" id="crm" formControlName="crm" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="login">login</label>
+        <input class="form-control" id="login" formControlName="login" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="perfil">perfil</label>
+        <select [(ngModel)]="usuario.perfil.id" class="form-control" id="perfil" formControlName="perfil">
+          <option value="1">admin</option>
+          <option value="2">médico</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="telefone">telefone</label>
+        <input class="form-control" id="telefone" formControlName="telefone" type="text">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="status">status</label>
+        <select [(ngModel)]="usuario.ativo" class="form-control" id="status" formControlName="status">
+          <option value="">selecione</option>
+          <option value="false">desativado</option>
+          <option value="true">ativo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">email</label>
+        <input class="form-control" id="email" formControlName="email" type="text">
+      </div>
+      <button class="button button-save">Salvar</button>
+    </form>
+  </section>
+</main>

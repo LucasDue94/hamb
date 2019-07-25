@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Usuario} from './usuario';
 
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
-import {subscriptionLogsToBeFn} from "rxjs/internal/testing/TestScheduler";
 
 @Injectable()
 export class UsuarioService {

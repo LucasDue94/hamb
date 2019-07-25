@@ -7,6 +7,8 @@ class Usuario {
     String crm
     Date ultimoAcesso
     Perfil perfil
+//    String telefone
+//    String email
     Boolean ativo = true
     static hasMany = [atendimentos: Atendimento]
 

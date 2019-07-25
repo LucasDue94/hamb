@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -10,8 +10,9 @@ import {NgxSpinnerService} from "ngx-spinner";
   templateUrl: './usuario-list.component.html',
   styleUrls: ['./usuario.component.scss']
 })
-export class UsuarioListComponent implements OnInit {
+export class UsuarioListComponent implements OnInit, AfterViewChecked {
 
+  @ViewChild('status', {static: false}) status;
   usuarios: Usuario[];
   usuario: Usuario;
   searchForm: FormGroup;
@@ -20,13 +21,15 @@ export class UsuarioListComponent implements OnInit {
   offset = 0;
   messageStatus;
 
-  constructor(private usuarioService: UsuarioService, private spinner: NgxSpinnerService) {
+  constructor(private usuarioService: UsuarioService,
+              private spinner: NgxSpinnerService,
+              private render: Renderer2) {
   }
 
   ngOnInit() {
+    this.show();
     this.usuarios = null;
     this.messageStatus = null;
-    this.show();
     this.searchControl = new FormControl();
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
@@ -40,34 +43,40 @@ export class UsuarioListComponent implements OnInit {
     this.search();
   }
 
+  ngAfterViewChecked() {
+    if (this.messageStatus) this.changeStatus();
+
+  }
+
   search() {
     this.show();
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(search => {
-        console.log(search);
         this.close();
         return this.usuarioService.search(search, this.offset, this.max);
       }),
     ).subscribe(usuarios => this.usuarios = usuarios);
-    console.log(this.usuarios.length)
   }
 
   show = () => this.spinner.show();
   close = () => this.spinner.hide();
 
   changeStatus() {
-    this.messageStatus = null;
-    console.log(this.messageStatus);
+    setTimeout(() => {
+      this.render.removeClass(this.status.nativeElement, 'offStatus');
+      this.render.addClass(this.status.nativeElement, 'onStatus');
+      this.messageStatus = false;
+    }, 300);
+    this.render.addClass(this.status.nativeElement, 'offStatus');
+    this.render.removeClass(this.status.nativeElement, 'onStatus');
   }
 
-  onOff(usuario) {
+  onOff(usuario, event) {
     this.usuarioService.onOff(usuario).subscribe(res => {
       if (res.status === "OK") {
-        console.log("status alterado");
         usuario.ativo = !usuario.ativo;
-        this.messageStatus = 'Status alterado!';
-        setTimeout(this.changeStatus, 1000);
+        this.messageStatus = true;
       }
     });
   }

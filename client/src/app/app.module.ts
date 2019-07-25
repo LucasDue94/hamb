@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClientModule} from "@angular/common/http";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {HeaderModule} from "./header/header.module";
@@ -26,7 +25,6 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
-    NgbModule,
     HeaderModule,
     MenuModule,
     MainModule,

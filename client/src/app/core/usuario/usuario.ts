@@ -11,7 +11,9 @@ export class Usuario {
   ultimoAcesso: any;
   perfil: Perfil;
   atendimentos: Atendimento[];
-  ativo: boolean
+  ativo: boolean;
+  telefone: string;
+  email: string;
 
   constructor (object?: any) {
     if (object) {
