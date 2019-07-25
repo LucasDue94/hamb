@@ -32,13 +32,13 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.agendas.sort((a, b) => (a.dia > b.dia) ? 1 : -1);
     this.agendaDayList.forEach(day => {
-      if (day.nativeElement.childNodes[0].textContent < 24) {
+      if (day.nativeElement.childNodes[0].textContent < 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#A9ABAE');
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'not-allowed');
-      } else if (day.nativeElement.childNodes[0].textContent > 24) {
+      } else if (day.nativeElement.childNodes[0].textContent > 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#5A5B5B');
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'not-allowed');
-      } else if (day.nativeElement.childNodes[0].textContent == 24) {
+      } else if (day.nativeElement.childNodes[0].textContent == 25) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#2B517E');
       }
     });

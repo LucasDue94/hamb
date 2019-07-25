@@ -1,7 +1,18 @@
 @import "~src/styles";
 
+.nav-top{
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  & .back{
+    color: $gray-80;
+    position: absolute;
+  }
+}
+
 .agenda-title-main {
   text-align: center;
+  width: 100%;
   font-size: 36px;
 }
 
