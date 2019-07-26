@@ -1,17 +1,24 @@
 @import "~src/styles";
 
 .table-show-paciente{
-  width: 90%;
+  width: 95%;
   margin-top: 25px;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
   border-collapse: separate;
-  border-spacing: 10px 10px;
+  border-spacing: 0px 10px;
   & td{
+    font-size: 20px !important;
     background: $gray-20;
     padding: 15px;
+    border-top: 1px solid $gray-60;
+    border-bottom: 1px solid $gray-60;
   }
-  & tr{
+
+  & .fa-registered{
+    color: #C24D4D ;
   }
 }
+
+
