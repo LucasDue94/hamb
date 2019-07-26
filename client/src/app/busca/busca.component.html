@@ -1,1 +1,55 @@
-<h1>busca works!</h1>
+<ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
+  <p class="spinner-title">Carregando...</p>
+</ngx-spinner>
+<nav class="nav-container">
+  <a [routerLink]="['/usuario','list']" class="back" [ngStyle]="{'visibility': 'hidden'}">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+  <h3>Busca de Usuários</h3>
+  <div [formGroup]="searchForm" class="search-container">
+    <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
+    <button id="search-button">
+      <fa-icon [icon]="['fas','search']"></fa-icon>
+    </button>
+  </div>
+</nav>
+<perfect-scrollbar class="content-default">
+  <main class="table">
+    <section class="thead">
+      <span class="th">PRONTUÁRIO</span>
+      <span class="th">NOME</span>
+      <span class="th ">MÃE</span>
+      <span class="th">TELEFONE</span>
+      <div class="th options">
+        <fa-icon [icon]="['fas','cog']"></fa-icon>
+      </div>
+    </section>
+    <section *ngIf="pacientes!=null" class="tbody">
+
+      <div class="row">
+        <span class="td">000001759</span>
+        <span class="td">Joaquim José da Silva Xavier</span>
+        <span class="td">Maria Joaquina de Amaral</span>
+        <span class="td">(82)9 9698-8714</span>
+      <div class="td options">
+        <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
+        <fa-icon [routerLink]="['/agenda','list',paciente]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+      </div>
+      </div>
+     <!-- <div *ngFor="let paciente of pacientes;" class="row" [ngClass]="{'disable' : !paciente?.ativo}">
+        <span class="td login">{{paciente.login}}</span>
+        <span class="td nome">{{paciente.nome}}</span>
+        <span class="td">{{paciente.crm}}</span>
+        <div class="td options">
+          <fa-icon [routerLink]="['/paciente','edit',paciente.id]" class="icon login" [icon]="['fas','edit']"></fa-icon>
+          <fa-icon [routerLink]="['/agenda','list',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+        </div>
+      </div>
+      <div class="usersNotFound" *ngIf="pacientes.length == 0">
+        Nenhum usuário foi encontrado!
+        <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
+      </div>-->
+    </section>
+  </main>
+</perfect-scrollbar>

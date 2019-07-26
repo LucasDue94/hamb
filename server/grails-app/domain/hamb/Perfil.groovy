@@ -15,17 +15,28 @@ class Perfil {
     }
 
     static void criarPerfis() {
+        withTransaction { transactionStatus ->
+            if (!exists(ADMIN)) {
+                Perfil perfil = new Perfil(nome: 'ADMIN')
+                perfil.id = ADMIN
+                try {
+                    perfil.save()
+                } catch (Exception ignored) {
+                    transactionStatus.setRollbackOnly()
+                }
+            }
 
-        if (!exists(ADMIN)) {
-            Perfil perfil = new Perfil(nome: 'ADMIN')
-            perfil.id = ADMIN
-            perfil.save()
-        }
+            if (!exists(MEDICO)) {
+                Perfil perfil = new Perfil(nome: 'MÉDICO')
+                perfil.id = MEDICO
+                try {
+                    perfil.save()
+                } catch (Exception ignored) {
+                    transactionStatus.setRollbackOnly()
+                }
+            }
 
-        if (!exists(MEDICO)) {
-            Perfil perfil = new Perfil(nome: 'MÉDICO')
-            perfil.id = MEDICO
-            perfil.save()
+            transactionStatus.flush()
         }
     }
 }

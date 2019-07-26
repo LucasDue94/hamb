@@ -27,7 +27,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.show();
+    this.spinner.show();
     this.usuarios = null;
     this.messageStatus = null;
     this.searchControl = new FormControl();
@@ -38,29 +38,26 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
     this.usuarioService.list(this.max, this.offset).subscribe(
       res => {
         this.usuarios = res;
-        this.close();
+        this.spinner.hide();
       });
     this.search();
   }
 
   ngAfterViewChecked() {
     if (this.messageStatus) this.changeStatus();
-
   }
 
   search() {
-    this.show();
+    this.spinner.show();
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(search => {
-        this.close();
+        this.spinner.hide();
         return this.usuarioService.search(search, this.offset, this.max);
       }),
     ).subscribe(usuarios => this.usuarios = usuarios);
   }
 
-  show = () => this.spinner.show();
-  close = () => this.spinner.hide();
 
   changeStatus() {
     setTimeout(() => {

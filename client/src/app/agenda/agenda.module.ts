@@ -1,14 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AgendaComponent } from './agenda.component';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AgendaRoutingModule} from './agenda-routing.module';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import {AgendaListComponent} from './agenda-list.component';
+import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
-  declarations: [AgendaComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    AgendaRoutingModule,
+    FontAwesomeModule,
+    PerfectScrollbarModule,
+    RouterModule
   ],
-  exports:[AgendaComponent]
+  declarations: [AgendaListComponent, AgendaShowComponent]
 })
-export class AgendaModule { }
+export class AgendaModule {
+}

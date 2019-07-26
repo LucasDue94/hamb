@@ -19,7 +19,7 @@ class Usuario {
         crm nullable: true, blank: false
         ultimoAcesso nullable: true, blank: false
         perfil nullable: false, blank: false
-        telefone nullable: true, blank: false
-        email nullable: true, blank: false
+        telefone nullable: true, blank: true
+        email nullable: true, blank: true
     }
 }

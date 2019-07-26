@@ -1,0 +1,24 @@
+<nav class="nav-top">
+  <a [routerLink]="['/agenda','list']" class="btn-back">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+  <p class="title-main">25 de Julho</p>
+</nav>
+<perfect-scrollbar class="content-default">
+  <table class="table-show-paciente">
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <tr *ngFor="let paciente of pacientes">
+      <td>{{paciente.prontuario}}</td>
+      <td>{{paciente.codpac}}</td>
+      <td>{{paciente.nome}}</td>
+      <td>{{paciente.convenio}}</td>
+    </tr>
+  </table>
+</perfect-scrollbar>
+
+

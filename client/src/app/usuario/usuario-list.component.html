@@ -1,17 +1,16 @@
+<div class="offStatus" #status>
+  <h1 class="title-status">Status alterado</h1>
+  <fa-icon class="icon" [icon]="['fas','check']"></fa-icon>
+</div>
 <ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
   <p class="spinner-title">Carregando...</p>
 </ngx-spinner>
 <nav class="nav-container">
-  <div class="offStatus" #status>
-    <p>Status alterado</p>
-    <fa-icon class="icon" [icon]="['fas','check']"></fa-icon>
-  </div>
   <a href="" class="back" [ngStyle]="{'visibility': 'hidden'}">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
   <h3>Usuários do sistema</h3>
-
   <div [formGroup]="searchForm" class="search-container">
     <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
     <button id="search-button">
@@ -19,7 +18,6 @@
     </button>
   </div>
 </nav>
-
 <perfect-scrollbar class="content-default">
   <main class="table">
     <section class="thead">
