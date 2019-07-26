@@ -7,8 +7,8 @@ class Usuario {
     String crm
     Date ultimoAcesso
     Perfil perfil
-//    String telefone
-//    String email
+    String telefone
+    String email
     Boolean ativo = true
     static hasMany = [atendimentos: Atendimento]
 
@@ -19,5 +19,7 @@ class Usuario {
         crm nullable: true, blank: false
         ultimoAcesso nullable: true, blank: false
         perfil nullable: false, blank: false
+        telefone nullable: true, blank: false
+        email nullable: true, blank: false
     }
 }
