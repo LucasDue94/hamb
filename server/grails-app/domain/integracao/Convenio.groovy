@@ -1,11 +1,11 @@
 package integracao
 
-class Cid {
+class Convenio {
     String id
-    String diagnostico
+    String fantasia
 
     static constraints = {
-        diagnostico nullable: false, blank: false
+        fantasia nullable:  false, blank: false
     }
 
     static mapping = {
