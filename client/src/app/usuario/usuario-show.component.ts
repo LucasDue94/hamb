@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-usuario-show',
+  selector: 'usuario-show',
   templateUrl: 'usuario-show.component.html',
   styleUrls: ['usuario.component.scss']
 })

@@ -1,6 +1,6 @@
 @import "~src/styles";
 
-.table-show-paciente{
+.table-show-paciente {
   width: 95%;
   margin-top: 25px;
   margin-left: auto;
@@ -8,7 +8,8 @@
   text-align: left;
   border-collapse: separate;
   border-spacing: 0px 10px;
-  & td{
+
+  & td {
     font-size: 20px !important;
     background: $gray-20;
     padding: 15px;
@@ -16,9 +17,35 @@
     border-bottom: 1px solid $gray-60;
   }
 
-  & .fa-registered{
-    color: #C24D4D ;
+  & .fa-registered {
+    color: #C24D4D;
   }
 }
+
+.btn-navtop-agenda {
+  width: 150px;
+  border: 2px solid $gray-70;
+  padding: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-agenda-manha {
+  color: $white;
+}
+
+.btn-agenda-tarde {
+  background: $gray-60;
+  color: $gray-20;
+}
+
+.btn-active {
+  background-color: #666;
+  color: white;
+}
+
 
 

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChild} from '@angular/core';
+import {AgendaService} from "../../core/agenda/agenda.service";
 
 @Component({
   selector: 'agenda-show',
@@ -7,17 +8,50 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AgendaShowComponent implements OnInit {
 
-  pacientes = [
-    {id:1, prontuario: 214589, codpac: 2458, nome: "José da Silva Peixoto", idade: 50, convenio: "Particular", retorno: true},
-    {id:2, prontuario: 214590, codpac: 2557, nome: "Maria da Graça da Silva", idade: 30, convenio: "Particular", retorno: false},
-    {id:3, prontuario: 214591, codpac: 2358, nome: "Manuela dos Santos da Silva", idade: 20, convenio: "Unimed", retorno: false },
-    {id:4, prontuario: 214592, codpac: 2151, nome: "Márcio dos Santos da Silva", idade: 38, convenio: "Bradesco", retorno: true},
-    {id:5, prontuario: 214593, codpac: 2052, nome: "Wilma Soares Melo", idade: 28, convenio: "Smile", retorno: false}
-  ]
+  @ViewChild("btnDisabled", {static: false}) btnDisabled: ElementRef;
+  @ViewChild("btnEnabled", {static: false}) btnEnabled: ElementRef;
+  @ViewChild("pacientesTable", {static: false}) pacientesTable: ElementRef;
 
-  constructor() { }
+  agendaAuxiliar: any[] = [];
+  agendaCompleta: any[] = [];
+  agendaManha: any[] = [];
+  agendaTarde: any[] = [];
 
-  ngOnInit() {
+  constructor(private agendaService: AgendaService, private render: Renderer2) {
   }
 
+  ngOnInit() {
+    this.agendaCompleta = this.agendaService.list();
+    this.agendaCompleta.forEach(agenda => {
+      if (agenda.periodo == 'manhã') {
+        this.agendaManha.push(agenda);
+        this.agendaAuxiliar = this.agendaManha;
+      } else {
+        this.agendaTarde.push(agenda);
+        this.agendaAuxiliar = this.agendaTarde;
+      }
+    });
+    this.agendaAuxiliar = this.agendaManha;
+  }
+
+  toogleColorBtn(e) {
+    let status = e.target.innerText;
+    if (e.type == 'click') {
+      this.btnDisabled.nativeElement.classList.forEach(className => {
+        if (className != 'btn-active' && status == 'Tarde') {
+          this.btnDisabled.nativeElement.classList.add('btn-active');
+          this.btnEnabled.nativeElement.classList.remove('btn-active');
+        } else if (className != 'btn-active' && status == 'Manhã') {
+          this.btnEnabled.nativeElement.classList.add('btn-active');
+          this.btnDisabled.nativeElement.classList.remove('btn-active');
+        }
+      });
+
+      if (status == 'Manhã') {
+        this.agendaAuxiliar = this.agendaManha;
+      } else if (status == 'Tarde') {
+        this.agendaAuxiliar = this.agendaTarde;
+      }
+    }
+  }
 }

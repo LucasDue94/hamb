@@ -10,7 +10,7 @@
   flex-direction: column;
   width: 95%;
   color: $white;
-  font-size: 20px;
+  font-size: 16px;
 
   .thead, .row {
     margin-bottom: 2px;
@@ -22,6 +22,11 @@
 
   .thead {
     border: 1px solid $gray-100;
+
+    .options {
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .row {
@@ -31,21 +36,148 @@
   .tbody {
     flex-direction: column;
     color: $gray-100;
+
+    .options {
+      padding: 0 8px;
+
+      & {
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .icon {
+        margin: 0 7px;
+        color: $gray-80;
+
+        &:hover {
+          cursor: pointer;
+          transition: 0.3s;
+          color: $gray-100;
+
+        }
+      }
+    }
   }
 
   .th, .td {
     flex: 1;
     padding: 8px;
     border-radius: 8px;
+    text-transform: uppercase;
   }
 
   .nome {
     flex: 3;
   }
 
-  .options {
-    align-items: center;
-    justify-content: space-around;
-    flex: 1;
+  .login {
+    margin-left: 5px;
+  }
+}
+
+.usersNotFound {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & {
+    border-radius: 8px;
+    background-color: $danger;
+    color: $white;
+    font-size: 18px;
+  }
+
+  .icon {
+    margin-left: 5px;
+  }
+
+}
+
+.disable {
+  color: $gray-70;
+}
+
+.onStatus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  padding: 10px;
+  height: 0;
+  z-index: 99;
+
+  & {
+    background-color: $green-default;
+    color: $success;
+    border-radius: 5px;
+    opacity: 0;
+    -webkit-animation: show 2s;
+    -o-animation: show 2s;
+    animation: show 2s;
+    box-shadow: 1px 1px 6px black;
+  }
+
+  .icon {
+    text-align: center;
+    margin-left: 10px;
+  }
+
+  @keyframes show {
+    0% {
+      opacity: 1;
+      color: transparent;
+    }
+    20% {
+      color: transparent;
+    }
+    50% {
+      color: $white;
+      height: 15px;
+      opacity: 1
+    }
+    100% {
+      height: 15px;
+    }
+  }
+}
+
+.offStatus {
+  display: none;
+}
+
+.container-edit-usuario {
+  position: absolute;
+  left: 0;
+  margin: 20px;
+  display: flex;
+  height: 350px;
+  width: 400px;
+
+  & {
+    background-color: $gray-50;
+    box-shadow: 0 0 6px $gray-100;
+    border-radius: 5px;
+  }
+
+  .form-container {
+    align-items: flex-end;
+  }
+}
+
+.button-save {
+  width: 70px;
+  height: 40px;
+
+  & {
+    letter-spacing: 1px;
+    font-weight: 400;
+    background-color: rgba($blue-default, 0.8);
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $blue-default;
   }
 }
