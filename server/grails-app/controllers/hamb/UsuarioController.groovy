@@ -1,10 +1,14 @@
 package hamb
 
+import grails.validation.ValidationException
+import static org.springframework.http.HttpStatus.CREATED
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NO_CONTENT
+import static org.springframework.http.HttpStatus.OK
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
+
 import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
-import grails.validation.ValidationException
-
-import static org.springframework.http.HttpStatus.*
 
 @ReadOnly
 class UsuarioController {
@@ -14,9 +18,9 @@ class UsuarioController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max, String termo) {
-        params.max = Math.min(max ?: 10, 100)
-        respond usuarioService.list(params, termo), model: [usuarioCount: usuarioService.count()]
+    def index(Integer max) {
+        params.max = Math.min(max ?: 20, 100)
+        respond usuarioService.list(params), model:[usuarioCount: usuarioService.count()]
     }
 
     def show(Long id) {
@@ -42,7 +46,7 @@ class UsuarioController {
             return
         }
 
-        respond usuario, [status: CREATED, view: "show"]
+        respond usuario, [status: CREATED, view:"show"]
     }
 
     @Transactional
@@ -64,7 +68,7 @@ class UsuarioController {
             return
         }
 
-        respond usuario, [status: OK, view: "show"]
+        respond usuario, [status: OK, view:"show"]
     }
 
     @Transactional
@@ -77,16 +81,5 @@ class UsuarioController {
         usuarioService.delete(id)
 
         render status: NO_CONTENT
-    }
-
-    @Transactional
-    def onOff(Usuario usuario) {
-        if (usuario.id == null) {
-            render status: NOT_FOUND
-            return
-        }
-        usuarioService.onOff(usuario)
-
-        respond status: OK
     }
 }

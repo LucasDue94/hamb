@@ -4,20 +4,22 @@
     Voltar
   </a>
   <p class="title-main">25 de Julho</p>
+  <button #btnEnabled class="btn-navtop-agenda btn-agenda-manha btn-active" (click)="toogleColorBtn($event)">Manhã
+  </button>
+  <button #btnDisabled class="btn-navtop-agenda btn-agenda-tarde" (click)="toogleColorBtn($event)">Tarde</button>
 </nav>
 <perfect-scrollbar class="content-default">
   <table class="table-show-paciente">
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <tr *ngFor="let paciente of pacientes">
-      <td>{{paciente.prontuario}}</td>
-      <td>{{paciente.codpac}}</td>
-      <td>{{paciente.nome}}</td>
-      <td>{{paciente.convenio}}</td>
-    </tr>
+      <tr #pacientesTable *ngFor="let paciente of agendaAuxiliar">
+        <td>
+          <fa-icon *ngIf="paciente.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
+        </td>
+        <td><a href="#">{{paciente.prontuario}}</a></td>
+        <td><a href="#">{{paciente.codpac}}</a></td>
+        <td><a href="#">{{paciente.nome}}</a></td>
+        <td><a href="#">{{paciente.idade}}</a></td>
+        <td><a href="#">{{paciente.convenio}}</a></td>
+      </tr>
   </table>
 </perfect-scrollbar>
 

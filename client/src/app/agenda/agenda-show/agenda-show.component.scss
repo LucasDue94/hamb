@@ -1,17 +1,51 @@
 @import "~src/styles";
 
-.table-show-paciente{
-  width: 90%;
+.table-show-paciente {
+  width: 95%;
   margin-top: 25px;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
   border-collapse: separate;
-  border-spacing: 10px 10px;
-  & td{
+  border-spacing: 0px 10px;
+
+  & td {
+    font-size: 20px !important;
     background: $gray-20;
     padding: 15px;
+    border-top: 1px solid $gray-60;
+    border-bottom: 1px solid $gray-60;
   }
-  & tr{
+
+  & .fa-registered {
+    color: #C24D4D;
   }
 }
+
+.btn-navtop-agenda {
+  width: 150px;
+  border: 1px solid $gray-70;
+  padding: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-agenda-manha {
+  color: $white;
+}
+
+.btn-agenda-tarde {
+  background: $gray-60;
+  color: $gray-20;
+}
+
+.btn-active {
+  background-color: #666;
+  color: white;
+}
+
+
+
