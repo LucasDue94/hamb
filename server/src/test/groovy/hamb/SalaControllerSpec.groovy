@@ -1,5 +1,6 @@
 package hamb
 
+import integracao.Sala
 import spock.lang.*
 import static org.springframework.http.HttpStatus.OK
 import static org.springframework.http.HttpStatus.NOT_FOUND

@@ -2,6 +2,7 @@ package hamb
 
 import grails.testing.mixin.integration.Integration
 import grails.gorm.transactions.Rollback
+import integracao.Sala
 import spock.lang.Specification
 import org.hibernate.SessionFactory
 
