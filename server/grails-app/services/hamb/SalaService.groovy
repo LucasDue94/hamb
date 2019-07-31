@@ -1,6 +1,7 @@
 package hamb
 
 import grails.gorm.services.Service
+import integracao.Sala
 
 @Service(Sala)
 interface SalaService {
