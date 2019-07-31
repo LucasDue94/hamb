@@ -13,6 +13,7 @@ interface AtendimentoService {
 
     void delete(Serializable id)
 
+    // TODO: incrementar contador de uso de CID ao incluir novo atendimento
     Atendimento save(Atendimento atendimento)
 
 }
