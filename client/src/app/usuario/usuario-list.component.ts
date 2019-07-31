@@ -69,7 +69,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
     this.render.removeClass(this.status.nativeElement, 'onStatus');
   }
 
-  onOff(usuario, event) {
+  onOff(usuario) {
     this.usuarioService.onOff(usuario).subscribe(res => {
       if (res.status === "OK") {
         usuario.ativo = !usuario.ativo;

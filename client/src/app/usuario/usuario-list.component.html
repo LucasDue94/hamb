@@ -36,7 +36,7 @@
         <div class="td options">
           <fa-icon [routerLink]="['/usuario','edit',usuario.id]" class="icon login" [icon]="['fas','edit']"></fa-icon>
           <fa-icon [routerLink]="['/agenda','list',usuario.id]" class="icon" [icon]="['fas','calendar-alt']"></fa-icon>
-          <fa-icon (click)="onOff(usuario, $event)" class="icon" [icon]="['fas','power-off']"></fa-icon>
+          <fa-icon (click)="onOff(usuario)" class="icon" [icon]="['fas','power-off']"></fa-icon>
         </div>
       </div>
       <div class="usersNotFound" *ngIf="usuarios.length == 0">

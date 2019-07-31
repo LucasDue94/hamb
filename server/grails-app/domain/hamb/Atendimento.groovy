@@ -17,10 +17,14 @@ class Atendimento {
 
     static constraints = {
         conteudo nullable: false, blank: false
-        paciente nullable: false
-        cid nullable: false
+        paciente nullable: false, blank: false
+        cid nullable: false, blank: false
         codReg nullable: false, blank: false
         dataAtendimento nullable: false, blank: false
         convenio nullable: false, blank: false
+    }
+
+    static mapping = {
+
     }
 }
