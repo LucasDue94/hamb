@@ -1,10 +1,9 @@
 package integracao
 
 import grails.testing.gorm.DomainUnitTest
-import hamb.Sala
 import spock.lang.Specification
 
-class SalaSpec extends Specification implements DomainUnitTest<Sala> {
+class PacienteAgendadoSpec extends Specification implements DomainUnitTest<PacienteAgendado> {
 
     def setup() {
     }

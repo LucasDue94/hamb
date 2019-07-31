@@ -22,45 +22,49 @@ CREATE FOREIGN TABLE cid (
 OPTIONS (table '(select COD_CID, DIAGNOSTICO
 from admwpd.URCIDCAD)', readonly 'true');
 
+DROP FOREIGN TABLE IF EXISTS sala;
+CREATE FOREIGN TABLE sala(
+    codigo varchar(4) OPTIONS (key 'true') NOT NULL,
+    unidade varchar(6) OPTIONS (key 'true') NOT NULL,
+    nome varchar(30) NOT NULL
+    ) SERVER wpd
+OPTIONS (table '(select COD_SALA, COD_UNI, DESCRICAO from ADMWPD.IMSALCAD)', readonly 'true');
+
 DROP FOREIGN TABLE IF EXISTS agenda;
 CREATE FOREIGN TABLE agenda(
   id VARCHAR(8) OPTIONS (key 'true') NOT NULL,
-  data date NOT NULL,
-  hora date NOT NULL,
-  cod_prov varchar(9) NOT NULL,
-  cod_prt varchar(9) NOT NULL,
-  cod_reg varchar(7) NOT NULL,
-  nome_pac varchar(70) NOT NULL,
-  cod_con varchar(3) NOT NULL,
-  cod_sala varchar(4) NOT NULL,
-  crm varchar(10) NOT NULL
+  crm varchar(10) NOT NULL,
+  data_hora TIMESTAMP NOT NULL,
+  sala_codigo varchar(4) NOT NULL,
+  sala_unidade varchar(6) NOT NULL
 ) SERVER wpd
-OPTIONS (table '(select IMAGNEXA.COD_AGENDA,
-       admwpd.IMAGNCAD.DATA,
-       admwpd.IMAGNCAD.HORA_INI,
-       admwpd.IMAGNPAC.COD_PRT_PROV,
-       admwpd.fapaccad.cod_prt,
-       admwpd.IMAGNEXA.cod_pac,
-       admwpd.IMAGNPAC.nome_pac,
-       admwpd.fapaccad.COD_CON,
-       admwpd.IMAGNCAD.COD_SALA,
-       admwpd.FAPROCAD.CRM
-FROM admwpd.IMAGNEXA
-         INNER JOIN admwpd.IMAGNPAC ON admwpd.IMAGNPAC.Cod_Prt_Prov = admwpd.IMAGNEXA.Cod_Prt_Prov
-         INNER JOIN admwpd.IMAGNCAD ON admwpd.IMAGNCAD.COD_AGENDA = admwpd.IMAGNEXA.COD_AGENDA
-         INNER JOIN admwpd.FAPROCAD ON admwpd.IMAGNCAD.COD_PRO = admwpd.FAPROCAD.COD_PRO
-         LEFT JOIN admwpd.fapaccad ON admwpd.fapaccad.COD_PAC = admwpd.IMAGNEXA.COD_PAC
-         LEFT JOIN admwpd.faprtcad ON admwpd.faprtcad.cod_prt = admwpd.fapaccad.cod_prt
-WHERE trim(admwpd.IMAGNEXA.COD_PAC) IS NOT NULL
-ORDER BY admwpd.IMAGNPAC.nome_pac)', readonly 'true');
+OPTIONS (table '(select COD_AGENDA,
+       CRM,
+       TO_DATE(TO_CHAR(DATA, ''DD/MM/YYYY'') || '' '' || TO_CHAR(HORA_INI, ''HH24:MI''), ''DD/MM/YYYY HH24:MI'') as DATA_HORA,
+       COD_SALA,
+       COD_UNI
+from ADMWPD.IMAGNCAD agn
+    inner join ADMWPD.FAPROCAD pro on pro.COD_PRO = agn.COD_PRO)', readonly 'true');
+
+DROP FOREIGN TABLE IF EXISTS registro_atendimento;
+CREATE FOREIGN TABLE registro_atendimento(
+    id VARCHAR(7) OPTIONS (key 'true') NOT NULL,
+    origem char(1) not null,
+    convenio_id VARCHAR(3) not null,
+    paciente_id varchar(9) not null
+) SERVER wpd
+OPTIONS (table '(select COD_PAC,
+       TIP_ATEND,
+       COD_CON,
+       COD_PRT
+from ADMWPD.FAPACCAD)', readonly 'true');
 
 DROP FOREIGN TABLE IF EXISTS convenio;
 CREATE FOREIGN TABLE convenio (
   id VARCHAR(6) OPTIONS (key 'true') NOT NULL,
   fantasia varchar (180) NOT NULL
   ) SERVER wpd
-  OPTIONS (table '(select COD_CON, FANTASIA
-from admwpd.FACONCAD)', readonly 'true');
+  OPTIONS (table '(select COD_CON, FANTASIA from admwpd.FACONCAD)', readonly 'true');
 
 
 

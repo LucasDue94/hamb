@@ -1,0 +1,7 @@
+import integracao.Agenda
+
+model {
+    List<Agenda> agendaList
+}
+
+json tmpl.agenda(agendaList ?: [])

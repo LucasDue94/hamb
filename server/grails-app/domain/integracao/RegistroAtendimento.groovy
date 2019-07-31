@@ -1,13 +1,11 @@
 package integracao
 
-class Agenda {
+class RegistroAtendimento {
 
     String id
-    String crm
-    Date dataHora
-    Sala sala
-
-    static hasMany = [pacientes: PacienteAgendado]
+    String origem
+    Convenio convenio
+    Paciente paciente
 
     static mapping = {
         id generator: 'assigned'
