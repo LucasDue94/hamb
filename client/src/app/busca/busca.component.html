@@ -6,7 +6,7 @@
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <h3>Busca de Atendimentos</h3>
+  <h3>Busca de pacientes</h3>
   <div [formGroup]="searchForm" class="search-container">
     <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
     <button id="search-button">
@@ -25,13 +25,13 @@
         <fa-icon [icon]="['fas','cog']"></fa-icon>
       </div>
     </section>
-    <section *ngIf="pacientes!=null" class="tbody">
+    <section *ngFor="let paciente of pacientes" class="tbody">
 
       <div class="row">
-        <span class="td">000001759</span>
-        <span class="td">Joaquim José da Silva Xavier</span>
-        <span class="td">Maria Joaquina de Amaral</span>
-        <span class="td">(82)9 9698-8714</span>
+        <span class="td">{{paciente.id}}</span>
+        <span class="td">{{paciente.nome}}</span>
+        <span class="td">{{paciente.nomeMae}}</span>
+        <span class="td">{{paciente.telefone}}</span>
       <div class="td options">
         <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
         <fa-icon [routerLink]="['/agenda','list',paciente]" class="icon" [icon]="['fas','book-medical']"></fa-icon>

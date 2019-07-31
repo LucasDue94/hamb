@@ -3,7 +3,7 @@ package integracao
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class AgendaSpec extends Specification implements DomainUnitTest<Agenda> {
+class RegistroAtendimentoSpec extends Specification implements DomainUnitTest<RegistroAtendimento> {
 
     def setup() {
     }

@@ -1,0 +1,7 @@
+import integracao.RegistroAtendimento
+
+model {
+    RegistroAtendimento registroAtendimento
+}
+
+json g.render(registroAtendimento, [expand: ['paciente'], resolveTemplate: false])

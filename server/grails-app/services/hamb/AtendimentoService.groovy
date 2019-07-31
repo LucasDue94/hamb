@@ -11,8 +11,10 @@ abstract class AtendimentoService {
         def criteria = Atendimento.createCriteria()
         List<Atendimento> atendimentoList = (List<Atendimento>) criteria.list(args) {
             if (codPrt != null && !codPrt.isEmpty()) {
-                paciente {
-                    eq('id', codPrt.padLeft(9,'0'))
+                registroAtendimento {
+                    paciente {
+                        eq('id', codPrt.padLeft(9, '0'))
+                    }
                 }
             }
             order("dataAtendimento", "asc")

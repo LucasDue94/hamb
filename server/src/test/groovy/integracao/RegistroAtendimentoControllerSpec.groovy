@@ -1,6 +1,5 @@
-package hamb
+package integracao
 
-import integracao.Sala
 import spock.lang.*
 import static org.springframework.http.HttpStatus.OK
 import static org.springframework.http.HttpStatus.NOT_FOUND
@@ -11,7 +10,7 @@ import grails.validation.ValidationException
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.testing.gorm.DomainUnitTest
 
-class SalaControllerSpec extends Specification implements ControllerUnitTest<SalaController>, DomainUnitTest<Sala> {
+class RegistroAtendimentoControllerSpec extends Specification implements ControllerUnitTest<RegistroAtendimentoController>, DomainUnitTest<RegistroAtendimento> {
 
     def populateValidParams(params) {
         assert params != null
@@ -23,7 +22,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the index action returns the correct response"() {
         given:
-        controller.salaService = Mock(SalaService) {
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -48,8 +47,8 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the save action correctly persists"() {
         given:
-        controller.salaService = Mock(SalaService) {
-            1 * save(_ as Sala)
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
+            1 * save(_ as RegistroAtendimento)
         }
 
         when:
@@ -57,7 +56,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        request.json = new Sala(params)
+        request.json = new RegistroAtendimento(params)
         controller.save()
 
         then:
@@ -67,9 +66,9 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.salaService = Mock(SalaService) {
-            1 * save(_ as Sala) >> { Sala sala ->
-                throw new ValidationException("Invalid instance", sala.errors)
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
+            1 * save(_ as RegistroAtendimento) >> { RegistroAtendimento registroAtendimento ->
+                throw new ValidationException("Invalid instance", registroAtendimento.errors)
             }
         }
 
@@ -77,7 +76,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        request.json = new Sala(params)
+        request.json = new RegistroAtendimento(params)
         controller.save()
 
         then:
@@ -87,7 +86,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the show action with a null id"() {
         given:
-        controller.salaService = Mock(SalaService) {
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
             1 * get(null) >> null
         }
 
@@ -100,8 +99,8 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the show action with a valid id"() {
         given:
-        controller.salaService = Mock(SalaService) {
-            1 * get(2) >> new Sala()
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
+            1 * get(2) >> new RegistroAtendimento()
         }
 
         when:"A domain instance is passed to the show action"
@@ -125,8 +124,8 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the update action correctly persists"() {
         given:
-        controller.salaService = Mock(SalaService) {
-            1 * save(_ as Sala)
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
+            1 * save(_ as RegistroAtendimento)
         }
 
         when:
@@ -134,7 +133,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def instance = new Sala(params)
+        def instance = new RegistroAtendimento(params)
         instance.id = 1
         instance.version = 0
         controller.update(instance)
@@ -146,16 +145,16 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.salaService = Mock(SalaService) {
-            1 * save(_ as Sala) >> { Sala sala ->
-                throw new ValidationException("Invalid instance", sala.errors)
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
+            1 * save(_ as RegistroAtendimento) >> { RegistroAtendimento registroAtendimento ->
+                throw new ValidationException("Invalid instance", registroAtendimento.errors)
             }
         }
 
         when:
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'PUT'
-        def instance = new Sala(params)
+        def instance = new RegistroAtendimento(params)
         instance.id = 1
         instance.version = 0
         controller.update(instance)
@@ -177,7 +176,7 @@ class SalaControllerSpec extends Specification implements ControllerUnitTest<Sal
 
     void "Test the delete action with an instance"() {
         given:
-        controller.salaService = Mock(SalaService) {
+        controller.registroAtendimentoService = Mock(RegistroAtendimentoService) {
             1 * delete(2)
         }
 

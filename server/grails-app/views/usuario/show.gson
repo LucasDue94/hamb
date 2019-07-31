@@ -1,0 +1,7 @@
+import hamb.Usuario
+
+model {
+	Usuario usuario
+}
+
+json tmpl.usuario(usuario)

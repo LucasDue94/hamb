@@ -1,0 +1,8 @@
+import hamb.Atendimento
+
+model {
+	Iterable<Atendimento> atendimentoList
+}
+
+json tmpl.atendimento(atendimentoList ?: [])
+

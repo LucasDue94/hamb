@@ -1,6 +1,7 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {NgxSpinnerService} from "ngx-spinner";
+import {PacienteService} from "../core/paciente/paciente.service";
 
 @Component({
   selector: 'busca',
@@ -10,14 +11,14 @@ import {NgxSpinnerService} from "ngx-spinner";
 export class BuscaComponent implements OnInit {
 
   paciente;
-  pacientes = 1;
+  pacientes;
   searchForm: FormGroup;
   searchControl: FormControl;
   max = 1000;
   offset = 0;
 
   constructor(private spinner: NgxSpinnerService,
-              private render: Renderer2) {
+              private render: Renderer2, private pacienteService: PacienteService) {
   }
 
   ngOnInit() {
@@ -26,7 +27,23 @@ export class BuscaComponent implements OnInit {
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
     });
-    this.spinner.hide();
+    this.pacienteService.list(this.max, this.offset).subscribe(
+      pacientes => {
+        this.pacientes = pacientes;
+        console.log(pacientes)
+        this.spinner.hide();
+      });
   }
+
+  /*  search() {
+      this.spinner.show();
+      this.searchControl.valueChanges.pipe(
+        debounceTime(1000),
+        switchMap(search => {
+          this.spinner.hide();
+          return this.pacienteService.search(search, this.offset, this.max);
+        }),
+      ).subscribe(pacientes => this.pacientes = pacientes);
+    }*/
 
 }

@@ -3,16 +3,35 @@ package integracao
 import grails.gorm.services.Service
 
 @Service(Paciente)
-interface PacienteService {
+abstract class PacienteService {
 
-    Paciente get(Serializable id)
+    abstract Paciente get(Serializable id)
 
-    List<Paciente> list(Map args)
+    List<Paciente> list(Map args, String termo) {
+        def criteria = Paciente.createCriteria()
+        List<Paciente> pacienteList = (List<Paciente>) criteria.list(args) {
+            if (termo != null && !termo.isEmpty()) {
+                registros {
+                    atendimento {
+                        isNotNull('id')
+                    }
+                }
+                or {
+                    ilike('nome', "%${termo}%")
+                    ilike('id', "%${termo}%")
+                    registros {
+                        ilike('id', "%${termo}%")
+                    }
+                }
+            }
+        }
+        return pacienteList
+    }
 
-    Long count()
+    abstract Long count()
 
-    void delete(Serializable id)
+    abstract void delete(Serializable id)
 
-    Paciente save(Paciente paciente)
+    abstract Paciente save(Paciente paciente)
 
 }

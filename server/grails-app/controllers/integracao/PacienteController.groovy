@@ -14,9 +14,9 @@ class PacienteController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
+    def index(Integer max, String termo) {
         params.max = Math.min(max ?: 10, 100)
-        respond pacienteService.list(params), model:[pacienteCount: pacienteService.count()]
+        respond pacienteService.list(params, termo), model: [pacienteCount: pacienteService.count()]
     }
 
     def show(Long id) {
@@ -42,7 +42,7 @@ class PacienteController {
             return
         }
 
-        respond paciente, [status: CREATED, view:"show"]
+        respond paciente, [status: CREATED, view: "show"]
     }
 
     @Transactional
@@ -64,7 +64,7 @@ class PacienteController {
             return
         }
 
-        respond paciente, [status: OK, view:"show"]
+        respond paciente, [status: OK, view: "show"]
     }
 
     @Transactional

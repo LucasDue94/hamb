@@ -1,28 +1,16 @@
 package integracao
 
-import hamb.Sala
-import hamb.Usuario
-
 class Agenda {
-    String id //cod_provisorio
-    Usuario medico
-    String codReg
-    Date data
-    Convenio convenio
 
-    static hasMany = [pacientes: Paciente]
-    static belongsTo = [sala: Sala]
+    String id
+    String crm
+    Date dataHora
+    Sala sala
 
-    static constraints = {
-        medico nullable: false, blank: false
-        codReg nullable: false, blank: false
-        data nullable: false, blank: false
-        convenio nullable: false, blank: false
-    }
+    static hasMany = [pacientes: PacienteAgendado]
 
     static mapping = {
         id generator: 'assigned'
         version false
     }
-
 }
