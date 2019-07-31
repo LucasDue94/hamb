@@ -49,15 +49,15 @@ from ADMWPD.IMAGNCAD agn
 DROP FOREIGN TABLE IF EXISTS registro_atendimento;
 CREATE FOREIGN TABLE registro_atendimento(
     id VARCHAR(7) OPTIONS (key 'true') NOT NULL,
-    origem char(1) not null,
+    origem char(1),
     convenio_id VARCHAR(3) not null,
     paciente_id varchar(9) not null
 ) SERVER wpd
-OPTIONS (table '(select COD_PAC,
-       TIP_ATEND,
-       COD_CON,
-       COD_PRT
-from ADMWPD.FAPACCAD)', readonly 'true');
+OPTIONS (table '(select pac.COD_PAC,
+       com.ORIGEM,
+       pac.COD_CON,
+       pac.COD_PRT
+from ADMWPD.FAPACCAD pac inner join ADMWPD.FAPACCOM com on com.COD_PAC = pac.COD_PAC)', readonly 'true');
 
 DROP FOREIGN TABLE IF EXISTS convenio;
 CREATE FOREIGN TABLE convenio (

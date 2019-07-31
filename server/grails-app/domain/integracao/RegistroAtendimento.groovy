@@ -1,14 +1,17 @@
 package integracao
 
+import hamb.Origem
+
 class RegistroAtendimento {
 
     String id
-    String origem
+    Origem origem
     Convenio convenio
     Paciente paciente
 
     static mapping = {
         id generator: 'assigned'
         version false
+        origem enumType: 'identity'
     }
 }

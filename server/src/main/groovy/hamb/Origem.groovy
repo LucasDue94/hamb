@@ -1,5 +1,7 @@
+package hamb
+
 enum Origem {
-    CONSULTA('I' as Character),
+    CONSULTA('C' as Character),
     RETORNO('L' as Character)
 
     final Character id
