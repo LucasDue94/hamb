@@ -20,6 +20,13 @@ usuario-list, usuario-edit, agenda-show, agenda-list, busca {
   height: 100%;
 }
 
+
+historico {
+  margin: 0 auto;
+  width: 90%;
+  height: 70%;
+}
+
 body {
   height: 100vh;
 }
@@ -245,4 +252,5 @@ $nav-height: 35px;
     border-radius: 8px;
     text-transform: uppercase;
   }
+
 }

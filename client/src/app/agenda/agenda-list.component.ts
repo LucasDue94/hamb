@@ -9,6 +9,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('agendaColumnList') agendaDayList: QueryList<AgendaListComponent>;
 
+  now = new Date();
+
   agendas = [
     {id: 1, dia: '24', agendados: 52, efetivados: 40, atentidos: 40},
     {id: 2, dia: '16', agendados: 52, efetivados: 40, atentidos: 40},
@@ -19,7 +21,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     {id: 7, dia: '26', agendados: 52, efetivados: 40, atentidos: 40},
     {id: 8, dia: '25', agendados: 52, efetivados: 40, atentidos: 40},
     {id: 9, dia: '30', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 10, dia: '04', agendados: 52, efetivados: 40, atentidos: 40}
+    {id: 10, dia: '04', agendados: 52, efetivados: 40, atentidos: 40},
+    {id: 11, dia: '31', agendados: 52, efetivados: 40, atentidos: 40}
   ];
   nativeElement: any;
 
@@ -30,17 +33,20 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    let today = this.now.getDate();
     this.agendas.sort((a, b) => (a.dia > b.dia) ? 1 : -1);
     this.agendaDayList.forEach(day => {
-      if (day.nativeElement.childNodes[0].textContent < 25) {
+      this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#A9ABAE');
+      if (day.nativeElement.childNodes[0].textContent > today) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#A9ABAE');
         this.render.setStyle(day.nativeElement.childNodes[1], 'color', '#A9ABAE');
-      } else if (day.nativeElement.childNodes[0].textContent > 25) {
+      } else if (day.nativeElement.childNodes[0].textContent > today) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#5A5B5B');
-      } else if (day.nativeElement.childNodes[0].textContent == 25) {
+      } else if (day.nativeElement.childNodes[0].textContent == today) {
         this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#2B517E');
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'pointer');
       }
     });
+    console.log(today);
   }
 }

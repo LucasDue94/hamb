@@ -9,6 +9,10 @@
   border-collapse: separate;
   border-spacing: 0px 10px;
 
+  & tr {
+    cursor: pointer;
+  }
+
   & td {
     font-size: 20px !important;
     background: $gray-20;

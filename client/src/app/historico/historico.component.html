@@ -1,0 +1,74 @@
+<nav class="nav-top">
+  <a [routerLink]="['/agenda', 'show']" class="btn-back">
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    Voltar
+  </a>
+  <p class="title-main">Histórico</p>
+  <div class="combobox-historico">
+    <p id="info" class="combobox-historico-text" (click)="toogle($event)">
+      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
+      José Flávio Menezes Almeida
+    </p>
+    <div class="combobox-info-historico">
+      <div class="combobox-info-text">
+        <div class="flex row justify-content-between">
+          <div>Paciente:</div>
+          <div>Data Nasc.</div>
+        </div>
+        <div class="flex row justify-content-between">
+          <strong>José Flávio Menezes Almeida</strong>
+          <strong>01/08/60</strong>
+        </div>
+        <div class="flex row justify-content-between">
+          <div>Nome da Mãe:</div>
+          <div>Idade:</div>
+        </div>
+        <div class="flex row justify-content-between">
+          <strong>Maria da Graça </strong>
+          <strong>28 anos</strong>
+        </div>
+        <div class="flex row justify-content-between">
+          <div>Registro:</div>
+          <div>Prontuário:</div>
+          <div>Convênio:</div>
+        </div>
+        <div class="flex row justify-content-between">
+          <strong>02215489</strong>
+          <strong>02216549</strong>
+          <strong>Unimed</strong>
+        </div>
+        <div>Telefone:</div>
+        <strong> (82) 99632-7587</strong>
+      </div>
+    </div>
+  </div>
+</nav>
+<perfect-scrollbar class="content-default">
+  <section class="section-historico" *ngFor="let paciente of paciente; index as i">
+    <article class="article-historico">
+      <p>
+        {{paciente.historico[i].laudo}}
+      </p>
+      <legend class="legend-article">
+        <strong class="historico-data-list"> {{paciente.historico[i].data}} {{paciente.historico[i].hora}} </strong>
+        <strong class="historico-cid-list"> CID: {{paciente.historico[i].cid}} </strong>
+        <strong class="historico-medico-list"> CRM: {{paciente.historico[i].medico}} </strong>
+      </legend>
+    </article>
+  </section>
+</perfect-scrollbar>
+<form action="" class="form-historico">
+  <textarea class="textarea-content" name="" id="" placeholder="> Digite o seu texto aqui <"></textarea>
+  <fieldset>
+    <ul class="list-buttons">
+      <li>
+        <select class="select-list" name="" id="#">
+          <option value="">CID</option>
+        </select>
+      </li>
+      <li>
+        <button class="button-save">Salvar</button>
+      </li>
+    </ul>
+  </fieldset>
+</form>

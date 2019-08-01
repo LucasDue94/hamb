@@ -1,0 +1,247 @@
+@import "~src/styles";
+
+::placeholder {
+  font-size: 1.6em;
+  color: $gray-80;
+  text-align: center;
+  line-height: 70px;
+}
+
+.form-historico {
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  margin-top: 20px;
+  vertical-align: top;
+
+  & .textarea-content {
+    width: 1366px;
+    border: 1px solid $gray-70;
+    height: 80px;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  & .list-buttons {
+    list-style: none;
+  }
+
+  & .select-list {
+    background: $gray-40;
+    width: 150px;
+    height: 45px;
+    font-size: 1em;
+    text-align: center;
+    border: 1px solid $gray-70;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+  & .button-save {
+    font-size: 1em;
+    background: $blue-default;
+    width: 150px;
+    height: 45px;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 5px;
+    color: $white;
+  }
+}
+
+.section-historico {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  margin: 0 auto;
+  align-items: center;
+  vertical-align: middle;
+  text-align: center;
+
+  .fa-user {
+    width: 140px;
+    text-align: center;
+    height: 150px;
+    background: #D6D0D0;
+    font-size: 6em;
+    color: #A19E9E;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px $gray-70;
+
+    & .fa-user-legend {
+      font-size: 14px;
+      color: $gray-90;
+    }
+  }
+
+  .article-historico-last {
+    width: 1100px;
+    margin-bottom: 10px;
+    padding: 20px;
+    text-indent: 50px;
+    margin-top: 20px;
+    text-align: justify;
+    font-size: 14px;
+    line-height: 25px;
+    border-radius: 10px;
+    background: $white;
+    box-shadow: 5px 5px 5px $gray-70;
+
+  }
+}
+
+.article-historico {
+  width: 1300px;
+  margin-bottom: 10px;
+  padding: 20px;
+  text-indent: 50px;
+  margin-top: 10px;
+  text-align: justify;
+  font-size: 18px;
+  line-height: 35px;
+  border-radius: 10px;
+  background: $white;
+  box-shadow: 5px 5px 5px $gray-70;
+
+  & .legend-article {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    vertical-align: middle;
+    margin-top: 10px;
+
+    & .historico-data-list {
+      color: $blue-default;
+    }
+
+    & .historico-cid-list {
+      color: $danger;
+    }
+
+    & .historico-medico-list {
+      color: $blue-default;
+    }
+  }
+}
+
+.combobox-historico {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 410px;
+  color: #8D8E8F;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px $gray-70;
+
+  & .combobox-historico-text {
+    margin-left: 10px;
+  }
+
+  & .selected-triangule {
+    position: absolute;
+    right: 10px;
+  }
+}
+
+.combobox-info-historico {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+  display: none;
+  padding: 10px;
+  z-index: 8;
+  border-radius: 10px;
+  background: $white;
+  border: 1px solid $gray-70;
+  box-shadow: 5px 5px 5px $gray-70;
+}
+
+.combobox-historico-text:hover {
+  color: $blue-default;
+}
+
+.combobox-info-text {
+  font-size: 12px;
+  min-width: 400px;
+  line-height: 30px;
+  padding: 5px;
+
+  & div, strong {
+    line-height: 25px;
+  }
+
+  & div {
+    font-size: 15px;
+  }
+
+  & strong {
+    font-size: 17px;
+  }
+
+}
+
+
+.flex {
+  display: flex;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.stretch {
+  align-items: stretch;
+}
+
+.flex-start {
+  align-items: flex-start;
+}
+
+.flex-end {
+  align-items: flex-end;
+}
+
+.center {
+  align-items: center;
+}
+
+.baseline {
+  align-items: baseline;
+}
+
+.collumn {
+  flex-direction: column;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.center {
+  align-content: center;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.grow-1 {
+  flex: 1 1 auto;
+}
+
+.flex-1 {
+  flex: 1 1 auto;
+  text-align: center;
+}

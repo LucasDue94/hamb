@@ -15,16 +15,20 @@ import {AgendaModule} from "./agenda/agenda.module";
 import {BuscaModule} from "./busca/busca.module";
 import {UsuarioModule} from "./usuario/usuario.module";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import { HistoricoComponent } from './historico/historico.component';
+import {HistoricoModule} from "./historico/historico.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HistoricoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
+    HistoricoModule,
     HeaderModule,
     MenuModule,
     MainModule,

@@ -11,8 +11,10 @@ export class AgendaService {
       id: 1,
       prontuario: 214589,
       codpac: 2458,
-      nome: "José da Silva Peixoto",
-      idade: 50,
+      paciente: {
+        nome: "José da Silva Peixoto",
+        idade: 50
+      },
       convenio: "Particular",
       retorno: true,
       consulta: new Date(),
@@ -23,8 +25,10 @@ export class AgendaService {
       id: 2,
       prontuario: 214590,
       codpac: 2557,
-      nome: "Maria da Graça da Silva",
-      idade: 30,
+      paciente: {
+        nome: "Maria da Graça da Silva",
+        idade: 30
+      },
       convenio: "Particular",
       retorno: false,
       periodo: 'manhã',
@@ -34,8 +38,10 @@ export class AgendaService {
       id: 3,
       prontuario: 214591,
       codpac: 2358,
-      nome: "Manuela dos Santos da Silva",
-      idade: 20,
+      paciente: {
+        nome: "Manuela dos Santos da Silva",
+        idade: 20
+      },
       convenio: "Unimed",
       retorno: true,
       periodo: 'manhã',
@@ -45,8 +51,10 @@ export class AgendaService {
       id: 4,
       prontuario: 214592,
       codpac: 2151,
-      nome: "Márcio dos Santos da Silva",
-      idade: 38,
+      paciente: {
+        nome: "Márcio dos Santos da Silva",
+        idade: 38
+      },
       convenio: "Bradesco",
       retorno: true,
       periodo: 'tarde',
@@ -56,8 +64,10 @@ export class AgendaService {
       id: 5,
       prontuario: 214593,
       codpac: 2052,
-      nome: "Wilma Soares Melo",
-      idade: 28,
+      paciente: {
+        nome: "Wilma Soares Melo",
+        idade: 28
+      },
       convenio: "Smile",
       retorno: false,
       periodo: 'manhã',

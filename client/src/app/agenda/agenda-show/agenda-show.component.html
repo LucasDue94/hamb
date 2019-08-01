@@ -10,16 +10,16 @@
 </nav>
 <perfect-scrollbar class="content-default">
   <table class="table-show-paciente">
-      <tr #pacientesTable *ngFor="let paciente of agendaAuxiliar">
-        <td>
-          <fa-icon *ngIf="paciente.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
-        </td>
-        <td><a href="#">{{paciente.prontuario}}</a></td>
-        <td><a href="#">{{paciente.codpac}}</a></td>
-        <td><a href="#">{{paciente.nome}}</a></td>
-        <td><a href="#">{{paciente.idade}}</a></td>
-        <td><a href="#">{{paciente.convenio}}</a></td>
-      </tr>
+    <tr #pacientesTable *ngFor="let agenda of agendaAuxiliar" [routerLink]="['/historico', 'list', agenda.id]">
+      <td>
+        <fa-icon *ngIf="agenda.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
+      </td>
+      <td>{{agenda.prontuario}}</td>
+      <td>{{agenda.codpac}}</td>
+      <td>{{agenda.paciente.nome}}</td>
+      <td>{{agenda.paciente.idade}}</td>
+      <td>{{agenda.convenio}}</td>
+    </tr>
   </table>
 </perfect-scrollbar>
 
