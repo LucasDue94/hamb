@@ -55,7 +55,6 @@ export class PacienteService {
             headers: this.httpOptions.headers,
             params: {termo: searchTerm}
         }).subscribe((json: any) => {
-            console.log(json);
             subject.next(json.map((obj: any) => new Paciente(obj)))
         });
         return subject.asObservable();

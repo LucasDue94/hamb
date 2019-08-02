@@ -4,4 +4,4 @@ model {
     Usuario usuario
 }
 
-json g.render(usuario, [expand: ['perfil'], resolveTemplate: false])
+json g.render(usuario, [expand: ['perfil'],excludes: ['senha','ultimoAcesso'], resolveTemplate: false])

@@ -3,8 +3,6 @@
 export class RegistroAtendimento {
     id: number;
 
-    
-
     constructor (object?: any) {
       if (object) {
         

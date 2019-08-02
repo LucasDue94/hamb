@@ -8,13 +8,14 @@
   </a>
   <h3>Busca de pacientes</h3>
   <div [formGroup]="searchForm" class="search-container">
-    <input formControlName="searchControl" id="search-text" placeholder="Procure: Nome, crm ou login..." type="text">
+    <input (focus)="search()" formControlName="searchControl" id="search-text"
+           placeholder="Procure: Nome, crm ou login..." type="text" #inputSearch>
     <button id="search-button">
       <fa-icon [icon]="['fas','search']"></fa-icon>
     </button>
   </div>
 </nav>
-<perfect-scrollbar class="content-default">
+<section [scrollWindow]="false" [hidden]="true" infinite-scroll (scrolled)="scrollDown()" class="content-default">
   <main class="table">
     <section class="thead">
       <span class="th">PRONTUÁRIO</span>
@@ -26,30 +27,20 @@
       </div>
     </section>
     <section *ngFor="let paciente of pacientes" class="tbody">
-
       <div class="row">
-        <span class="td">{{paciente.id}}</span>
+        <span class="td">{{paciente.id }}</span>
         <span class="td">{{paciente.nome}}</span>
         <span class="td">{{paciente.nomeMae}}</span>
         <span class="td">{{paciente.telefone}}</span>
-      <div class="td options">
-        <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
-        <fa-icon [routerLink]="['/agenda','list',paciente]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
-      </div>
-      </div>
-     <!-- <div *ngFor="let paciente of pacientes;" class="row" [ngClass]="{'disable' : !paciente?.ativo}">
-        <span class="td login">{{paciente.login}}</span>
-        <span class="td nome">{{paciente.nome}}</span>
-        <span class="td">{{paciente.crm}}</span>
         <div class="td options">
-          <fa-icon [routerLink]="['/paciente','edit',paciente.id]" class="icon login" [icon]="['fas','edit']"></fa-icon>
-          <fa-icon [routerLink]="['/agenda','list',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+          <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
+          <fa-icon [routerLink]="['/agenda','list',paciente]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
         </div>
       </div>
       <div class="usersNotFound" *ngIf="pacientes.length == 0">
         Nenhum usuário foi encontrado!
         <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
-      </div>-->
+      </div>
     </section>
   </main>
-</perfect-scrollbar>
+</section>

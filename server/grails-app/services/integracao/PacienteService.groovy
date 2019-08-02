@@ -10,17 +10,22 @@ abstract class PacienteService {
     List<Paciente> list(Map args, String termo) {
         def criteria = Paciente.createCriteria()
         List<Paciente> pacienteList = (List<Paciente>) criteria.list(args) {
-            if (termo != null && !termo.isEmpty()) {
-                registros {
-                    atendimento {
-                        isNotNull('id')
-                    }
+
+           /* registros {
+                atendimento {
+                    isNotNull('id')
                 }
+            }*/
+
+            if (termo != null && !termo.isEmpty()) {
                 or {
                     ilike('nome', "%${termo}%")
                     ilike('id', "%${termo}%")
                     registros {
                         ilike('id', "%${termo}%")
+                        projections{
+                            distinct('paciente')
+                        }
                     }
                 }
             }

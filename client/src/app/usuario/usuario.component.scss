@@ -9,23 +9,6 @@
   margin-left: 5px;
 }
 
-.usersNotFound {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-
-  & {
-    border-radius: 8px;
-    background-color: $danger;
-    color: $white;
-    font-size: 18px;
-  }
-  .icon {
-    margin-left: 5px;
-  }
-}
-
 .disable {
   color: $gray-70;
 }

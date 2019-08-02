@@ -4,5 +4,5 @@ model {
     Atendimento atendimento
 }
 
-json g.render(atendimento, [expand: ['registroAtendimento', 'usuario','usuario.perfil'], excludes: ['usuario.senha','usuario.ultimoAcesso'], resolveTemplate: false]) {
+json g.render(atendimento, [expand: ['usuario','usuario.perfil','cid'], excludes: ['registroAtendimento'], resolveTemplate: false]) {
 }

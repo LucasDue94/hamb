@@ -41,6 +41,8 @@ $nav-height: 35px;
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow-y: scroll;
+  min-height: 300px;
   height: calc(100% - 35px);
   background-color: $gray-30;
   border-radius: 6px;
@@ -244,5 +246,23 @@ $nav-height: 35px;
     padding: 8px;
     border-radius: 8px;
     text-transform: uppercase;
+  }
+}
+
+.usersNotFound {
+  z-index: 99;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  & {
+    border-radius: 8px;
+    background-color: $danger;
+    color: $white;
+    font-size: 18px;
+  }
+  .icon {
+    margin-left: 5px;
   }
 }

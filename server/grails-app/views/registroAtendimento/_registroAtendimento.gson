@@ -4,4 +4,4 @@ model {
     RegistroAtendimento registroAtendimento
 }
 
-json g.render(registroAtendimento, [expand: ['paciente'], resolveTemplate: false])
+json g.render(registroAtendimento, [expand:['atendimento'],resolveTemplate: false])
