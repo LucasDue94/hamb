@@ -11,8 +11,4 @@ interface PacienteService {
 
     Long count()
 
-    void delete(Serializable id)
-
-    Paciente save(Paciente paciente)
-
 }

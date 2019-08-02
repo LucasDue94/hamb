@@ -14,5 +14,4 @@ interface UsuarioService {
     void delete(Serializable id)
 
     Usuario save(Usuario usuario)
-
 }

@@ -10,7 +10,13 @@ class Usuario {
     String telefone
     String email
     Boolean ativo = true
+    Boolean expirado = false
+    Boolean bloqueado = false
+    Boolean senhaExpirada = false
+
     static hasMany = [atendimentos: Atendimento]
+
+    static transients = ['springSecurityService', 'permissoes']
 
     static constraints = {
         nome nullable: false, blank: false
@@ -21,5 +27,18 @@ class Usuario {
         perfil nullable: false, blank: false
         telefone nullable: true, blank: true
         email nullable: true, blank: true
+        ativo nullable: false
+        expirado nullable: false
+        bloqueado nullable: false
+        senhaExpirada nullable: false
     }
+
+    static mapping = {
+        ativo defaultValue: true
+        expirado defaultValue: false
+        bloqueado defaultValue: false
+        senhaExpirada defaultValue: false
+    }
+
+    Set getPermissoes() { [this.perfil] }
 }

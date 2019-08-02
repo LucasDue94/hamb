@@ -1,9 +1,9 @@
-package integracao
+package hamb
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ConvenioSpec extends Specification implements DomainUnitTest<Convenio> {
+class UsuarioTokenSpec extends Specification implements DomainUnitTest<UsuarioToken> {
 
     def setup() {
     }
