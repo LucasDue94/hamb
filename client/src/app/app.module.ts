@@ -6,8 +6,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {HeaderModule} from "./header/header.module";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {library} from '@fortawesome/fontawesome-svg-core';
-import {fas} from '@fortawesome/free-solid-svg-icons';
 import {MenuModule} from "./menu/menu.module";
 import {MainModule} from "./main/main.module";
 import {RouterModule} from "@angular/router";
@@ -15,6 +13,10 @@ import {AgendaModule} from "./agenda/agenda.module";
 import {BuscaModule} from "./busca/busca.module";
 import {UsuarioModule} from "./usuario/usuario.module";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+import {ReactiveFormsModule} from "@angular/forms";
+import {LoginModule} from "./login/login.module";
 
 @NgModule({
   declarations: [
@@ -32,10 +34,11 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
     AgendaModule,
     BuscaModule,
     UsuarioModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    ReactiveFormsModule,
+    LoginModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

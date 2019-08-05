@@ -1,0 +1,23 @@
+<main class="container">
+  <section class="login-container">
+    <section class="top">
+    <img class="img-login" src="../../images/heart.png">
+      <h1 class="system-name">Hamb</h1>
+      <h3 class="system-description">Sistema de atendimento ambulatorial</h3>
+    </section>
+    <section [formGroup]="loginForm" class="bottom">
+      <div class="login-form-group">
+        <fa-icon class="login-icon" [icon]="['fas','user']"></fa-icon>
+        <input class="login-form-control" formControlName="username" placeholder="login" type="text">
+      </div>
+      <div class="login-form-group">
+        <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
+        <input class="login-form-control" formControlName="password" placeholder="senha" type="text">
+      </div>
+      <div class="login-form-group">
+        <fa-icon class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
+        <input (click)="send()" placeholder="entrar" type="submit" class="button-login">
+      </div>
+    </section>
+  </section>
+</main>
