@@ -1,0 +1,7 @@
+import integracao.Paciente
+
+model {
+	Paciente paciente
+}
+
+json tmpl.paciente(paciente)

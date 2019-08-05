@@ -17,7 +17,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   usuario: Usuario;
   searchForm: FormGroup;
   searchControl: FormControl;
-  max = 1000;
+  max = 25;
   offset = 0;
   messageStatus;
 
@@ -31,6 +31,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
     this.usuarios = null;
     this.messageStatus = null;
     this.searchControl = new FormControl();
+    this.searchControl.setValue('');
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
     });
@@ -40,24 +41,35 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
         this.usuarios = res;
         this.spinner.hide();
       });
-    this.search();
   }
 
   ngAfterViewChecked() {
     if (this.messageStatus) this.changeStatus();
   }
 
-  search() {
+  scrollDown() {
     this.spinner.show();
-    this.searchControl.valueChanges.pipe(
-      debounceTime(1000),
-      switchMap(search => {
-        this.spinner.hide();
-        return this.usuarioService.search(search, this.offset, this.max);
-      }),
-    ).subscribe(usuarios => this.usuarios = usuarios);
+    this.offset += 25;
+    this.usuarioService.search(this.searchControl.value, this.offset).subscribe(usuarios => {
+      usuarios.forEach(usuario => this.usuarios.push(usuario));
+      this.spinner.hide();
+    });
   }
 
+  search() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(1000),
+      switchMap(changes => {
+        this.spinner.show();
+        this.offset = 0;
+        if (this.usuarios != undefined) this.usuarios.length = 0;
+        return this.usuarioService.search(changes, this.offset)
+      })
+    ).subscribe(res => {
+      this.usuarios = res;
+      this.spinner.hide();
+    });
+  }
 
   changeStatus() {
     setTimeout(() => {

@@ -1,0 +1,8 @@
+import integracao.Paciente
+
+model {
+	Iterable<Paciente> pacienteList
+}
+
+json tmpl.paciente(pacienteList ?: [])
+
