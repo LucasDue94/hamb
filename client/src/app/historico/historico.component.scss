@@ -1,57 +1,59 @@
 @import "~src/styles";
+@import "~src/app/usuario/usuario.component";
 
-::placeholder {
-  font-size: 1.6em;
-  color: $gray-80;
-  text-align: center;
-  line-height: 70px;
-}
 
 .form-historico {
-  overflow: hidden;
   display: flex;
   justify-content: flex-end;
   flex-direction: row;
+  position: relative;
   margin-top: 20px;
   vertical-align: top;
 
   & .textarea-content {
-    width: 1366px;
+    width: 980%;
     border: 1px solid $gray-70;
     height: 80px;
     border-radius: 5px;
     padding: 10px;
   }
 
+  ::placeholder {
+    font-size: 1.3em;
+    color: $gray-80;
+    text-align: center;
+    line-height: 70px;
+  }
+
+
   & .list-buttons {
     list-style: none;
   }
 
-  & .select-list {
+  & .select-list-cid {
+    position: relative;
     background: $gray-40;
     width: 150px;
     height: 45px;
     font-size: 1em;
-    text-align: center;
     border: 1px solid $gray-70;
     margin-left: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
     cursor: pointer;
-  }
 
+    & p {
+      border: 1px solid black;
+    }
 
-  & .button-save {
-    font-size: 1em;
-    background: $blue-default;
-    width: 150px;
-    height: 45px;
-    cursor: pointer;
-    margin-left: 10px;
-    border-radius: 5px;
-    color: $white;
+    & ::before {
+      content: "▼";
+      float: right;
+      margin-right: 10px;
+    }
   }
 }
+
 
 .section-historico {
   display: flex;
@@ -244,4 +246,79 @@
 .flex-1 {
   flex: 1 1 auto;
   text-align: center;
+}
+
+.selected-cid {
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  background: $white;
+  box-shadow: 5px 5px 10px $gray-80;
+  margin-top: -360px;
+  border-radius: 5px;
+  display: none;
+  width: 450px;
+  height: 350px;
+  border: 1px solid $gray-70;
+
+  & .list-cid {
+    list-style: none;
+  }
+
+  & .list-cid li {
+    border: 1px solid $gray-40;
+    padding: 15px;
+  }
+
+}
+
+.search-cid {
+  position: absolute;
+  top: -50px;
+  right: 50px;
+  height: 40px;
+  width: 300px;
+  box-shadow: 5px 5px 10px $gray-80;
+  border-radius: 5px;
+  border: 1px solid $gray-70;
+  margin-bottom: 10px;
+  background: $white;
+  font-size: 16px;
+}
+
+.btn-search-cid {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  box-shadow: 5px 5px 10px $gray-80;
+  padding: 10px;
+  background: $blue-default;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+
+  & fa-icon {
+    font-size: 1.5em;
+  }
+}
+
+
+.break {
+  position: absolute;
+  top:50px;
+  right: 0;
+}
+
+.btn-save {
+  position: relative;
+  width: 150px;
+  height: 45px;
+  font-size: 1em;
+  border: 1px solid $gray-70;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background: $blue-default;
 }

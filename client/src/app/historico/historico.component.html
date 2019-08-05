@@ -5,7 +5,7 @@
   </a>
   <p class="title-main">Histórico</p>
   <div class="combobox-historico">
-    <p id="info" class="combobox-historico-text" (click)="toogle($event)">
+    <p id="info" class="combobox-historico-text" (click)="collapse($event)">
       <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
       José Flávio Menezes Almeida
     </p>
@@ -44,31 +44,34 @@
   </div>
 </nav>
 <perfect-scrollbar class="content-default">
-  <section class="section-historico" *ngFor="let paciente of paciente; index as i">
+  <section class="section-historico" *ngFor="let atendimento of atendimentos">
     <article class="article-historico">
       <p>
-        {{paciente.historico[i].laudo}}
+        {{atendimento.conteudo}}
       </p>
       <legend class="legend-article">
-        <strong class="historico-data-list"> {{paciente.historico[i].data}} {{paciente.historico[i].hora}} </strong>
-        <strong class="historico-cid-list"> CID: {{paciente.historico[i].cid}} </strong>
-        <strong class="historico-medico-list"> CRM: {{paciente.historico[i].medico}} </strong>
+        <strong class="historico-data-list"> {{atendimento.dataAtendimento}} </strong>
+        <strong class="historico-cid-list"> CID: {{atendimento.cid.diagnostico}} </strong>
+        <strong class="historico-medico-list"> CRM: </strong>
       </legend>
     </article>
   </section>
 </perfect-scrollbar>
-<form action="" class="form-historico">
+<div class="form-historico">
   <textarea class="textarea-content" name="" id="" placeholder="> Digite o seu texto aqui <"></textarea>
-  <fieldset>
-    <ul class="list-buttons">
-      <li>
-        <select class="select-list" name="" id="#">
-          <option value="">CID</option>
-        </select>
-      </li>
-      <li>
-        <button class="button-save">Salvar</button>
-      </li>
-    </ul>
-  </fieldset>
-</form>
+  <div class="flex wrap">
+    <button class="select-list-cid" (click)="collapse($event)">CID <span></span></button>
+    <div class="selected-cid">
+      <input class="search-cid" type="text" placeholder="Prontuário, nome, registro..." autofocus>
+      <button class="btn-search-cid">
+        <fa-icon [icon]="['fas','search']"></fa-icon>
+      </button>
+      <ul class="list-cid" *ngFor="let cid of cids">
+        <li>{{cid.id}} - {{cid.diagnostico}}</li>
+      </ul>
+    </div>
+    <button class="btn-save">Salvar</button>
+  </div>
+</div>
+
+

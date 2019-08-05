@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {Atendimento} from "./atendimento";
 import {api} from "../../../api";
+import {Observable} from "rxjs";
+import {Cid} from "./cid";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AtendimentoService {
+export class CidService {
+
 
   constructor(private httpClient: HttpClient) { }
 
-  list(): Observable<Atendimento[]>{
-    return this.httpClient.get<Atendimento[]>(`${api}/atendimentos`);
+  list(): Observable<Cid[]> {
+    return this.httpClient.get<Cid[]>(`${api}/cids`);
   }
 }

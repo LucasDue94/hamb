@@ -1,5 +1,10 @@
-import {Component, HostListener, OnInit, Renderer2} from '@angular/core';
-import {logger} from "codelyzer/util/logger";
+import {Component, OnInit, Renderer2} from '@angular/core';
+import {Cid} from "../core/cid/cid";
+import {CidService} from "../core/cid/cid.service";
+import {Paciente} from "../core/paciente/paciente";
+import {PacienteService} from "../core/paciente/paciente.service";
+import {AtendimentoService} from "../core/atendimento/atendimento.service";
+import {Atendimento} from "../core/atendimento/atendimento";
 
 @Component({
   selector: 'historico',
@@ -8,72 +13,46 @@ import {logger} from "codelyzer/util/logger";
 })
 export class HistoricoComponent implements OnInit {
 
-  paciente = [
-    {
-      id: 1, nome: 'Flávio dos Santos',
-      historico: [
-        {
-          id: 1,
-          laudo: "  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's\n" +
-            "        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make\n" +
-            "        a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,\n" +
-            "        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing\n" +
-            "        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions\n" +
-            "        of Lorem Ipsum.\n" +
-            "        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's\n" +
-            "        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make\n" +
-            "        a type ,specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.",
-          data: '01/07/2019',
-          hora: '10:45',
-          cid: 'Cefaléia',
-          medico: 'Márcio Fernando Costa Medeiros',
-          crm: 5331
-        },
-        {
-          id: 2,
-          laudo: "  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's\n" +
-            "        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make\n" +
-            "        a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,\n" +
-            "        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing\n" +
-            "        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions\n" +
-            "        of Lorem Ipsum.\n" +
-            "        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's\n" +
-            "        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make\n" +
-            "        a type ,specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.",
-          data: '01/07/2019',
-          hora: '10:45',
-          cid: 'Cefaléia',
-          medico: 'Márcio Fernando Costa Medeiros',
-          crm: 5331
-        }
-      ],
-    }
-  ];
+  cids: Cid[];
+  pacientes: Paciente[];
+  atendimentos: Atendimento[];
 
-  constructor(private render: Renderer2) {
+  constructor(private render: Renderer2,
+              private cidsService: CidService,
+              private pacientesService: PacienteService,
+              private atendimentoService: AtendimentoService) {
   }
 
   ngOnInit() {
+    this.cidsService.list().subscribe(cids => {
+      this.cids = cids;
+    });
+
+    this.pacientesService.list().subscribe(pacientes => {
+      this.pacientes = pacientes;
+    });
+
+    this.atendimentoService.list().subscribe(atendimentos => {
+      this.atendimentos = atendimentos;
+    });
   }
 
 
-  public toogle(e) {
+  public collapse(e) {
     document.addEventListener("click", (evt) => {
-      const combobox = e.target;
-      const comboboxInfo = e.target.nextElementSibling;
+      const elementCliked = e.target;
+      const element = e.target.nextElementSibling;
       let targetElement = evt.target;
 
       do {
-        if (targetElement == combobox) {
-          this.render.setStyle(comboboxInfo, 'display', 'block');
+        if (targetElement == elementCliked || targetElement == element) {
+          this.render.setStyle(element, 'display', 'block');
           return;
         }
         targetElement = targetElement.parentNode;
       } while (targetElement);
-      this.render.setStyle(comboboxInfo, 'display', 'none');
+      this.render.setStyle(element, 'display', 'none');
     });
-
   }
-
 
 }

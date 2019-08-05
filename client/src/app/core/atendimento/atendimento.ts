@@ -1,8 +1,13 @@
+import {Paciente} from "../paciente/paciente";
+import {Cid} from "../cid/cid";
 
 
 export class Atendimento {
   id: number;
-
+  cid: Cid;
+  paciente: Paciente;
+  conteudo: string;
+  dataAtendimento: string;
   
 
   constructor (object?: any) {
@@ -12,10 +17,9 @@ export class Atendimento {
         this[prop] = object[prop];
       }
     }
-
   }
 
-  toString(): string {
+/*  toString(): string {
     return 'hamb.Atendimento : ' + (this.id ? this.id : '(unsaved)');
-  }
+  }*/
 }
