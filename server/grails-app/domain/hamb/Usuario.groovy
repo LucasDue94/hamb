@@ -20,6 +20,6 @@ class Usuario {
         ultimoAcesso nullable: true, blank: false
         perfil nullable: false, blank: false
         telefone nullable: true, blank: true
-        email nullable: true, blank: true
+        email nullable: true, blank: true, email: true
     }
 }

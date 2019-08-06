@@ -1,0 +1,7 @@
+import integracao.Agenda
+
+model {
+    Agenda agenda
+}
+
+json g.render(agenda, [deep: true, excludes: ['pacientes.agenda'], resolveTemplate: false])

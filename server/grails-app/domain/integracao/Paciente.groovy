@@ -7,10 +7,12 @@ class Paciente {
     String contato
     Date dataNasc
 
+    static hasMany = [registros: RegistroAtendimento]
+
     static constraints = {
         nome nullable: false, blank: false
         dataNasc nullable: false, blank: false
-        nomeMae nullable: false,blank: false
+        nomeMae nullable: false, blank: false
         contato nullable: true
     }
 

@@ -1,0 +1,7 @@
+import hamb.Atendimento
+
+model {
+	Atendimento atendimento
+}
+
+json tmpl.atendimento(atendimento)

@@ -1,4 +1,4 @@
-package hamb
+package integracao
 
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.CREATED
@@ -11,64 +11,64 @@ import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
 
 @ReadOnly
-class SalaController {
+class RegistroAtendimentoController {
 
-    SalaService salaService
+    RegistroAtendimentoService registroAtendimentoService
 
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond salaService.list(params), model:[salaCount: salaService.count()]
+        respond registroAtendimentoService.list(params), model:[registroAtendimentoCount: registroAtendimentoService.count()]
     }
 
     def show(Long id) {
-        respond salaService.get(id)
+        respond registroAtendimentoService.get(id)
     }
 
     @Transactional
-    def save(Sala sala) {
-        if (sala == null) {
+    def save(RegistroAtendimento registroAtendimento) {
+        if (registroAtendimento == null) {
             render status: NOT_FOUND
             return
         }
-        if (sala.hasErrors()) {
+        if (registroAtendimento.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sala.errors
+            respond registroAtendimento.errors
             return
         }
 
         try {
-            salaService.save(sala)
+            registroAtendimentoService.save(registroAtendimento)
         } catch (ValidationException e) {
-            respond sala.errors
+            respond registroAtendimento.errors
             return
         }
 
-        respond sala, [status: CREATED, view:"show"]
+        respond registroAtendimento, [status: CREATED, view:"show"]
     }
 
     @Transactional
-    def update(Sala sala) {
-        if (sala == null) {
+    def update(RegistroAtendimento registroAtendimento) {
+        if (registroAtendimento == null) {
             render status: NOT_FOUND
             return
         }
-        if (sala.hasErrors()) {
+        if (registroAtendimento.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sala.errors
+            respond registroAtendimento.errors
             return
         }
 
         try {
-            salaService.save(sala)
+            registroAtendimentoService.save(registroAtendimento)
         } catch (ValidationException e) {
-            respond sala.errors
+            respond registroAtendimento.errors
             return
         }
 
-        respond sala, [status: OK, view:"show"]
+        respond registroAtendimento, [status: OK, view:"show"]
     }
 
     @Transactional
@@ -78,7 +78,7 @@ class SalaController {
             return
         }
 
-        salaService.delete(id)
+        registroAtendimentoService.delete(id)
 
         render status: NO_CONTENT
     }

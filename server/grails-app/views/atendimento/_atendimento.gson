@@ -1,0 +1,8 @@
+import hamb.Atendimento
+
+model {
+    Atendimento atendimento
+}
+
+json g.render(atendimento, [expand: ['usuario','usuario.perfil','cid'], excludes: ['registroAtendimento'], resolveTemplate: false]) {
+}

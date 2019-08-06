@@ -3,16 +3,35 @@ package hamb
 import grails.gorm.services.Service
 
 @Service(Usuario)
-interface UsuarioService {
+abstract class UsuarioService {
 
-    Usuario get(Serializable id)
+    abstract Usuario get(Serializable id)
 
-    List<Usuario> list(Map args)
+    List<Usuario> list(Map args, String termo) {
+        def criteria = Usuario.createCriteria()
+        List<Usuario> usuarioList = (List<Usuario>) criteria.list(args) {
+            if (termo != null && !termo.isEmpty()) {
+                or {
+                    ilike('crm', "%${termo}%")
+                    ilike('nome', "%${termo}%")
+                    ilike('login', "%${termo}%")
+                }
+            }
+            order("ativo","desc")
+            order("nome","asc")
+        }
+        return usuarioList
+    }
 
-    Long count()
+    abstract Long count()
 
-    void delete(Serializable id)
+    abstract void delete(Serializable id)
 
-    Usuario save(Usuario usuario)
+    abstract Usuario save(Usuario usuario)
+
+    void onOff(Usuario usuario) {
+        usuario.ativo = !usuario.ativo
+        usuario.save flush: true
+    }
 
 }
