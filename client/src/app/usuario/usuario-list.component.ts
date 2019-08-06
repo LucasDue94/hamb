@@ -20,6 +20,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   max = 25;
   offset = 0;
   messageStatus;
+   responseOk = 200;
 
   constructor(private usuarioService: UsuarioService,
               private spinner: NgxSpinnerService,
@@ -83,7 +84,8 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
 
   onOff(usuario) {
     this.usuarioService.onOff(usuario).subscribe(res => {
-      if (res.status === "OK") {
+      const responseOk = 200;
+      if (res.status === responseOk) {
         usuario.ativo = !usuario.ativo;
         this.messageStatus = true;
       }

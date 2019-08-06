@@ -8,6 +8,7 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+
 info:
     app:
         name: '@info.app.name@'
@@ -33,7 +34,7 @@ spring:
 management:
     endpoints:
         enabled-by-default: false
-
+---
 ---
 grails:
     mime:

@@ -92,7 +92,7 @@
         }
       }
 
-      .login-icon, .send-icon {
+      .login-icon, .send-icon,.eye-icon {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -109,8 +109,19 @@
         }
       }
 
+      .eye-icon{
+        background-color: transparent;
+        color: $gray-70;
+        box-shadow: 0 0 10px $gray-70;
+        position: absolute;
+        right: 70px;
+        align-self: center;
+        cursor: pointer;
+      }
+
       .send-icon {
         & {
+          cursor: pointer;
           background-color: $gray-80;
           color: $gray-60;
         }
@@ -137,3 +148,4 @@
     }
   }
 }
+

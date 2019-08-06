@@ -25,6 +25,7 @@ abstract class AtendimentoService {
 
     abstract Long count()
 
+    // TODO: incrementar contador de uso de CID ao incluir novo atendimento
     abstract void delete(Serializable id)
 
     abstract Atendimento save(Atendimento atendimento)

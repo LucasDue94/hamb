@@ -16,6 +16,7 @@ export class BuscaComponent implements OnInit {
   searchForm: FormGroup;
   searchControl: FormControl;
   offset = 0;
+  max = 15;
 
   constructor(private spinner: NgxSpinnerService,
               private render: Renderer2, private pacienteService: PacienteService) {
@@ -34,10 +35,11 @@ export class BuscaComponent implements OnInit {
 
   scrollDown() {
     this.spinner.show();
-    this.offset += 10;
-    this.pacienteService.search(this.searchControl.value, this.offset).subscribe(pacientes => {
+    this.offset += 15;
+    this.pacienteService.search(this.searchControl.value, this.offset,this.max).subscribe(pacientes => {
       pacientes.forEach(paciente => this.pacientes.push(paciente));
       this.spinner.hide();
+      console.log(this.pacientes);
     });
   }
 
@@ -52,6 +54,7 @@ export class BuscaComponent implements OnInit {
       })
     ).subscribe(res => {
       this.pacientes = res;
+      console.log(this.pacientes)
       this.spinner.hide();
     });
   }

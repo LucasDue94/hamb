@@ -11,7 +11,7 @@ abstract class PacienteService {
         def criteria = Paciente.createCriteria()
         List<Paciente> pacienteList = (List<Paciente>) criteria.list(args) {
 
-           /* registros {
+            /*registros {
                 atendimento {
                     isNotNull('id')
                 }

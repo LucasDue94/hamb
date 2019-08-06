@@ -8,15 +8,17 @@
     <section [formGroup]="loginForm" class="bottom">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','user']"></fa-icon>
-        <input class="login-form-control" formControlName="username" placeholder="login" type="text">
+        <input class="login-form-control" formControlName="login" placeholder="login" type="text">
       </div>
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
-        <input class="login-form-control" formControlName="password" placeholder="senha" type="text">
+        <fa-icon *ngIf="visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye']"></fa-icon>
+        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye-slash']"></fa-icon>
+        <input class="login-form-control" formControlName="senha" placeholder="senha" type="password" #password>
       </div>
       <div class="login-form-group">
-        <fa-icon class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
-        <input (click)="send()" placeholder="entrar" type="submit" class="button-login">
+        <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
+        <input (click)="login()" placeholder="entrar" type="submit" class="button-login">
       </div>
     </section>
   </section>

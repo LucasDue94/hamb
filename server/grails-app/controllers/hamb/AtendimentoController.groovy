@@ -2,11 +2,13 @@ package hamb
 
 import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
 import static org.springframework.http.HttpStatus.*
 
 @ReadOnly
+@Secured(Perfil.PERMISSAO_MEDICO)
 class AtendimentoController {
 
     AtendimentoService atendimentoService

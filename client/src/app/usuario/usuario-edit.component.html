@@ -55,7 +55,8 @@
       </div>
       <div class="form-group">
         <label class="form-label" for="email">email</label>
-        <input (change)="attach('email')" class="form-control" id="email" formControlName="email">
+        <input type="text" (change)="attach('email')" class="form-control" id="email" formControlName="email">
+        <div class="color-danger" *ngIf="usuarioForm.get('email')?.errors?.email">Email Inválido</div>
       </div>
       <button (click)="save()" class="button button-save">Salvar</button>
     </form>
