@@ -10,7 +10,7 @@ import grails.validation.ValidationException
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.testing.gorm.DomainUnitTest
 
-class ConvenioControllerSpec extends Specification implements ControllerUnitTest<ConvenioController>, DomainUnitTest<Convenio> {
+class CidControllerSpec extends Specification implements ControllerUnitTest<CidController>, DomainUnitTest<Cid> {
 
     def populateValidParams(params) {
         assert params != null
@@ -22,7 +22,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the index action returns the correct response"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
+        controller.cidService = Mock(CidService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -47,8 +47,8 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the save action correctly persists"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
-            1 * save(_ as Convenio)
+        controller.cidService = Mock(CidService) {
+            1 * save(_ as Cid)
         }
 
         when:
@@ -56,7 +56,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        request.json = new Convenio(params)
+        request.json = new Cid(params)
         controller.save()
 
         then:
@@ -66,9 +66,9 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
-            1 * save(_ as Convenio) >> { Convenio convenio ->
-                throw new ValidationException("Invalid instance", convenio.errors)
+        controller.cidService = Mock(CidService) {
+            1 * save(_ as Cid) >> { Cid cid ->
+                throw new ValidationException("Invalid instance", cid.errors)
             }
         }
 
@@ -76,7 +76,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        request.json = new Convenio(params)
+        request.json = new Cid(params)
         controller.save()
 
         then:
@@ -86,7 +86,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the show action with a null id"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
+        controller.cidService = Mock(CidService) {
             1 * get(null) >> null
         }
 
@@ -99,8 +99,8 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the show action with a valid id"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
-            1 * get(2) >> new Convenio()
+        controller.cidService = Mock(CidService) {
+            1 * get(2) >> new Cid()
         }
 
         when:"A domain instance is passed to the show action"
@@ -124,8 +124,8 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the update action correctly persists"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
-            1 * save(_ as Convenio)
+        controller.cidService = Mock(CidService) {
+            1 * save(_ as Cid)
         }
 
         when:
@@ -133,7 +133,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def instance = new Convenio(params)
+        def instance = new Cid(params)
         instance.id = 1
         instance.version = 0
         controller.update(instance)
@@ -145,16 +145,16 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
-            1 * save(_ as Convenio) >> { Convenio convenio ->
-                throw new ValidationException("Invalid instance", convenio.errors)
+        controller.cidService = Mock(CidService) {
+            1 * save(_ as Cid) >> { Cid cid ->
+                throw new ValidationException("Invalid instance", cid.errors)
             }
         }
 
         when:
         request.contentType = JSON_CONTENT_TYPE
         request.method = 'PUT'
-        def instance = new Convenio(params)
+        def instance = new Cid(params)
         instance.id = 1
         instance.version = 0
         controller.update(instance)
@@ -176,7 +176,7 @@ class ConvenioControllerSpec extends Specification implements ControllerUnitTest
 
     void "Test the delete action with an instance"() {
         given:
-        controller.convenioService = Mock(ConvenioService) {
+        controller.cidService = Mock(CidService) {
             1 * delete(2)
         }
 
