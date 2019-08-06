@@ -48,6 +48,8 @@ $nav-height: 35px;
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow-y: scroll;
+  min-height: 300px;
   height: calc(100% - 35px);
   background-color: $gray-30;
   border-radius: 6px;
@@ -253,4 +255,36 @@ $nav-height: 35px;
     text-transform: uppercase;
   }
 
+}
+
+.withoutData {
+  z-index: 99;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 310px;
+
+  & {
+    transition: 1.2s;
+    border-radius: 8px;
+    background-color: $danger;
+    color: $white;
+    font-size: 18px;
+    animation: noData 1s;
+
+    @keyframes noData {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+
+
+  .icon {
+    margin-left: 5px;
+  }
 }
