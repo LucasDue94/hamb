@@ -1,4 +1,4 @@
-<div class="offStatus" #status>
+<div class="offStatus" #ativo>
   <h1 class="title-status">Usuário Salvo</h1>
   <fa-icon class="icon" [icon]="['fas','check']"></fa-icon>
 </div>
@@ -24,11 +24,19 @@
     <form class="form-container" [formGroup]="usuarioForm">
       <div class="form-group">
         <label class="form-label" for="nome">nome</label>
-        <input (change)="attach('nome')" class="form-control" id="nome" formControlName="nome" type="text">
+        <input (focusout)="attach('nome')" (change)="attach('nome')" class="form-control" id="nome" formControlName="nome" type="text">
+        <div class="form-invalid" *ngIf="validateArray?.nome">
+          O usuário precisa ter um nome
+          <fa-icon [icon]="['fas','frown']"></fa-icon>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label" for="login">login</label>
         <input (change)="attach('login')" class="form-control" id="login" formControlName="login" type="text">
+        <div class="form-invalid" *ngIf="validateArray?.login">
+          O login não pode ser vazio
+          <fa-icon [icon]="['fas','frown']"></fa-icon>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label" for="crm">crm</label>
@@ -40,6 +48,10 @@
           <option value="1">admin</option>
           <option value="2">médico</option>
         </select>
+        <div class="form-invalid" *ngIf="validateArray?.perfil">
+          Você precisa escolher um perfil
+          <fa-icon [icon]="['fas','frown']"></fa-icon>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label" for="telefone">telefone</label>
@@ -52,11 +64,16 @@
           <option value="false">desativado</option>
           <option value="true">ativo</option>
         </select>
+        <div class="form-invalid" *ngIf="validateArray?.ativo">
+          Você quer ativar ou desativar o usuário?
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label" for="email">email</label>
         <input type="text" (change)="attach('email')" class="form-control" id="email" formControlName="email">
-        <div class="color-danger" *ngIf="usuarioForm.get('email')?.errors?.email">Email Inválido</div>
+        <div class="form-invalid" *ngIf="validateArray?.email">
+          Email Inválido. Tente colocar um @
+        </div>
       </div>
       <button (click)="save()" class="button button-save">Salvar</button>
     </form>

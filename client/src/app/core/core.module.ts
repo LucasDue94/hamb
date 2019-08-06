@@ -5,6 +5,8 @@ import {UsuarioService} from './usuario/usuario.service';
 import {PacienteService} from './paciente/paciente.service';
 import {RegistroAtendimentoService} from './registroAtendimento/registroAtendimento.service';
 import {AuthService} from "./auth/auth.service";
+import { AgendaService } from './agenda/agenda.service';
+import { SalaService } from './sala/sala.service';
 
 @NgModule({
   declarations: [],
@@ -16,8 +18,10 @@ import {AuthService} from "./auth/auth.service";
     UsuarioService,
     PacienteService,
     RegistroAtendimentoService,
-    AuthService
-  ]
+    AuthService,
+    AgendaService,
+    SalaService
+]
 })
 export class CoreModule {
 }

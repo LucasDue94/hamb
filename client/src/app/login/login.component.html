@@ -1,7 +1,7 @@
 <main class="container">
   <section class="login-container">
     <section class="top">
-    <img class="img-login" src="../../images/heart.png">
+      <img class="img-login" src="../../images/heart.png">
       <h1 class="system-name">Hamb</h1>
       <h3 class="system-description">Sistema de atendimento ambulatorial</h3>
     </section>
@@ -13,12 +13,17 @@
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
         <fa-icon *ngIf="visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye']"></fa-icon>
-        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye-slash']"></fa-icon>
+        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon"
+                 [icon]="['fas','eye-slash']"></fa-icon>
         <input class="login-form-control" formControlName="senha" placeholder="senha" type="password" #password>
       </div>
       <div class="login-form-group">
         <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <input (click)="login()" placeholder="entrar" type="submit" class="button-login">
+        <div [ngClass]="[ this.error ? 'invalid': 'valid']">
+          Usuário ou senha incorreto!
+          <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
+        </div>
       </div>
     </section>
   </section>

@@ -19,7 +19,7 @@
   }
 
   .top {
-    align-items: center ;
+    align-items: center;
     align-content: center;
     justify-content: center;
 
@@ -42,6 +42,7 @@
     .system-description {
       text-align: center;
       width: 200px;
+
       & {
         font-size: 15px;
         font-weight: 400;
@@ -92,7 +93,7 @@
         }
       }
 
-      .login-icon, .send-icon,.eye-icon {
+      .login-icon, .send-icon, .eye-icon {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -109,7 +110,7 @@
         }
       }
 
-      .eye-icon{
+      .eye-icon {
         background-color: transparent;
         color: $gray-70;
         box-shadow: 0 0 10px $gray-70;
@@ -149,3 +150,30 @@
   }
 }
 
+.invalid {
+  border-radius: 5px;
+  position: absolute;
+  padding: 5px;
+  bottom: 5px;
+  background-color: $light-danger;
+  color: $white;
+  animation: invalid-login 500ms;
+
+  @keyframes invalid-login {
+    0% {
+      margin-left: -15px;
+      bottom: 30px;
+    }
+    35% {
+      bottom: 15px;
+    }
+    50% {
+      bottom: 20px;
+    }
+  }
+}
+
+  .valid {
+    display: none;
+
+  }

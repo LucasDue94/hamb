@@ -6,6 +6,7 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {AgendaListComponent} from './agenda-list.component';
 import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
 import {RouterModule} from "@angular/router";
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
@@ -14,8 +15,9 @@ import {RouterModule} from "@angular/router";
     AgendaRoutingModule,
     FontAwesomeModule,
     PerfectScrollbarModule,
-    RouterModule
-  ],
+    RouterModule,
+    CoreModule
+],
   declarations: [AgendaListComponent, AgendaShowComponent]
 })
 export class AgendaModule {

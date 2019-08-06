@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('password', {static: false}) password;
   visible = false;
   loginForm: FormGroup;
+  error = false;
   user = {
     login: '',
     senha: ''
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.error = false;
     this.user.login = this.loginForm.get('login').value;
     this.user.senha = this.loginForm.get('senha').value;
 
@@ -52,7 +54,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/index'])
     },
       error => {
-        console.log('deu bom nãi')
+      this.error = true;
+        console.log('deu bom não')
       });
   }
 

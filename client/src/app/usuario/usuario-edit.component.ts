@@ -1,9 +1,10 @@
-import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, DoCheck, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
-import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {NgxSpinnerService} from "ngx-spinner";
+import get = Reflect.get;
 
 @Component({
   selector: 'usuario-edit',
@@ -12,12 +13,23 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class UsuarioEditComponent implements OnInit, AfterViewChecked {
 
-  @ViewChild('status', {static: false}) status;
+  @ViewChild('ativo', {static: false}) ativo;
   usuario: Usuario;
   searchForm: FormGroup;
   searchControl: FormControl;
   usuarioForm: FormGroup;
   messageStatus;
+  validateArray = {
+    nome: false,
+    login: false,
+    crm: false,
+    perfil: false,
+    email: false,
+    telefone: false,
+    ativo: false,
+    isValid: true
+  };
+
   constructor(private route: ActivatedRoute, private router: Router,
               private usuarioService: UsuarioService, private render: Renderer2,
               private spinner: NgxSpinnerService) {
@@ -29,15 +41,13 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
 
     this.usuario = new Usuario();
     this.usuarioForm = new FormGroup({
-      nome: new FormControl(),
-      login: new FormControl(),
+      nome: new FormControl('', Validators.required),
+      login: new FormControl('', Validators.required),
       crm: new FormControl({disable: true}),
-      perfil: new FormControl(),
-      //TODO Validação de email
-      email: new FormControl('',Validators.email),
-      ativo: new FormControl(),
+      perfil: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.email),
       telefone: new FormControl(),
-      status: new FormControl(),
+      ativo: new FormControl('', Validators.required),
     });
   }
 
@@ -46,7 +56,6 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
     this.route.params.subscribe((params: Params) => {
       this.usuarioService.get(+params['id']).subscribe((usuario: Usuario) => {
         this.usuario = usuario;
-        console.log(usuario);
         this.setFormGroup();
         this.spinner.hide();
       })
@@ -73,6 +82,7 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   }
 
   attach(idForm) {
+    this.validateForm()
     if (idForm == 'perfil') {
       this.usuario['perfil'].id = this.usuarioForm.get(idForm).value;
     } else {
@@ -82,24 +92,36 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
 
   changeStatus() {
     setTimeout(() => {
-      this.render.removeClass(this.status.nativeElement, 'offStatus');
-      this.render.addClass(this.status.nativeElement, 'onStatus');
+      this.render.removeClass(this.ativo.nativeElement, 'offStatus');
+      this.render.addClass(this.ativo.nativeElement, 'onStatus');
       this.messageStatus = false;
     }, 300);
-    this.render.addClass(this.status.nativeElement, 'offStatus');
-    this.render.removeClass(this.status.nativeElement, 'onStatus');
+    this.render.addClass(this.ativo.nativeElement, 'offStatus');
+    this.render.removeClass(this.ativo.nativeElement, 'onStatus');
   }
+
+  validateForm() {
+    console.log(this.usuarioForm.controls);
+    for (let key in this.usuarioForm.controls) {
+      this.validateArray[key] = this.usuarioForm.get(key).invalid;
+      if (this.validateArray[key]) {
+        this.validateArray.isValid = false;
+      }
+    }
+  }
+
 
   save() {
-    console.log(this.usuarioForm.get('email'));
-    this.usuarioService.save(this.usuario).subscribe(res => {
-      console.log(res);
-      let r = this.router;
-      this.messageStatus = true;
-      setTimeout(function () {
-        r.navigate(['/usuario', 'list']);
-      }, 2000);
-    });
-  }
+    this.validateForm();
+    if (this.validateArray.isValid) {
+      this.usuarioService.save(this.usuario).subscribe(res => {
+        let r = this.router;
+        this.messageStatus = true;
+        setTimeout(function () {
+          r.navigate(['/usuario', 'list']);
+        }, 2000);
+      });
+    }
 
+  }
 }

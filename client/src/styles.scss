@@ -131,20 +131,19 @@ $nav-height: 35px;
   color: $gray-80;
 }
 
-
 .form-container {
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
-  text-transform: capitalize;
   align-items: self-start;
 }
 
 .form-group {
   display: flex;
-  margin: 0 5px;
+  margin: 5px;
   flex-direction: column;
   flex: 1;
+  text-transform: capitalize;
 
   .form-label {
     font-size: 15px;
@@ -280,11 +279,15 @@ $nav-height: 35px;
   }
 }
 
-.color-danger {
+.form-invalid{
+  width: auto;
+  text-transform: none;
+  margin-top: 60px;
+  position: absolute;
   font-size: 15px;
   padding: 5px;
   border-radius: 2px;
-  background-color: $light-danger;
   color: $white;
+  background-color: $light-danger;
   transition: 0.3s;
 }

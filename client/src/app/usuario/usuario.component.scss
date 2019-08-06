@@ -31,7 +31,7 @@
     border-radius: 2px;
     opacity: 1;
     -webkit-animation: show 2s;
-    -o-animation: success  2s;
+    -o-animation: success 2s;
     animation: success 2s;
     box-shadow: 1px 2px 6px black;
   }
@@ -71,11 +71,12 @@
 }
 
 .container-edit-usuario {
+  display: flex;
+  align-items: flex-start;
   position: absolute;
   left: 0;
   margin: 20px;
-  display: flex;
-  height: 370px;
+  height: 380px;
   width: 400px;
 
   & {
@@ -90,6 +91,7 @@
 }
 
 .button-save {
+  margin: 4px;
   width: 70px;
   height: 40px;
 
@@ -103,4 +105,12 @@
   &:hover {
     background-color: $blue-default;
   }
+}
+
+
+#nome{
+  text-transform: capitalize;
+}
+#email{
+  text-transform: lowercase;
 }

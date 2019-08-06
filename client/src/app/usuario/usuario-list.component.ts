@@ -42,6 +42,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
         this.usuarios = res;
         this.spinner.hide();
       });
+    this.search()
   }
 
   ngAfterViewChecked() {
