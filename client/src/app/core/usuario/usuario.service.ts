@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Usuario} from './usuario';
-
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
@@ -44,7 +43,6 @@ export class UsuarioService {
       headers: this.httpOptions.headers,
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
-      console.log(json);
       subject.next(json.map((usuario: any) => new Usuario(usuario)))
     });
     return subject.asObservable();

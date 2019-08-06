@@ -39,8 +39,7 @@ import {HistoricoModule} from "./historico/historico.module";
     PerfectScrollbarModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  exports: [
-  ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -8,15 +8,14 @@
 <perfect-scrollbar class="content-default">
   <section>
     <ul class="agenda-list">
-        <li #agendaColumnList class="agenda-column-list" *ngFor="let agenda of agendas">
-          <a [routerLink]="['/agenda','show']"><h1 class="agenda-day-list">{{agenda.dia}}</h1></a>
+        <li #agendaColumnList class="agenda-column-list" *ngFor="let dia of dayList">
+          <a [routerLink]="['/agenda','show']"><h1 class="agenda-day-list">{{dia}}</h1></a>
             <div class="agenda-column-content-list">
-              <p class="text-line-agenda">Agendados: {{agenda.agendados}} </p>
-              <p class="text-line-agenda">Efetivados: {{agenda.efetivados}} </p>
-              <p class="text-line-agenda">Atendidos: {{agenda.atentidos}} </p>
+              <p class="text-line-agenda">Agendados:  </p>
+              <p class="text-line-agenda">Efetivados:  </p>
+              <p class="text-line-agenda">Atendidos:  </p>
             </div>
         </li>
     </ul>
   </section>
 </perfect-scrollbar>
-

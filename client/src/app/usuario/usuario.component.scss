@@ -9,23 +9,6 @@
   margin-left: 5px;
 }
 
-.usersNotFound {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-
-  & {
-    border-radius: 8px;
-    background-color: $danger;
-    color: $white;
-    font-size: 18px;
-  }
-  .icon {
-    margin-left: 5px;
-  }
-}
-
 .disable {
   color: $gray-70;
 }
@@ -49,8 +32,8 @@
     border-radius: 2px;
     opacity: 1;
     -webkit-animation: show 2s;
-    -o-animation: show 2s;
-    animation: show 2s;
+    -o-animation: success  2s;
+    animation: success 2s;
     box-shadow: 1px 2px 6px black;
   }
 
@@ -64,8 +47,9 @@
     margin-left: 10px;
   }
 
-  @keyframes show {
+  @keyframes success {
     0% {
+      opacity: 0.3;
       height: 50%;
       width: 50%;
     }

@@ -1,6 +1,9 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {NgxSpinnerService} from "ngx-spinner";
+import {PacienteService} from "../core/paciente/paciente.service";
+import {Paciente} from "../core/paciente/paciente";
+import {debounceTime, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'busca',
@@ -8,25 +11,48 @@ import {NgxSpinnerService} from "ngx-spinner";
   styleUrls: ['./busca.component.scss']
 })
 export class BuscaComponent implements OnInit {
-
-  paciente;
-  pacientes = 1;
+  pacientes: Paciente[];
+  paciente: Paciente;
   searchForm: FormGroup;
   searchControl: FormControl;
-  max = 1000;
   offset = 0;
 
   constructor(private spinner: NgxSpinnerService,
-              private render: Renderer2) {
+              private render: Renderer2, private pacienteService: PacienteService) {
   }
 
   ngOnInit() {
     this.spinner.show();
     this.searchControl = new FormControl();
+    this.searchControl.setValue('');
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
     });
     this.spinner.hide();
   }
 
+
+  scrollDown() {
+    this.spinner.show();
+    this.offset += 10;
+    this.pacienteService.search(this.searchControl.value, this.offset).subscribe(pacientes => {
+      pacientes.forEach(paciente => this.pacientes.push(paciente));
+      this.spinner.hide();
+    });
+  }
+
+  search() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(1000),
+      switchMap(changes => {
+        this.spinner.show();
+        this.offset = 0;
+        if (this.pacientes != undefined) this.pacientes.length = 0;
+        return this.pacienteService.search(changes, this.offset)
+      })
+    ).subscribe(res => {
+      this.pacientes = res;
+      this.spinner.hide();
+    });
+  }
 }

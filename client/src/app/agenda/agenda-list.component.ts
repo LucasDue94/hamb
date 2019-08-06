@@ -1,4 +1,6 @@
 import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
+import {AgendaService} from "../core/agenda/agenda.service";
+import {Agenda} from "../core/agenda/agenda";
 
 @Component({
   selector: 'agenda-list',
@@ -9,32 +11,46 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('agendaColumnList') agendaDayList: QueryList<AgendaListComponent>;
 
-  now = new Date();
-
-  agendas = [
-    {id: 1, dia: '24', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 2, dia: '16', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 3, dia: '12', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 4, dia: '10', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 5, dia: '09', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 6, dia: '08', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 7, dia: '26', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 8, dia: '25', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 9, dia: '30', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 10, dia: '04', agendados: 52, efetivados: 40, atentidos: 40},
-    {id: 11, dia: '31', agendados: 52, efetivados: 40, atentidos: 40}
-  ];
+  dayNow = new Date();
+  agendas: Agenda[];
+  agenda = new Agenda();
+  anoAtual = new Date();
   nativeElement: any;
+  dayList = [];
+  monthList = [];
+  yearList = [];
+  tableMonth = [
+    ['Janeiro', 1],
+    ['Fevereiro', 2],
+    ['Março', 3],
+    ['Abril', 4],
+    ['Maio', 5],
+    ['Junho', 6],
+    ['Julho', 7],
+    ['Agosto', 8],
+    ['Setembro', 9],
+    ['Outubro', 10],
+    ['Novembro', 11],
+    ['Dezembro', 12]
+  ];
+  year;
+  day;
+  month;
 
-  constructor(private render: Renderer2) {
+  constructor(private render: Renderer2, private agendaService: AgendaService) {
   }
 
   ngOnInit() {
+    this.agendaService.list().subscribe(agendas => {
+
+    });
   }
 
   ngAfterViewInit(): void {
-    let today = this.now.getDate();
-    this.agendas.sort((a, b) => (a.dia > b.dia) ? 1 : -1);
+    let today = this.dayNow.getDate();
+    /*
+        this.dayList.sort((a, b) => (a.dia > b.dia) ? 1 : -1);
+    */
     this.agendaDayList.forEach(day => {
       this.render.setStyle(day.nativeElement.childNodes[0], 'color', '#A9ABAE');
       if (day.nativeElement.childNodes[0].textContent > today) {
@@ -47,6 +63,5 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
         this.render.setStyle(day.nativeElement.childNodes[0], 'cursor', 'pointer');
       }
     });
-    console.log(today);
   }
 }

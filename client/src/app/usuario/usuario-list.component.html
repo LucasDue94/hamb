@@ -18,7 +18,7 @@
     </button>
   </div>
 </nav>
-<perfect-scrollbar class="content-default">
+<section [scrollWindow]="false" [hidden]="true" infinite-scroll (scrolled)="scrollDown()" class="content-default">
   <main class="table">
     <section class="thead">
       <span class="th login">LOGIN</span>
@@ -36,13 +36,13 @@
         <div class="td options">
           <fa-icon [routerLink]="['/usuario','edit',usuario.id]" class="icon login" [icon]="['fas','edit']"></fa-icon>
           <fa-icon [routerLink]="['/agenda','list',usuario.id]" class="icon" [icon]="['fas','calendar-alt']"></fa-icon>
-          <fa-icon (click)="onOff(usuario, $event)" class="icon" [icon]="['fas','power-off']"></fa-icon>
+          <fa-icon (click)="onOff(usuario)" class="icon" [icon]="['fas','power-off']"></fa-icon>
         </div>
       </div>
-      <div class="usersNotFound" *ngIf="usuarios.length == 0">
+      <div class="withoutData" *ngIf="usuarios.length == 0">
         Nenhum usuário foi encontrado!
         <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
       </div>
     </section>
   </main>
-</perfect-scrollbar>
+</section>

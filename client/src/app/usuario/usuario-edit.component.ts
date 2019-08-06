@@ -2,7 +2,7 @@ import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angula
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
