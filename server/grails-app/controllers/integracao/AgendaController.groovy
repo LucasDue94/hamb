@@ -1,8 +1,11 @@
 package integracao
 
 import grails.gorm.transactions.ReadOnly
+import grails.plugin.springsecurity.annotation.Secured
+import hamb.Perfil
 
 @ReadOnly
+@Secured(Perfil.PERMISSAO_MEDICO)
 class AgendaController {
 
     AgendaService agendaService

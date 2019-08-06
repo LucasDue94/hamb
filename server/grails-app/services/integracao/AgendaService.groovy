@@ -11,8 +11,4 @@ interface AgendaService {
 
     abstract Long count()
 
-    abstract void delete(Serializable id)
-
-    abstract Agenda save(Agenda agenda)
-
 }
