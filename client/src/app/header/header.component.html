@@ -1,7 +1,7 @@
 <header class="header">
   <div class="user-information">
-    <p>Usuário: {{username}}</p>
-    <p>Crm: {{crm}}</p>
+    <p> Usuário: {{usuarioLogado.nome}}</p>
+    <p *ngIf="usuarioLogado.crm!=='null'">Crm: {{usuarioLogado.crm}}</p>
   </div>
   <h1 class="system-name">{{systemName}}
     <fa-icon [icon]="['fas','user-md']"></fa-icon>

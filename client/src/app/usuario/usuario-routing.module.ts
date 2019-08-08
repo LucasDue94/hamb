@@ -8,8 +8,8 @@ import {AuthGuard} from "../core/guards/auth.guard";
 
 const routes: Routes = [
   {
-    path: 'usuario', children: [
-      {path: '', redirectTo: '/usuario', pathMatch: 'full'},
+    path: 'usuario', canActivate: [AuthGuard], children: [
+      {path: '', redirectTo: 'list', pathMatch: 'full'},
       {path: 'list', component: UsuarioListComponent, data: {permissao: 'ROLE_ADMIN'}},
       {path: 'edit/:id', component: UsuarioEditComponent, data: {permissao: 'ROLE_ADMIN'}},
       {path: 'show/:id', component: UsuarioShowComponent, data: {permissao: 'ROLE_ADMIN'}},
@@ -18,7 +18,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class UsuarioRoutingModule {
 }

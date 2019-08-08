@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'agenda-list',
@@ -23,7 +24,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   ];
   nativeElement: any;
 
-  constructor(private render: Renderer2) {
+  constructor(private route: ActivatedRoute, private render: Renderer2) {
   }
 
   ngOnInit() {

@@ -11,7 +11,11 @@ class Atendimento {
     String conteudo
 
     static constraints = {
-        usuario nullable: false, blank: false
+        usuario nullable: false, blank: false, validator: { val ->
+            if (val == null || val.crm == null || val.crm.isEmpty()) {
+                return ['noCrm']
+            }
+        }
         registroAtendimento nullable: false, blank: false
         dataAtendimento nullable: false, blank: false
         cid nullable: false, blank: false

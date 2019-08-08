@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../core/auth/auth.service";
 import {Router} from "@angular/router";
@@ -13,19 +13,27 @@ export class LoginComponent implements OnInit {
   visible = false;
   loginForm: FormGroup;
   error = false;
-  user = {
+  currentUser;
+  messageError = '';
+  authUser = {
     login: '',
-    senha: ''
+    senha: '',
   };
 
   constructor(private authService: AuthService, private router: Router) {
     this.loginForm = new FormGroup({
       login: new FormControl('', Validators.required),
       senha: new FormControl('', Validators.required)
-    })
+    });
   }
 
   ngOnInit() {
+  }
+
+  @HostListener('window:keyup', ['$event']) keyEnterEvent(event: KeyboardEvent) {
+    if (event.key == "Enter") {
+      this.login();
+    }
   }
 
   showPass() {
@@ -39,24 +47,35 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.error = false;
-    this.user.login = this.loginForm.get('login').value;
-    this.user.senha = this.loginForm.get('senha').value;
+    this.authUser.login = this.loginForm.get('login').value;
+    this.authUser.senha = this.loginForm.get('senha').value;
+    if (!this.loginForm.invalid) {
+      this.authService.authentication(this.authUser).subscribe(res => {
+          this.currentUser = res;
+          if (res.hasOwnProperty('access_token')) {
+            localStorage.setItem('id', res['id']);
+            localStorage.setItem('nome', res['nome']);
+            localStorage.setItem('login', res['login']);
+            localStorage.setItem('crm', res['crm']);
+            localStorage.setItem('token', res['access_token']);
+            localStorage.setItem('perfil', res['perfil']);
+            localStorage.setItem('roles', res['roles']);
+          }
 
-    this.authService.authentication(this.user).subscribe(res => {
-      console.log(res);
-      if (res.hasOwnProperty('access_token')) {
-        localStorage.setItem('token', res['access_token']);
-        localStorage.setItem('username', res['username']);
-        localStorage.setItem('roles', res['roles']);
-      }
-      console.log(localStorage);
-
-      this.router.navigate(['/index'])
-    },
-      error => {
+          //TODO mudar o redirecionamento para agenda/show/id
+          if (this.currentUser.crm == null) {
+            this.router.navigate(['/usuario']);
+          } else {
+            this.router.navigate(['/agenda']);
+          }
+        },
+        error => {
+          this.error = true;
+          this.messageError = 'Usuário ou senha iválida!';
+        });
+    } else {
       this.error = true;
-        console.log('deu bom não')
-      });
+      this.messageError = 'Preencha o login e a senha!';
+    }
   }
-
 }

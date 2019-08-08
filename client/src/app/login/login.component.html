@@ -21,7 +21,7 @@
         <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <input (click)="login()" placeholder="entrar" type="submit" class="button-login">
         <div [ngClass]="[ this.error ? 'invalid': 'valid']">
-          Usuário ou senha incorreto!
+         {{messageError}}
           <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
         </div>
       </div>

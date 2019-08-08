@@ -4,26 +4,28 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
+import {HeadersHelper} from "../headersHelper";
 
 @Injectable()
-export class PacienteService {
+export class PacienteService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
-  httpOptions = {
-    headers: new HttpHeaders({
+
+  getDefaultHttpOptions() {
+    return new HttpHeaders({
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
       "X-Auth-Token": localStorage.getItem('token')
-
     })
-  };
+  }
 
   constructor(private http: HttpClient) {
+    super()
   }
 
   list(max?: any, offset?: any): Observable<Paciente[]> {
     let subject = new Subject<Paciente[]>();
-    this.http.get(this.baseUrl + `paciente?offset=` + offset + '&max=' + max, {headers: this.httpOptions.headers})
+    this.http.get(this.baseUrl + `paciente?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((paciente: any) => new Paciente(paciente)))
       });
@@ -44,7 +46,7 @@ export class PacienteService {
 
   get(id: number): Observable<Paciente> {
     let subject = new Subject<Paciente>();
-    this.http.get(this.baseUrl + `paciente/` + id, {headers: this.httpOptions.headers})
+    this.http.get(this.baseUrl + `paciente/` + id, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any) => {
         subject.next(new Paciente(json));
       });
@@ -54,7 +56,7 @@ export class PacienteService {
   search(searchTerm, offset?: any, max?): Observable<any[]> {
     let subject = new Subject<Paciente[]>();
     this.http.get(this.baseUrl + `paciente/` + '?offset=' + offset + '&max=' + max, {
-      headers: this.httpOptions.headers,
+      headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
       subject.next(json.map((obj: any) => new Paciente(obj)))
@@ -65,12 +67,12 @@ export class PacienteService {
   save(paciente: Paciente): Observable<Paciente> {
     if (paciente.id) {
       return this.http.put<Paciente>(this.baseUrl + `paciente/` + paciente.id, paciente, {
-        headers: this.httpOptions.headers,
+        headers: this.getDefaultHttpOptions(),
         responseType: 'json'
       });
     } else {
       return this.http.post<Paciente>(this.baseUrl + `paciente/`, paciente, {
-        headers: this.httpOptions.headers,
+        headers: this.getDefaultHttpOptions(),
         responseType: 'json'
       });
     }
@@ -79,7 +81,7 @@ export class PacienteService {
 
   destroy(paciente: Paciente): Observable<Object> {
     return this.http.delete(this.baseUrl + `paciente/` + paciente.id, {
-      headers: this.httpOptions.headers,
+      headers: this.getDefaultHttpOptions(),
       observe: 'response'
     });
   }

@@ -9,16 +9,15 @@ import {AuthService} from "../core/auth/auth.service";
 export class HeaderComponent implements OnInit {
 
   systemName;
-  username;
-  crm;
+  usuarioLogado;
 
   constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
     this.systemName = 'hamb';
-    this.username = 'Pedro A. O. Ferreira';
-    this.crm = '0001'
+    this.usuarioLogado = localStorage;
+    console.log(typeof this.usuarioLogado.crm)
   }
 
   logout() {

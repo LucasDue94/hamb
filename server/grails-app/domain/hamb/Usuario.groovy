@@ -41,5 +41,5 @@ class Usuario {
         senhaExpirada defaultValue: false
     }
 
-    Set getPermissoes() { [this.perfil] }
+    Set getPermissoes() { return [this.perfil] }
 }

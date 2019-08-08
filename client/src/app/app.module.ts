@@ -17,6 +17,7 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoginModule} from "./login/login.module";
+import {AuthGuard} from "./core/guards/auth.guard";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,10 @@ import {LoginModule} from "./login/login.module";
     ReactiveFormsModule,
     LoginModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

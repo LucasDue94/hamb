@@ -2,22 +2,23 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
+import {HeadersHelper} from "../headersHelper";
 
 @Injectable()
-export class AuthService {
+export class AuthService extends HeadersHelper {
 
   private baseUrl = environment.apiUrl;
   token: string;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      "Accept": "application/json",
-      "Content-Type": "application/json",
+  getDefaultHttpOptions() {
+    return new HttpHeaders({
       "Cache-Control": "no-cache",
+      "Content-Type": "application/json",
     })
-  };
+  }
 
   constructor(private http?: HttpClient, private router?: Router) {
+    super()
   }
 
   authentication(user) {
@@ -28,7 +29,7 @@ export class AuthService {
       "senha": user.senha
     };
 
-    return this.http.post(url, data, {headers: this.httpOptions.headers, responseType: 'json'});
+    return this.http.post(url, data, {headers: this.getDefaultHttpOptions(), responseType: 'json'});
   }
 
 

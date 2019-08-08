@@ -20,7 +20,7 @@ import { SalaService } from './sala/sala.service';
     RegistroAtendimentoService,
     AuthService,
     AgendaService,
-    SalaService
+    SalaService,
 ]
 })
 export class CoreModule {

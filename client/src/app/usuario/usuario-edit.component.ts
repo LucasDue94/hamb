@@ -1,10 +1,9 @@
-import {AfterViewChecked, Component, DoCheck, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {NgxSpinnerService} from "ngx-spinner";
-import get = Reflect.get;
 
 @Component({
   selector: 'usuario-edit',
@@ -101,18 +100,19 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   }
 
   validateForm() {
-    console.log(this.usuarioForm.controls);
     for (let key in this.usuarioForm.controls) {
       this.validateArray[key] = this.usuarioForm.get(key).invalid;
       if (this.validateArray[key]) {
         this.validateArray.isValid = false;
       }
+      this.validateArray.isValid = !this.validateArray[key];
     }
   }
 
 
   save() {
     this.validateForm();
+    console.log(this.validateArray);
     if (this.validateArray.isValid) {
       this.usuarioService.save(this.usuario).subscribe(res => {
         let r = this.router;
