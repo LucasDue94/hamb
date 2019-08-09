@@ -6,14 +6,16 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [
+    MainComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
   exports: [
-    MainComponent
+    MainComponent,
   ]
 })
 export class MainModule {

@@ -18,10 +18,12 @@ import {fas} from '@fortawesome/free-solid-svg-icons';
 import {ReactiveFormsModule} from "@angular/forms";
 import {LoginModule} from "./login/login.module";
 import {AuthGuard} from "./core/guards/auth.guard";
+import {ErrorComponent} from "./error/error.component";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

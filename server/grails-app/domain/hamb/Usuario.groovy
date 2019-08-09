@@ -20,14 +20,13 @@ class Usuario {
 
     static constraints = {
         nome nullable: false, blank: false
-        login nullable: false, blank: false
+        login unique: true, nullable: false, blank: false
         senha nullable: false, blank: false
         crm nullable: true, blank: false
         ultimoAcesso nullable: true, blank: false
         perfil nullable: false, blank: false
         telefone nullable: true, blank: true
         email nullable: true, blank: true, email: true
-        email nullable: true, blank: true
         ativo nullable: false
         expirado nullable: false
         bloqueado nullable: false

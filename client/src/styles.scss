@@ -15,9 +15,16 @@
   }
 }
 
-usuario-list, usuario-edit, agenda-show, agenda-list, busca, login {
+usuario-list, usuario-edit, agenda-show, agenda-list, busca, login, app-error {
   width: 100%;
   height: 100%;
+}
+
+app-error{
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 body {

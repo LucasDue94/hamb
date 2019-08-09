@@ -17,7 +17,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.systemName = 'hamb';
     this.usuarioLogado = localStorage;
-    console.log(typeof this.usuarioLogado.crm)
   }
 
   logout() {

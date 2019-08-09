@@ -14,11 +14,9 @@ export class AuthGuard implements CanActivate {
             this.router.navigate(['/']);
             return false;
         }
-      console.log('opa');
 
         if (route.firstChild && !this.loginService.hasPermission(route.firstChild.data.permissao)) {
-            // this.router.navigate(['/erro']);
-          console.log('Sem permissão pra acessar a página');
+            this.router.navigate(['/error']);
             return false;
         }
         return true;
