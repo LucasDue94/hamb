@@ -20,7 +20,11 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   max = 25;
   offset = 0;
   messageStatus;
-   responseOk = 200;
+  responseOk = 200;
+
+  getEventData(event){
+    console.log(event)
+  }
 
   constructor(private usuarioService: UsuarioService,
               private spinner: NgxSpinnerService,

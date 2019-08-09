@@ -19,11 +19,12 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {LoginModule} from "./login/login.module";
 import {AuthGuard} from "./core/guards/auth.guard";
 import {ErrorComponent} from "./error/error.component";
+import {FastSearchModule} from "./fast-search/fast-search.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,8 @@ import {ErrorComponent} from "./error/error.component";
     UsuarioModule,
     PerfectScrollbarModule,
     ReactiveFormsModule,
-    LoginModule
+    LoginModule,
+    FastSearchModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

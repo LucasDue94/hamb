@@ -10,13 +10,14 @@ import {UsuarioRoutingModule} from "./usuario-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {FastSearchModule} from "../fast-search/fast-search.module";
 
 
 @NgModule({
   declarations: [
     UsuarioListComponent,
     UsuarioEditComponent,
-    UsuarioShowComponent
+    UsuarioShowComponent,
   ],
   imports: [
     CommonModule,
@@ -27,7 +28,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    FastSearchModule
   ],
 })
 export class UsuarioModule {
