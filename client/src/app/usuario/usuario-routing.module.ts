@@ -9,9 +9,9 @@ const routes: Routes = [
   {
     path: 'usuario', children: [
       {path: '', redirectTo: '/usuario', pathMatch: 'full'},
-      {path: 'list', component: UsuarioListComponent},
-      {path: 'edit/:id', component: UsuarioEditComponent},
-      {path: 'show/:id', component: UsuarioShowComponent},
+      {path: 'list', component: UsuarioListComponent, data: {permissao: 'ROLE_ADMIN'}},
+      {path: 'edit/:id', component: UsuarioEditComponent, data: {permissao: 'ROLE_ADMIN'}},
+      {path: 'show/:id', component: UsuarioShowComponent, data: {permissao: 'ROLE_ADMIN'}},
     ]
   }];
 

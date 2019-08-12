@@ -18,7 +18,6 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   searchControl: FormControl;
   usuarioForm: FormGroup;
   messageStatus;
-
   constructor(private route: ActivatedRoute, private router: Router,
               private usuarioService: UsuarioService, private render: Renderer2,
               private spinner: NgxSpinnerService) {
@@ -34,7 +33,8 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
       login: new FormControl(),
       crm: new FormControl({disable: true}),
       perfil: new FormControl(),
-      email: new FormControl(),
+      //TODO Validação de email
+      email: new FormControl('',Validators.email),
       ativo: new FormControl(),
       telefone: new FormControl(),
       status: new FormControl(),
@@ -91,7 +91,7 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   }
 
   save() {
-    console.log(this.usuario);
+    console.log(this.usuarioForm.get('email'));
     this.usuarioService.save(this.usuario).subscribe(res => {
       console.log(res);
       let r = this.router;

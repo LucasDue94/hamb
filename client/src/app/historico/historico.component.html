@@ -5,11 +5,11 @@
   </a>
   <p class="title-main">Histórico</p>
   <div class="combobox-historico">
-    <p id="info" class="combobox-historico-text" (click)="collapse($event)">
+    <p class="combobox-historico-text" (click)="openInfoCard($event)">
       <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
       José Flávio Menezes Almeida
     </p>
-    <div class="combobox-info-historico">
+    <div #infoCard *ngIf="showInfoCard" class="combobox-info-historico">
       <div class="combobox-info-text">
         <div class="flex row justify-content-between">
           <div>Paciente:</div>
@@ -43,20 +43,18 @@
     </div>
   </div>
 </nav>
-<perfect-scrollbar class="content-default">
-  <section class="section-historico" *ngFor="let atendimento of atendimentos">
-    <article class="article-historico">
-      <p>
-        {{atendimento.conteudo}}
-      </p>
-      <legend class="legend-article">
-        <strong class="historico-data-list"> {{atendimento.dataAtendimento}} </strong>
-        <strong class="historico-cid-list"> CID: {{atendimento.cid.diagnostico}} </strong>
-        <strong class="historico-medico-list"> CRM: </strong>
-      </legend>
-    </article>
-  </section>
-</perfect-scrollbar>
+<section infinite-scroll class="section-historico" *ngFor="let atendimento of atendimentos">
+  <article class="article-historico">
+    <p>
+      {{atendimento.conteudo}}
+    </p>
+    <legend class="legend-article">
+      <strong class="historico-data-list"> {{atendimento.dataAtendimento}} </strong>
+      <strong class="historico-cid-list"> CID: {{atendimento.cid.diagnostico}} </strong>
+      <strong class="historico-medico-list"> CRM: </strong>
+    </legend>
+  </article>
+</section>
 <div class="form-historico">
   <textarea class="textarea-content" name="" id="" placeholder="> Digite o seu texto aqui <"></textarea>
   <div class="flex wrap">

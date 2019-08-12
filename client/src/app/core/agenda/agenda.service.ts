@@ -14,15 +14,14 @@ export class AgendaService {
     headers: new HttpHeaders({
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
+      "X-Auth-Token": localStorage.getItem('token')
     })
   };
 
-
-
-  constructor(private httpClient: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
   list(): Observable<Agenda[]> {
-    return  this.httpClient.get<Agenda[]>(`${this.baseUrl}agenda`);
+    return this.http.get<Agenda[]>(`${this.baseUrl}agenda`, {headers: this.httpOptions.headers});
   }
 }

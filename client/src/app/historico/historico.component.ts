@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -17,10 +17,14 @@ export class HistoricoComponent implements OnInit {
   pacientes: Paciente[];
   atendimentos: Atendimento[];
 
+  showInfoCard = false;
+  @ViewChild('infoCard', { static: false }) infoCard;
+
   constructor(private render: Renderer2,
               private cidsService: CidService,
               private pacientesService: PacienteService,
               private atendimentoService: AtendimentoService) {
+    this.removeInfoCard = this.removeInfoCard.bind(this);
   }
 
   ngOnInit() {
@@ -37,22 +41,20 @@ export class HistoricoComponent implements OnInit {
     });
   }
 
+  private removeInfoCard(evt) {
+    let target = evt.target;
+    while (target != null && target !== this.infoCard.nativeElement) target = target.parentNode;
 
-  public collapse(e) {
-    document.addEventListener("click", (evt) => {
-      const elementCliked = e.target;
-      const element = e.target.nextElementSibling;
-      let targetElement = evt.target;
+    if (target === null || target === undefined) {
+      this.showInfoCard = false;
+      document.removeEventListener('click', this.removeInfoCard);
+    }
+  }
 
-      do {
-        if (targetElement == elementCliked || targetElement == element) {
-          this.render.setStyle(element, 'display', 'block');
-          return;
-        }
-        targetElement = targetElement.parentNode;
-      } while (targetElement);
-      this.render.setStyle(element, 'display', 'none');
-    });
+  public openInfoCard(e) {
+    e.stopPropagation();
+    this.showInfoCard = !this.showInfoCard;
+    document.addEventListener('click', this.removeInfoCard);
   }
 
 }

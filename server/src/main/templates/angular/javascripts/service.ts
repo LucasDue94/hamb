@@ -13,6 +13,7 @@ export class ${className}Service {
         headers: new HttpHeaders({
             "Cache-Control": "no-cache",
             "Content-Type": "application/json",
+            "X-Auth-Token": localStorage.getItem('token')
         })
     };
 

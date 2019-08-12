@@ -1,12 +1,8 @@
 package integracao
 
 import grails.gorm.transactions.ReadOnly
-import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
-import grails.validation.ValidationException
 import hamb.Perfil
-
-import static org.springframework.http.HttpStatus.*
 
 @ReadOnly
 @Secured(Perfil.PERMISSAO_MEDICO)
@@ -16,9 +12,9 @@ class PacienteController {
 
     static responseFormats = ['json', 'xml']
 
-    def index(Integer max) {
+    def index(Integer max, String termo) {
         params.max = Math.min(max ?: 10, 100)
-        respond pacienteService.list(params), model:[pacienteCount: pacienteService.count()]
+        respond pacienteService.list(params, termo), model: [pacienteCount: pacienteService.count()]
     }
 
     def show(Long id) {

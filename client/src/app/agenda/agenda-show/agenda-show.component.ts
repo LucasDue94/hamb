@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
+import {Agenda} from "../../core/agenda/agenda";
 
 @Component({
   selector: 'agenda-show',
@@ -12,6 +13,7 @@ export class AgendaShowComponent implements OnInit {
   @ViewChild("btnEnabled", {static: false}) btnEnabled: ElementRef;
   @ViewChild("pacientesTable", {static: false}) pacientesTable: ElementRef;
 
+  agenda = new Agenda();
   agendaAuxiliar: any[] = [];
   agendaCompleta: any[] = [];
   agendaManha: any[] = [];
@@ -21,17 +23,22 @@ export class AgendaShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.agendaCompleta = this.agendaService.list();
-    this.agendaCompleta.forEach(agenda => {
-      if (agenda.periodo == 'manhã') {
-        this.agendaManha.push(agenda);
-        this.agendaAuxiliar = this.agendaManha;
-      } else {
-        this.agendaTarde.push(agenda);
-        this.agendaAuxiliar = this.agendaTarde;
-      }
+
+    this.agendaService.list().subscribe( agenda => {
+      this.agendaCompleta = agenda;
+      this.agendaCompleta.forEach(agenda => {
+        if (agenda.periodo == 'manhã') {
+          this.agendaManha.push(agenda);
+          this.agendaAuxiliar = this.agendaManha;
+        } else {
+          this.agendaTarde.push(agenda);
+          this.agendaAuxiliar = this.agendaTarde;
+        }
+      });
+      this.agendaAuxiliar = this.agendaManha;
     });
-    this.agendaAuxiliar = this.agendaManha;
+
+
   }
 
   toogleColorBtn(e) {

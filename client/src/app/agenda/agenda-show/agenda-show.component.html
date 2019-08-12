@@ -3,7 +3,7 @@
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <p class="title-main">25 de Julho</p>
+  <p class="title-main">{{agenda.getMes()}}</p>
   <button #btnEnabled class="btn-navtop-agenda btn-agenda-manha btn-active" (click)="toogleColorBtn($event)">Manhã
   </button>
   <button #btnDisabled class="btn-navtop-agenda btn-agenda-tarde" (click)="toogleColorBtn($event)">Tarde</button>

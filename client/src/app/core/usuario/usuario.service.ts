@@ -12,6 +12,7 @@ export class UsuarioService {
     headers: new HttpHeaders({
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
+      "X-Auth-Token": localStorage.getItem('token')
     })
   };
 
@@ -63,7 +64,7 @@ export class UsuarioService {
   }
 
   onOff(usuario: Usuario): any {
-    return this.http.put<Usuario>(this.baseUrl + 'usuario/onOff/' + usuario.id, {
+    return this.http.put<Usuario>(this.baseUrl + 'usuario/onOff/' + usuario.id,'', {
       headers: this.httpOptions.headers,
       observe: 'response'
     });

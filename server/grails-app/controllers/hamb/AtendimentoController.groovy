@@ -1,16 +1,14 @@
 package hamb
 
-import grails.validation.ValidationException
-import static org.springframework.http.HttpStatus.CREATED
-import static org.springframework.http.HttpStatus.NOT_FOUND
-import static org.springframework.http.HttpStatus.NO_CONTENT
-import static org.springframework.http.HttpStatus.OK
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
-
 import grails.gorm.transactions.ReadOnly
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.annotation.Secured
+import grails.validation.ValidationException
+
+import static org.springframework.http.HttpStatus.*
 
 @ReadOnly
+@Secured(Perfil.PERMISSAO_MEDICO)
 class AtendimentoController {
 
     AtendimentoService atendimentoService
@@ -18,9 +16,9 @@ class AtendimentoController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
+    def index(Integer max, String codPrt) {
         params.max = Math.min(max ?: 10, 100)
-        respond atendimentoService.list(params), model:[atendimentoCount: atendimentoService.count()]
+        respond atendimentoService.list(params, codPrt), model:[atendimentoCount: atendimentoService.count()]
     }
 
     def show(Long id) {

@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'historico',
     children: [
       {path:'', redirectTo: 'historico', pathMatch: 'full'},
-      {path:'list/:id', component: HistoricoComponent}
+      {path:'list', component: HistoricoComponent, data: {permissao: 'ROLE_ADMIN'}}
     ]
   }
 ];

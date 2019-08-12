@@ -3,19 +3,21 @@
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <p class="title-main">Julho</p>
+  <p class="title-main">{{agenda.getMes()}}</p>
 </nav>
-<perfect-scrollbar class="content-default">
-  <section>
-    <ul class="agenda-list">
-        <li #agendaColumnList class="agenda-column-list" *ngFor="let dia of dayList">
-          <a [routerLink]="['/agenda','show']"><h1 class="agenda-day-list">{{dia}}</h1></a>
-            <div class="agenda-column-content-list">
-              <p class="text-line-agenda">Agendados:  </p>
-              <p class="text-line-agenda">Efetivados:  </p>
-              <p class="text-line-agenda">Atendidos:  </p>
-            </div>
-        </li>
-    </ul>
-  </section>
-</perfect-scrollbar>
+<section infinite-scroll>
+  <ul class="agenda-list">
+    <li #agendaColumnList class="agenda-column-list" *ngFor="let dia of datas">
+      <a [routerLink]="['/agenda','show']">
+        <h1 class="agenda-day-list"
+            [ngStyle]="{'color': dia < agenda.getToday() ? '#A9ABAE' : dia > agenda.getToday() ? '#5A5B5B' : dia == agenda.getToday() ? '#2B517E' : '#A9ABAE'}">
+        {{dia}}</h1>
+      </a>
+      <div class="agenda-column-content-list">
+        <p class="text-line-agenda">Agendados: </p>
+        <p class="text-line-agenda">Efetivados: </p>
+        <p class="text-line-agenda">Atendidos: </p>
+      </div>
+    </li>
+  </ul>
+</section>

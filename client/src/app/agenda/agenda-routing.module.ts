@@ -7,8 +7,8 @@ const routes: Routes = [
   {
     path: 'agenda', children: [
       {path: '', redirectTo:'/agenda', pathMatch:'full'},
-      {path: 'show', component: AgendaShowComponent},
-      {path: 'list', component: AgendaListComponent}
+      {path: 'show', component: AgendaShowComponent, data: {permissao: 'ROLE_ADMIN'}},
+      {path: 'list', component: AgendaListComponent, data: {permissao: 'ROLE_ADMIN'}}
       ]
   }
 ];

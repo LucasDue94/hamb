@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "../core/auth/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -11,12 +12,17 @@ export class HeaderComponent implements OnInit {
   username;
   crm;
 
-  constructor() { }
+  constructor(private authService: AuthService) {
+  }
 
   ngOnInit() {
     this.systemName = 'hamb';
-    this.username ='Pedro A. O. Ferreira';
-    this.crm ='0001'
+    this.username = 'Pedro A. O. Ferreira';
+    this.crm = '0001'
+  }
+
+  logout() {
+    this.authService.logout(localStorage.getItem('token'));
   }
 
 }
