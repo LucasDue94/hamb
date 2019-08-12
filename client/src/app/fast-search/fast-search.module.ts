@@ -4,6 +4,7 @@ import {FastSearchComponent} from "./fast-search.component";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     NgxSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    InfiniteScrollModule
   ],
   exports:[FastSearchComponent]
 })

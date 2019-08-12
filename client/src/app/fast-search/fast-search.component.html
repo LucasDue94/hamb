@@ -8,18 +8,21 @@
     </div>
   </nav>
 
-  <main class="table">
-    <section *ngIf="dataArray!=null" class="tbody">
-      <div *ngFor="let data of dataArray;" class="row" [ngClass]="{'disable' : !data?.ativo}">
+  <section [scrollWindow]="false" [hidden]="true" infinite-scroll (scrolled)="scrollDown()"
+           [ngStyle]="{'height':height}" class="content-default">
+    <main class="table" infinite-scroll>
+      <section *ngIf="dataArray!=null" class="tbody">
+        <div *ngFor="let data of dataArray;" class="row" [ngClass]="{'disable' : !data?.ativo}">
         <span (click)="emitData(data)" *ngFor="let field of fields; index as i" [ngStyle]="{'flex': widthField[i]}"
               class="td">{{data[field]}}</span>
-      </div>
-      <div class="withoutData" *ngIf="dataArray.length == 0">
-        Nenhum dado foi encontrado!
-        <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
-      </div>
-    </section>
-  </main>
+        </div>
+        <div class="withoutData" *ngIf="dataArray.length == 0">
+          {{messageStatus}}
+          <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
+        </div>
+      </section>
+    </main>
+  </section>
 </section>
 
 <ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
