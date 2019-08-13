@@ -1,51 +1,57 @@
 @import "~src/styles";
 
-.agenda-list {
-  margin-top: 40px;
-  list-style: none;
+.content-default {
   display: flex;
+  justify-content: center;
+  align-content: baseline;
+  justify-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  overflow: hidden;
 }
 
-.agenda-column-list {
-  background: $white;
-  width: 160px;
-  height: 190px;
-  border-radius: 5px;
+.card {
+  position: relative;
+  background-color: $white;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
   margin: 10px;
-  text-align: center;
-  box-shadow: 3px 3px 2px $gray-60;
-  border: 1px solid $gray-90;
+  height: 160px;
+  border: 1px solid $gray-70;
+  font-size: 50px;
+  cursor: pointer;
 
-  .agenda-day-list {
-    font-size: 4em;
-    margin-top: 5px;
+  &:hover {
+    transition: 0.3s;
+    box-shadow: 1px 1px 10px $gray-100;
+  }
+
+  .day {
     font-weight: 500;
   }
 }
 
-.agenda-column-content-list {
-  cursor: pointer;
-  width: 75%;
+.informations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 115px;
   height: 70px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-  padding: 10px;
-  background: $gray-30;
-  border: 1px solid $gray-90;
+  padding: 5px;
+  font-size: 16px;
+  color: $gray-90;
   border-radius: 5px;
-
-  & .text-line-agenda{
-    width: 100%;
-    font-size: 14px;
-    line-height: 20px;
-    margin: 5px;
-  }
+  background-color: $gray-20;
+  border: 1px solid $gray-70;
+  letter-spacing: 1px;
 }
 
-
-
+.withoutData {
+  margin: 10px;
+  left: 0;
+}

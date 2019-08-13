@@ -1,55 +1,86 @@
-/*
 import {Injectable} from '@angular/core';
-import {Http, Response, RequestOptions, RequestMethod, Request, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
 import {Atendimento} from './atendimento';
-import {Subject} from 'rxjs/Subject';
-
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/of';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../../environments/environment.prod";
+import {Observable, Subject} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class AtendimentoService {
 
-  private baseUrl = 'http://localhost:8080/';
+    private baseUrl = environment.serverUrl;
+    httpOptions = {
+        headers: new HttpHeaders({
+            "Cache-Control": "no-cache",
+            "Content-Type": "application/json",
+            "X-Auth-Token": localStorage.getItem('token')
+        })
+    };
 
-  constructor(private http: Http) {
-  }
-
-  list(): Observable<Atendimento[]> {
-    let subject = new Subject<Atendimento[]>();
-    this.http.get(this.baseUrl + 'atendimento')
-      .map((r: Response) => r.json())
-      .subscribe((json: any[]) => {
-        subject.next(json.map((item: any) => new Atendimento(item)))
-      });
-    return subject.asObservable();
-  }
-
-  get(id: number): Observable<Atendimento> {
-    return this.http.get(this.baseUrl + 'atendimento/'+id)
-      .map((r: Response) => new Atendimento(r.json()));
-  }
-
-  save(atendimento: Atendimento): Observable<Atendimento> {
-    const requestOptions = new RequestOptions();
-    if (atendimento.id) {
-      requestOptions.method = RequestMethod.Put;
-      requestOptions.url = this.baseUrl + 'atendimento/' + atendimento.id;
-    } else {
-      requestOptions.method = RequestMethod.Post;
-      requestOptions.url = this.baseUrl + 'atendimento';
+    constructor(private http: HttpClient) {
     }
-    requestOptions.body = JSON.stringify(atendimento);
-    requestOptions.headers = new Headers({"Content-Type": "application/json"});
 
-    return this.http.request(new Request(requestOptions))
-      .map((r: Response) => new Atendimento(r.json()));
-  }
+    list(max?: any, offset?: any): Observable<Atendimento[]> {
+        let subject = new Subject<Atendimento[]>();
+        this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max, {headers: this.httpOptions.headers})
+            .subscribe((json: any[]) => {
+                subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
+            });
+        return subject.asObservable();
+    }
 
-  destroy(atendimento: Atendimento): Observable<boolean> {
-    return this.http.delete(this.baseUrl + 'atendimento/' + atendimento.id).map((res: Response) => res.ok).catch(() => {
-      return Observable.of(false);
-    });
-  }
-}*/
+    count() {
+        let quantity: number;
+        return this.http.get<Atendimento[]>(this.baseUrl + `atendimento/`).pipe(
+            map(
+                data => {
+                    quantity = data['total'];
+                    return quantity;
+                }
+            )
+        )
+    }
+
+    get(id: number): Observable<Atendimento> {
+        let subject = new Subject<Atendimento>();
+        this.http.get(this.baseUrl + `atendimento/` + id, {headers: this.httpOptions.headers})
+            .subscribe((json: any) => {
+                subject.next(new Atendimento(json));
+            });
+        return subject.asObservable();
+    }
+
+    search(searchTerm, offset?: any, max?): Observable<any[]> {
+        let subject = new Subject<Atendimento[]>();
+        this.http.get(this.baseUrl + `atendimento/` + '?offset=' + offset + '&max=' + max, {
+            headers: this.httpOptions.headers,
+            params: {termo: searchTerm}
+        }).subscribe((json: any) => {
+            console.log(json);
+            subject.next(json.map((obj: any) => new Atendimento(obj)))
+        });
+        return subject.asObservable();
+    }
+
+    save(atendimento: Atendimento): Observable<Atendimento> {
+        if (atendimento.id) {
+            return this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
+                headers: this.httpOptions.headers,
+                responseType: 'json'
+            });
+        } else {
+            return this.http.post<Atendimento>(this.baseUrl + `atendimento/`, atendimento, {
+                headers: this.httpOptions.headers,
+                responseType: 'json'
+            });
+        }
+    }
+
+
+    destroy(atendimento: Atendimento): Observable<Object> {
+        return this.http.delete(this.baseUrl + `atendimento/` + atendimento.id, {
+            headers: this.httpOptions.headers,
+            observe: 'response'
+        });
+    }
+}

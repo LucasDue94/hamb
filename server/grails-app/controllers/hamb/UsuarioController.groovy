@@ -16,9 +16,9 @@ class UsuarioController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max, String termo) {
-        params.max = Math.min(max ?: 10, 100)
-        respond usuarioService.list(params, termo), model: [usuarioCount: usuarioService.count()]
+    def index(Integer max) {
+        params.max = Math.min(max ?: 20, 100)
+        respond usuarioService.list(params), model:[usuarioCount: usuarioService.count()]
     }
 
     def show(Long id) {
@@ -53,7 +53,6 @@ class UsuarioController {
             render status: NOT_FOUND
             return
         }
-
         if (usuario.hasErrors()) {
             transactionStatus.setRollbackOnly()
             respond usuario.errors
@@ -80,16 +79,5 @@ class UsuarioController {
         usuarioService.delete(id)
 
         render status: NO_CONTENT
-    }
-
-    @Transactional
-    def onOff(Usuario usuario) {
-        if (usuario.id == null) {
-            render status: NOT_FOUND
-            return
-        }
-        usuarioService.onOff(usuario)
-
-        respond status: OK
     }
 }

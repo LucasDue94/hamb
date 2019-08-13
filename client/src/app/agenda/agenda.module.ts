@@ -7,6 +7,8 @@ import {AgendaListComponent} from './agenda-list.component';
 import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
 import {RouterModule} from "@angular/router";
 import {CoreModule} from '../core/core.module';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+
 
 @NgModule({
   imports: [
@@ -15,7 +17,8 @@ import {CoreModule} from '../core/core.module';
     FontAwesomeModule,
     PerfectScrollbarModule,
     RouterModule,
-    CoreModule
+    CoreModule,
+    InfiniteScrollModule
   ],
   declarations: [AgendaListComponent, AgendaShowComponent]
 })

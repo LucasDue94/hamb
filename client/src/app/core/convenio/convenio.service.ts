@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { ${className} } from './${propertyName}';
+import { Convenio } from './convenio';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
@@ -8,7 +8,7 @@ import {HeadersHelper} from "../headersHelper";
 
 
 @Injectable()
-export class ${className}Service extends  HeadersHelper{
+export class ConvenioService extends  HeadersHelper{
 
     private baseUrl = environment.serverUrl;
     getDefaultHttpOptions() {
@@ -23,18 +23,18 @@ export class ${className}Service extends  HeadersHelper{
         super()
     }
 
-    list(max?: any, offset?: any): Observable<${className}[]> {
-        let subject = new Subject<${className}[]>();
-        this.http.get(this.baseUrl + `${propertyName}?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
+    list(max?: any, offset?: any): Observable<Convenio[]> {
+        let subject = new Subject<Convenio[]>();
+        this.http.get(this.baseUrl + `convenio?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
             .subscribe((json: any[]) => {
-                subject.next(json.map((propertyName: any) => new ${className}(propertyName)))
+                subject.next(json.map((propertyName: any) => new Convenio(propertyName)))
             });
         return subject.asObservable();
     }
 
     count() {
         let quantity: number;
-        return this.http.get<${className}[]>(this.baseUrl + `${propertyName}/`).pipe(
+        return this.http.get<Convenio[]>(this.baseUrl + `convenio/`).pipe(
             map(
                 data => {
                     quantity = data['total'];
@@ -44,35 +44,35 @@ export class ${className}Service extends  HeadersHelper{
         )
     }
 
-    get(id: number): Observable<${className}> {
-        let subject = new Subject<${className}>();
-        this.http.get(this.baseUrl + `${propertyName}/` + id, {headers: this.getDefaultHttpOptions()})
+    get(id: number): Observable<Convenio> {
+        let subject = new Subject<Convenio>();
+        this.http.get(this.baseUrl + `convenio/` + id, {headers: this.getDefaultHttpOptions()})
             .subscribe((json: any) => {
-                subject.next(new ${className}(json));
+                subject.next(new Convenio(json));
             });
         return subject.asObservable();
     }
 
     search(searchTerm, offset?: any, max?): Observable<any[]> {
-        let subject = new Subject<${className}[]>();
-        this.http.get(this.baseUrl + `${propertyName}/` + '?offset=' + offset + '&max=' + max, {
+        let subject = new Subject<Convenio[]>();
+        this.http.get(this.baseUrl + `convenio/` + '?offset=' + offset + '&max=' + max, {
             headers: this.getDefaultHttpOptions(),
             params: {termo: searchTerm}
         }).subscribe((json: any) => {
             console.log(json);
-            subject.next(json.map((obj: any) => new ${className}(obj)))
+            subject.next(json.map((obj: any) => new Convenio(obj)))
         });
         return subject.asObservable();
     }
 
-    save(${propertyName}: ${className}): Observable<${className}> {
-        if (${propertyName}.id) {
-            return this.http.put<${className}>(this.baseUrl + `${propertyName}/` + ${propertyName}.id, ${propertyName}, {
+    save(convenio: Convenio): Observable<Convenio> {
+        if (convenio.id) {
+            return this.http.put<Convenio>(this.baseUrl + `convenio/` + convenio.id, convenio, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
             });
         } else {
-            return this.http.post<${className}>(this.baseUrl + `${propertyName}/`, ${propertyName}, {
+            return this.http.post<Convenio>(this.baseUrl + `convenio/`, convenio, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
             });
@@ -80,8 +80,8 @@ export class ${className}Service extends  HeadersHelper{
     }
 
 
-    destroy(${propertyName}: ${className}): Observable<Object> {
-        return this.http.delete(this.baseUrl + `${propertyName}/` + ${propertyName}.id, {
+    destroy(convenio: Convenio): Observable<Object> {
+        return this.http.delete(this.baseUrl + `convenio/` + convenio.id, {
             headers: this.getDefaultHttpOptions(),
             observe: 'response'
         });

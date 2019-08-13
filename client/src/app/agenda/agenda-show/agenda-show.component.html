@@ -1,26 +1,28 @@
-<nav class="nav-top">
-  <a [routerLink]="['/agenda','list']" class="btn-back">
+<nav class="nav-container">
+  <a [routerLink]="['/agenda','list']" class="back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <p class="title-main">25 de Julho</p>
-  <button #btnEnabled class="btn-navtop-agenda btn-agenda-manha btn-active" (click)="toogleColorBtn($event)">Manhã
-  </button>
-  <button #btnDisabled class="btn-navtop-agenda btn-agenda-tarde" (click)="toogleColorBtn($event)">Tarde</button>
+  <h3>{{getMes()}}</h3>
+  <div>
+    <button #btnEnabled class="btn-navtop-agenda btn-agenda-manha btn-active" (click)="toogleColorBtn($event)">Manhã
+    </button>
+    <button #btnDisabled class="btn-navtop-agenda btn-agenda-tarde" (click)="toogleColorBtn($event)">Tarde</button>
+  </div>
 </nav>
-<perfect-scrollbar class="content-default">
+<section class="content-default">
   <table class="table-show-paciente">
-      <tr #pacientesTable *ngFor="let paciente of agendaAuxiliar">
-        <td>
-          <fa-icon *ngIf="paciente.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
-        </td>
-        <td><a href="#">{{paciente.prontuario}}</a></td>
-        <td><a href="#">{{paciente.codpac}}</a></td>
-        <td><a href="#">{{paciente.nome}}</a></td>
-        <td><a href="#">{{paciente.idade}}</a></td>
-        <td><a href="#">{{paciente.convenio}}</a></td>
-      </tr>
+    <tr #pacientesTable *ngFor="let paciente of agenda?.pacientes" [routerLink]="['/historico', 'list', paciente.id]">
+      <!-- <td>
+         <fa-icon *ngIf="agenda.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
+       </td>-->
+      <td>{{paciente.id}}</td>
+      <td>{{paciente.registro}}</td>
+      <td>{{paciente.nome}}</td>
+      <td>{{paciente.nascimento}}</td>
+      <td>{{paciente.convenio}}</td>
+    </tr>
   </table>
-</perfect-scrollbar>
+</section>
 
 

@@ -14,7 +14,9 @@ class AgendaController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond agendaService.list(params), model:[agendaCount: agendaService.count()]
+
+        respond agendaService.list(), model:[agendaCount: agendaService.count()]
+//        respond agendaService.list(params), model:[agendaCount: agendaService.count()]
     }
 
     def show(String id) {

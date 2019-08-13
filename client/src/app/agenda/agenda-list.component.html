@@ -1,22 +1,30 @@
-<nav class="nav-top">
-  <a [routerLink]="['/']" class="btn-back">
+<nav class="nav-container">
+  <a [ngStyle]="{'visibility': 'hidden'}" [routerLink]="['/']" class="btn-back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <p class="title-main">Julho</p>
+  <h3>{{getMes()}}</h3>
+  <div [ngStyle]="{'visibility': 'hidden'}" class="search-container">
+    <input id="search-text"
+           placeholder="Procure: Nome, crm ou login..." type="text">
+    <button id="search-button">
+      <fa-icon [icon]="['fas','search']"></fa-icon>
+    </button>
+  </div>
 </nav>
-<perfect-scrollbar class="content-default">
-  <section>
-    <ul class="agenda-list">
-        <li #agendaColumnList class="agenda-column-list" *ngFor="let agenda of agendas">
-          <a [routerLink]="['/agenda','show']"><h1 class="agenda-day-list">{{agenda.dia}}</h1></a>
-            <div class="agenda-column-content-list">
-              <p class="text-line-agenda">Agendados: {{agenda.agendados}} </p>
-              <p class="text-line-agenda">Efetivados: {{agenda.efetivados}} </p>
-              <p class="text-line-agenda">Atendidos: {{agenda.atentidos}} </p>
-            </div>
-        </li>
-    </ul>
+<section infinite-scroll class="content-default">
+  <section (click)="send(dia)" class="card" *ngFor="let dia of dias">
+    <h1 [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
+      class="day">{{dia}}</h1>
+    <div class="informations">
+      <p>Atendidos:5</p>
+      <p>Efetivados:2</p>
+      <p>Agendados:12</p>
+    </div>
   </section>
-</perfect-scrollbar>
+  <div class="withoutData" *ngIf="this.agendas?.length == 0">
+    Você ainda não possui agendas neste mês!
+    <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
+  </div>
 
+</section>

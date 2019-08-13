@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
+import {Router} from "@angular/router";
+import {Agenda} from "../../core/agenda/agenda";
 
 @Component({
   selector: 'agenda-show',
@@ -12,26 +14,37 @@ export class AgendaShowComponent implements OnInit {
   @ViewChild("btnEnabled", {static: false}) btnEnabled: ElementRef;
   @ViewChild("pacientesTable", {static: false}) pacientesTable: ElementRef;
 
+  agenda;
   agendaAuxiliar: any[] = [];
   agendaCompleta: any[] = [];
   agendaManha: any[] = [];
   agendaTarde: any[] = [];
+  route;
 
-  constructor(private agendaService: AgendaService, private render: Renderer2) {
+
+  constructor(private agendaService: AgendaService, private render: Renderer2, private router: Router) {
   }
 
   ngOnInit() {
-    this.agendaCompleta = this.agendaService.list();
-    this.agendaCompleta.forEach(agenda => {
-      if (agenda.periodo == 'manhã') {
-        this.agendaManha.push(agenda);
-        this.agendaAuxiliar = this.agendaManha;
-      } else {
-        this.agendaTarde.push(agenda);
-        this.agendaAuxiliar = this.agendaTarde;
+     this.getRoute();
+    console.log(this.agenda);
+  }
+
+  getRoute() {
+    this.router.config.forEach(r => {
+      if (r.path == 'agenda') {
+        r.children.forEach(child => {
+          if (child.path === 'show') {
+            const r = child.data;
+            this.agenda = r.data.agenda;
+          }
+        })
       }
     });
-    this.agendaAuxiliar = this.agendaManha;
+  }
+
+  getMes() {
+    return Agenda.getMes();
   }
 
   toogleColorBtn(e) {

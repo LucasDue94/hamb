@@ -7,7 +7,11 @@
   margin-right: auto;
   text-align: left;
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
+
+  & tr {
+    cursor: pointer;
+  }
 
   & td {
     font-size: 20px !important;
@@ -46,6 +50,5 @@
   background-color: #666;
   color: white;
 }
-
 
 

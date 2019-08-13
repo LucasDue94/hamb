@@ -9,8 +9,8 @@ const routes: Routes = [
   {
     path: 'agenda', canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'list', pathMatch: 'full'},
-      {path: 'show', component: AgendaShowComponent, data: {permissao: 'ROLE_MEDICO'}},
-      {path: 'list', component: AgendaListComponent, canActivate: [AuthGuard], data: {permissao: 'ROLE_MEDICO'}}
+      {path: 'show', component: AgendaShowComponent, data: {permissao: 'ROLE_MEDICO', agenda: ''}},
+      {path: 'list', component: AgendaListComponent, canActivate: [AuthGuard], data: {permissao: 'ROLE_MEDICO'}},
     ]
   }
 ];

@@ -20,6 +20,12 @@ usuario-list, usuario-edit, agenda-show, agenda-list, busca, login, app-error, f
   height: 100%;
 }
 
+historico {
+  margin: 0 auto;
+  width: 90%;
+  height: 70%;
+}
+
 app-error {
   display: flex;
   position: absolute;
@@ -56,32 +62,15 @@ $nav-height: 35px;
   box-shadow: 0 0 6px $gray-100;
 }
 
-.nav-top {
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
-
-  & .btn-back {
-    color: $gray-80;
-    position: absolute;
-  }
-
-  & .title-main {
-    text-align: center;
-    width: 100%;
-    font-size: 36px;
-    font-family: Roboto Medium, "sans-serif";
-    letter-spacing: 2px;
-  }
-}
-
 .nav-container {
-  font-size: 20px;
+  font-size: 25px;
   height: $nav-height;
   display: flex;
   margin-bottom: 10px;
   justify-content: space-between;
   width: 100%;
+  color: $gray-80;
+  letter-spacing: 1px;
 
   .back {
     color: $gray-80;
@@ -93,7 +82,6 @@ $nav-height: 35px;
   }
 
   .search-container {
-    //width: 100%;
     display: flex;
     justify-content: flex-start;
 

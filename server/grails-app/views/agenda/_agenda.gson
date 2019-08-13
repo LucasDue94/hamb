@@ -4,4 +4,5 @@ model {
     Agenda agenda
 }
 
-json g.render(agenda, [resolveTemplate: false])
+json g.render(agenda, [expand: ['pacientes'],resolveTemplate: false])
+

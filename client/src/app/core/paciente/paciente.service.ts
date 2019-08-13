@@ -20,7 +20,7 @@ export class PacienteService extends HeadersHelper {
   }
 
   constructor(private http: HttpClient) {
-    super()
+    super();
   }
 
   list(max?: any, offset?: any): Observable<Paciente[]> {

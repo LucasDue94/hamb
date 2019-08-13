@@ -22,10 +22,6 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   messageStatus;
   responseOk = 200;
 
-  getEventData(event){
-    console.log(event)
-  }
-
   constructor(private usuarioService: UsuarioService,
               private spinner: NgxSpinnerService,
               private render: Renderer2) {
