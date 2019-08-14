@@ -44,9 +44,9 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   send(key) {
     let agenda = new Agenda(this.agendasMapped.get(key));
-    this.getRoute(agenda);
-
-    this.router.navigate(['/agenda', 'show']);
+    let dateUTC = new Date(Date.parse(agenda.dataHora));
+    let formatedDate = dateUTC.toISOString().substring(0,10);
+    this.router.navigate(['/agenda', 'show', formatedDate]);
   }
 
   getRoute(agenda): any {

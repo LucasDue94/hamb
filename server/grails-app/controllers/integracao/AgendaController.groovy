@@ -12,14 +12,13 @@ class AgendaController {
 
     static responseFormats = ['json', 'xml']
 
-    def index(Integer max) {
+    def index(Integer max, String data) {
         params.max = Math.min(max ?: 10, 100)
 
-        respond agendaService.list(), model:[agendaCount: agendaService.count()]
-//        respond agendaService.list(params), model:[agendaCount: agendaService.count()]
+        respond agendaService.list(data), model: [agendaCount: agendaService.count()]
     }
 
-    def show(String id) {
+    def show(Long id) {
         respond agendaService.get(id)
     }
 }

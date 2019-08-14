@@ -1,3 +1,4 @@
+<!--
 <nav class="nav-container">
   <a [routerLink]="['/agenda','list']" class="back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
@@ -13,16 +14,17 @@
 <section class="content-default">
   <table class="table-show-paciente">
     <tr #pacientesTable *ngFor="let paciente of agenda?.pacientes" [routerLink]="['/historico', 'list', paciente.id]">
-      <!-- <td>
+      &lt;!&ndash; <td>
          <fa-icon *ngIf="agenda.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
-       </td>-->
+       </td>&ndash;&gt;
       <td>{{paciente.id}}</td>
       <td>{{paciente.registro}}</td>
       <td>{{paciente.nome}}</td>
       <td>{{paciente.nascimento}}</td>
-      <td>{{paciente.convenio}}</td>
+      <td>{{paciente.convenio.id}}</td>
     </tr>
   </table>
 </section>
 
 
+-->
