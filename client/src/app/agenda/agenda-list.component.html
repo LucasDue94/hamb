@@ -22,7 +22,7 @@
       <p>Agendados:12</p>
     </div>
   </section>
-  <div class="withoutData" *ngIf="this.agendas?.length == 0">
+  <div class="withoutData" *ngIf="agendas?.size == 0">
     Você ainda não possui agendas neste mês!
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>

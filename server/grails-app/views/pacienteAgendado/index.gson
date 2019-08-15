@@ -1,0 +1,8 @@
+import integracao.PacienteAgendado
+
+model {
+	Iterable<PacienteAgendado> pacienteAgendadoList
+}
+
+json tmpl.pacienteAgendado(pacienteAgendadoList ?: [])
+

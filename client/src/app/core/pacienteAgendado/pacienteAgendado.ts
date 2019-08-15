@@ -1,6 +1,6 @@
-import {Agenda} from '../agenda/agenda';
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
 import {Convenio} from '../convenio/convenio';
+import {Agenda} from "../agenda/agenda";
 
 export class PacienteAgendado {
   id: number;

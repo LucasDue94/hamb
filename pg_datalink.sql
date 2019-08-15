@@ -8,7 +8,7 @@ CREATE FOREIGN TABLE paciente (
   id varchar(9) OPTIONS (key 'true') NOT NULL,
   nome varchar(70) NOT NULL,
   nome_mae varchar(70) NOT NULL,
-  data_nasc date NOT NULL,
+  nascimento date NOT NULL,
   contato varchar(70) NOT NULL
 ) SERVER wpd
 OPTIONS (table '(select COD_PRT, NOME_PAC, NOME_MAE, NASCIMENTO, CELULAR

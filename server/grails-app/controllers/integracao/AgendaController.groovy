@@ -13,8 +13,10 @@ class AgendaController {
     static responseFormats = ['json', 'xml']
 
     def index(Integer max, String data) {
+        if(data=='undefined'){
+            data = null
+        }
         params.max = Math.min(max ?: 10, 100)
-
         respond agendaService.list(data), model: [agendaCount: agendaService.count()]
     }
 

@@ -30,12 +30,24 @@ export class Agenda {
 
   }
 
+  static mergeAgenda(agendas) {
+    let agendasMap = new Map();
+    agendas.forEach(agenda => {
+      let key = (Agenda.getDay(agenda.dataHora));
+      if (agendasMap.get(key)) {
+        agendasMap.get(key).pacientes = agendasMap.get(key).pacientes.concat(agenda.pacientes);
+      } else {
+        agendasMap.set(key, agenda);
+      }
+    });
+    return agendasMap;
+  }
+
   static getMes() {
     let stringMes;
-    let mesAtual = new Date();
-    let mes = mesAtual.getMonth() + 1;
+    let mesAtual = new Date().getMonth() + 1;
 
-    switch (mes) {
+    switch (mesAtual) {
       case 1:
         stringMes = 'Janeiro';
         break;
@@ -76,16 +88,25 @@ export class Agenda {
     return stringMes;
   }
 
-  static getToday() {
-    return (new Date()).getDate()
-  }
+  static getToday = () => (new Date()).getDate();
 
-  static getDay(data) {
-    let dataFormat = new Date(data);
+
+  static getDay(stringData) {
+    let dataFormat = new Date(stringData);
     return dataFormat.getDate();
   }
 
-  toString(): string {
+  static getHour(stringData) {
+    let dataFormat = new Date(stringData);
+    return dataFormat.getHours();
+  }
+
+  static getIdade(nasc) {
+    let nascimento = new Date(nasc);
+    return Math.floor(Math.ceil(Math.abs(nascimento.getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) / 365.25);
+  }
+
+  toString() {
     return 'integracao.Agenda : ' + (this.id ? this.id : '(unsaved)');
   }
 }

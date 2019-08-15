@@ -1,0 +1,7 @@
+import integracao.PacienteAgendado
+
+model {
+    PacienteAgendado pacienteAgendado
+}
+
+json g.render(pacienteAgendado, [expand: ['convenio', 'registro'], resolveTemplate: false])

@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
-import {NavigationExtras, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'agenda-list',
@@ -10,12 +10,11 @@ import {NavigationExtras, Router} from "@angular/router";
 })
 export class AgendaListComponent implements OnInit, AfterViewInit {
 
-  agendas: Agenda[];
-  agendasMapped = new Map();
+  agendas: Map<string, Agenda>;
   dias;
 
-
   constructor(private render: Renderer2, private agendaService: AgendaService, private router: Router) {
+
   }
 
   ngOnInit() {
@@ -23,56 +22,24 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.agendaService.list().subscribe((agendas) => {
-      this.agendas = agendas;
-      this.mergeAgenda();
+      console.log(agendas);
+      this.agendas = Agenda.mergeAgenda(agendas);
+      this.dias = Array.from(this.agendas.keys());
+      console.log(this.agendas);
     });
   }
 
-
-  mergeAgenda() {
-    this.agendas.forEach(agenda => {
-      let key = (Agenda.getDay(agenda.dataHora));
-      if (this.agendasMapped.get(key)) {
-        this.agendasMapped.get(key).pacientes = this.agendasMapped.get(key).pacientes.concat(agenda.pacientes);
-      } else {
-        this.agendasMapped.set(key, agenda);
-      }
-    });
-    this.dias = Array.from(this.agendasMapped.keys());
-  }
-
-
-  send(key) {
-    let agenda = new Agenda(this.agendasMapped.get(key));
+  dateToString(key) {
+    let agenda = new Agenda(this.agendas.get(key));
     let dateUTC = new Date(Date.parse(agenda.dataHora));
-    let formatedDate = dateUTC.toISOString().substring(0,10);
-    this.router.navigate(['/agenda', 'show', formatedDate]);
+    return dateUTC.toISOString().substring(0, 10);
   }
 
-  getRoute(agenda): any {
-    console.log(this.router.config);
-    this.router.config.forEach(r => {
-      if (r.path == 'agenda') {
-        r.children.forEach(child => {
-          if (child.path == 'show') {
-            child.data = {
-              data: {
-                agenda: agenda
-              }
-            };
-          }
-        })
-      }
-    });
-  }
+  send = (key) => this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
 
-  getToday() {
-    return Agenda.getToday();
-  }
+  getToday = () => Agenda.getToday();
 
-  getMes() {
-    return Agenda.getMes();
-  }
+  getMes = () => Agenda.getMes();
 }
 
 

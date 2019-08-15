@@ -1,30 +1,28 @@
-<!--
 <nav class="nav-container">
   <a [routerLink]="['/agenda','list']" class="back">
-    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
+    <fa-icon class="back" [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
   <h3>{{getMes()}}</h3>
   <div>
-    <button #btnEnabled class="btn-navtop-agenda btn-agenda-manha btn-active" (click)="toogleColorBtn($event)">Manhã
-    </button>
-    <button #btnDisabled class="btn-navtop-agenda btn-agenda-tarde" (click)="toogleColorBtn($event)">Tarde</button>
+    <button #btnEnabled class="btn-horario btn-active">Manhã</button>
+    <button #btnDisabled class="btn-horario">Tarde</button>
   </div>
 </nav>
 <section class="content-default">
-  <table class="table-show-paciente">
-    <tr #pacientesTable *ngFor="let paciente of agenda?.pacientes" [routerLink]="['/historico', 'list', paciente.id]">
-      &lt;!&ndash; <td>
-         <fa-icon *ngIf="agenda.retorno" class="fa-registered" [icon]="['fas', 'registered']"></fa-icon>
-       </td>&ndash;&gt;
-      <td>{{paciente.id}}</td>
-      <td>{{paciente.registro}}</td>
-      <td>{{paciente.nome}}</td>
-      <td>{{paciente.nascimento}}</td>
-      <td>{{paciente.convenio.id}}</td>
-    </tr>
-  </table>
+  <main class="pacientes-container">
+    <section class="row-agenda" *ngFor="let paciente of pacientes" [routerLink]="['/historico', 'list', paciente.id]">
+      <span class="info">{{paciente?.id}}</span>
+      <span class="info">{{paciente?.registro?.id}}</span>
+      <span class="info nome">{{paciente?.nome}}</span>
+      <span class="info">{{paciente?.nascimento}}</span>
+      <span class="info convenio">{{paciente?.convenio?.fantasia}}</span>
+    </section>
+  </main>
 </section>
 
+<ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
+  <p class="spinner-title">Carregando...</p>
+</ngx-spinner>
 
--->
+

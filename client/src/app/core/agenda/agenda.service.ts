@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Agenda} from './agenda';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
 
@@ -24,9 +24,9 @@ export class AgendaService extends HeadersHelper {
     super()
   }
 
-  list(max?: any, offset?: any): Observable<Agenda[]> {
+  list(max?: any, offset?: any, data?: any): Observable<Agenda[]> {
     let subject = new Subject<Agenda[]>();
-    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=', {headers: this.getDefaultHttpOptions()})
+    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + '&data=' + data, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Agenda(propertyName)))
       });

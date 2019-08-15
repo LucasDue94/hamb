@@ -1,54 +1,72 @@
 @import "~src/styles";
 
-.table-show-paciente {
-  width: 95%;
-  margin-top: 25px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-  border-collapse: separate;
-  border-spacing: 0 10px;
+.back {
+  font-size: 18px;
+}
 
-  & tr {
-    cursor: pointer;
-  }
+.pacientes-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 30px;
 
-  & td {
-    font-size: 20px !important;
-    background: $gray-20;
-    padding: 15px;
-    border-top: 1px solid $gray-60;
+  .row-agenda {
+    display: flex;
+    align-content: space-between;
+    justify-items: center;
+    width: 100%;
+    margin: 5px;
     border-bottom: 1px solid $gray-60;
-  }
+    border-top: 1px solid $gray-60;
+    text-align: left;
+    font-size: 16px;
 
-  & .fa-registered {
-    color: #C24D4D;
+    &:hover {
+      transition: 0.5s;
+      border-bottom: 1px solid $gray-70;
+      border-top: 1px solid $gray-70;
+      box-shadow: 1px 1px 10px $gray-60;
+
+      .info {
+        cursor: pointer;
+        transition: 0.5s;
+        background: $gray-60;
+      }
+    }
+
+    .nome {
+      flex: 2 !important;
+      text-align: left;
+    }
+
+    .convenio {
+      text-align: center;
+    }
+
+    .info {
+      flex: 1;
+      background: $gray-20;
+      padding: 15px;
+    }
   }
 }
 
-.btn-navtop-agenda {
+.btn-horario {
   width: 150px;
-  border: 1px solid $gray-70;
   padding: 5px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-size: 20px;
-  cursor: pointer;
-}
+  margin-left: 10px;
 
-.btn-agenda-manha {
-  color: $white;
-}
-
-.btn-agenda-tarde {
-  background: $gray-60;
-  color: $gray-20;
+  & {
+    border: 1px solid $gray-70;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+  }
 }
 
 .btn-active {
-  background-color: #666;
-  color: white;
+  background-color: $gray-100;
 }
 
 

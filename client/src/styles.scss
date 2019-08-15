@@ -63,14 +63,18 @@ $nav-height: 35px;
 }
 
 .nav-container {
-  font-size: 25px;
-  height: $nav-height;
   display: flex;
-  margin-bottom: 10px;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  height: $nav-height;
   width: 100%;
-  color: $gray-80;
-  letter-spacing: 1px;
+
+  & {
+    font-size: 25px;
+    color: $gray-80;
+    letter-spacing: 1px;
+  }
 
   .back {
     color: $gray-80;
