@@ -250,7 +250,7 @@ $nav-height: 35px;
 
 .withoutData {
   z-index: 99;
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   padding: 10px;
@@ -262,19 +262,26 @@ $nav-height: 35px;
     background-color: $danger;
     color: $white;
     font-size: 18px;
-    animation: noData 1s;
+    animation: noData 500ms;
 
     @keyframes noData {
       0% {
+        transform: rotate(10deg);
+        top: 0;
         opacity: 0;
       }
+      50% {
+        top: 50px;
+      }
       100% {
+        top: 0;
         opacity: 1;
       }
     }
   }
 
   .icon {
+    position: relative;
     margin-left: 5px;
   }
 }

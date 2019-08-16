@@ -17,14 +17,13 @@
     <h1 [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
       class="day">{{dia}}</h1>
     <div class="informations">
-      <p>Atendidos:5</p>
-      <p>Efetivados:2</p>
-      <p>Agendados:12</p>
+      <p>Atendidos:-</p>
+      <p>Efetivados:{{getEfetivados(dia)}}</p>
+      <p>Agendados:{{getAgendados(dia)}}</p>
     </div>
   </section>
   <div class="withoutData" *ngIf="agendas?.size == 0">
     Você ainda não possui agendas neste mês!
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
-
 </section>

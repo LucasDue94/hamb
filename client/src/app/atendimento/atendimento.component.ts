@@ -4,6 +4,9 @@ import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
 import {PacienteService} from "../core/paciente/paciente.service";
 import {AtendimentoService} from "../core/atendimento/atendimento.service";
+import {Atendimento} from "../core/atendimento/atendimento";
+import {ActivatedRoute, Params} from "@angular/router";
+import {Usuario} from "../core/usuario/usuario";
 
 @Component({
   selector: 'historico',
@@ -14,30 +17,34 @@ export class AtendimentoComponent implements OnInit {
 
   cids: Cid[];
   pacientes: Paciente[];
-  atendimentos: AtendimentoComponent[];
+  atendimentos: Atendimento[];
+  codPrt;
+
 
   showInfoCard = false;
-  @ViewChild('infoCard', { static: false }) infoCard;
+  @ViewChild('infoCard', {static: false}) infoCard;
 
   constructor(private render: Renderer2,
               private cidsService: CidService,
-              private pacientesService: PacienteService,
-              private atendimentoService: AtendimentoService) {
+              private pacienteService: PacienteService,
+              private atendimentoService: AtendimentoService,
+              private route: ActivatedRoute) {
     this.removeInfoCard = this.removeInfoCard.bind(this);
   }
 
   ngOnInit() {
-    this.cidsService.list().subscribe(cids => {
-      this.cids = cids;
+    this.route.params.subscribe((params: Params) => {
+      this.codPrt = params['id'];
     });
+    this.pacienteService.get(this.codPrt).subscribe(res => console.log(res));
 
-    this.pacientesService.list().subscribe(pacientes => {
-      this.pacientes = pacientes;
-    });
-
-    this.atendimentoService.list().subscribe(atendimentos => {
-      // this.atendimentos = atendimentos;
-    });
+    /*  this.cidsService.list().subscribe(cids => {
+        this.cids = cids;
+      });
+  */
+    /*  this.atendimentoService.list().subscribe(atendimentos => {
+        this.atendimentos = atendimentos;
+      });*/
   }
 
   private removeInfoCard(evt) {

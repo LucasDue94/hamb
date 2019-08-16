@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
@@ -12,9 +12,13 @@ import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 })
 export class AgendaShowComponent implements OnInit {
 
+  @ViewChild('btnManha', {static: false}) btnManha;
+  @ViewChild('btnTarde', {static: false}) btnTarde;
   agendas: Map<string, Agenda>;
-  dataAgenda;
   pacientes: PacienteAgendado[];
+  hourMin;
+  hourMax;
+  dataAgenda;
   horario = '';
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
@@ -28,35 +32,85 @@ export class AgendaShowComponent implements OnInit {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
-        console.log(this.agendas);
+        if (this.agendas.size == 0) {
+          this.router.navigate(['/agenda', 'list']);
+        }
         this.getPacientes();
-        this.spinner.hide()
+        this.spinner.hide();
+        this.verificaAgenda()
       })
     });
   }
 
+  verificaAgenda() {
+    let now = new Date();
+    if (this.getHour(now) > 11) {
+      this.setHorario('tarde');
+      this.toogle(this.btnTarde);
+      if (this.countPacientes() == 0) {
+        this.setHorario('manhã');
+        this.toogle(this.btnManha);
+      }
+    }
+
+  }
+
   getMes = () => Agenda.getMes();
 
-  getDay = (data) => Agenda.getDay(data);
+  getDay = (data) => Agenda.getDay(data) + 1;
 
   getPacientes() {
     let keys = this.agendas.keys();
-    this.pacientes = this.agendas.get(keys.next().value).pacientes;
-    console.log(this.pacientes);
+    if (this.agendas != undefined)
+      this.pacientes = this.agendas.get(keys.next().value).pacientes;
+  }
+
+  getIdade(stringData) {
+    if (stringData == undefined) return '--';
+    const nascimento = new Date(stringData);
+    const idade = Agenda.getIdade(nascimento);
+    return idade > 1 ? idade + ' anos' : idade + 'ano';
   }
 
   getHour = (stringData) => Agenda.getHour(stringData);
 
-  filterHour(item) {
+  toogle(button) {
+    if (button == this.btnManha) {
+      this.render.addClass(this.btnManha.nativeElement, 'btn-active');
+      this.render.removeClass(this.btnTarde.nativeElement, 'btn-active');
+    } else if (button == this.btnTarde) {
+      this.render.addClass(this.btnTarde.nativeElement, 'btn-active');
+      this.render.removeClass(this.btnManha.nativeElement, 'btn-active');
+    }
+  }
 
+  setIntervalo() {
+    if (this.horario == "manhã") {
+      this.hourMin = 0;
+      this.hourMax = 11;
+    } else if (this.horario == 'tarde') {
+      this.hourMin = 11;
+      this.hourMax = 23;
+    }
+  }
+
+  countPacientes(): number {
+    let total = 0;
+    if (this.pacientes != undefined) {
+      this.pacientes.forEach(paciente => {
+        let hora = this.getHour(paciente.hora);
+        if (hora > this.hourMin && hora < this.hourMax) {
+          total++;
+        }
+      });
+      return total;
+    }
   }
 
   setHorario(horario) {
     this.horario = horario;
-    if (this.horario == 'manhã') {
-
-    } else {
-
-    }
+    this.setIntervalo();
+    if (this.horario == 'manhã') this.toogle(this.btnManha);
+    else if (this.horario == 'tarde') this.toogle(this.btnTarde)
   }
 }

@@ -1,26 +1,31 @@
 <nav class="nav-container">
   <a [routerLink]="['/agenda','list']" class="back">
-    <fa-icon class="back" [icon]="['fas','arrow-left']"></fa-icon>
+    <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <h3>{{getMes()}}</h3>
+  <h3>{{getDay(dataAgenda)}} de {{getMes()}}</h3>
   <div>
-    <button #btnEnabled class="btn-horario btn-active">Manhã</button>
-    <button #btnDisabled class="btn-horario">Tarde</button>
+    <button #btnManha class="btn-horario btn-active" (click)="setHorario('manhã')">Manhã</button>
+    <button #btnTarde class="btn-horario" (click)="setHorario('tarde')">Tarde</button>
   </div>
 </nav>
 <section class="content-default">
   <main class="pacientes-container">
-    <section class="row-agenda" *ngFor="let paciente of pacientes" [routerLink]="['/historico', 'list', paciente.id]">
-      <span class="info">{{paciente?.id}}</span>
-      <span class="info">{{paciente?.registro?.id}}</span>
-      <span class="info nome">{{paciente?.nome}}</span>
-      <span class="info">{{paciente?.nascimento}}</span>
-      <span class="info convenio">{{paciente?.convenio?.fantasia}}</span>
+    <section *ngFor="let paciente of pacientes" [routerLink]="['/atendimento', paciente?.registro?.paciente?.id]">
+      <div *ngIf="getHour(paciente?.hora) > this.hourMin && getHour(paciente?.hora) < this.hourMax " class="row-agenda">
+        <span class="info">{{paciente?.id}}</span>
+        <span class="info">{{paciente?.registro?.id}}</span>
+        <span class="info nome">{{paciente?.nome}}</span>
+        <span class="info idade">{{getIdade(paciente?.nascimento)}}</span>
+        <span class="info convenio">{{paciente?.convenio?.fantasia}}</span>
+      </div>
     </section>
+    <div class="withoutData" *ngIf="countPacientes() == 0">
+      Você não possui pacientes neste horário!
+      <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
+    </div>
   </main>
 </section>
-
 <ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
   <p class="spinner-title">Carregando...</p>
 </ngx-spinner>

@@ -1,5 +1,6 @@
 import {PacienteAgendado} from '../pacienteAgendado/pacienteAgendado';
 import {Sala} from '../sala/sala';
+import {Paciente} from "../paciente/paciente";
 
 export class Agenda {
   id: number;
@@ -27,7 +28,6 @@ export class Agenda {
         this[prop] = object[prop];
       }
     }
-
   }
 
   static mergeAgenda(agendas) {
@@ -88,22 +88,49 @@ export class Agenda {
     return stringMes;
   }
 
-  static getToday = () => (new Date()).getDate();
 
-
-  static getDay(stringData) {
-    let dataFormat = new Date(stringData);
-    return dataFormat.getDate();
+  static getDay(stringData?) {
+    if (stringData) {
+      let dataFormat = new Date(stringData);
+      return dataFormat.getDate();
+    }
+    return new Date().getDate();
   }
 
-  static getHour(stringData) {
-    let dataFormat = new Date(stringData);
-    return dataFormat.getHours();
+  static getHour(stringData?) {
+    if (stringData) {
+      let dataFormat = new Date(stringData);
+      return dataFormat.getHours();
+    }
+    return new Date().getHours();
   }
 
   static getIdade(nasc) {
     let nascimento = new Date(nasc);
     return Math.floor(Math.ceil(Math.abs(nascimento.getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) / 365.25);
+  }
+
+  static getStringDate(data?) {
+    let dateUTC = new Date();
+    let stringData = dateUTC.toISOString().substring(0, 10);
+    if (data) {
+      dateUTC = new Date(data);
+      stringData = dateUTC.toISOString().substring(0, 10);
+    }
+    return stringData;
+  }
+
+  //TODO
+  static getAtendidos(pacientes: PacienteAgendado[]) {
+    let total = 0;
+  }
+
+  static getEfetivados(pacientes: PacienteAgendado[]) {
+    let total = 0;
+    pacientes.forEach(paciente => {
+      if (paciente.registro != null) total++;
+    });
+    return total;
   }
 
   toString() {

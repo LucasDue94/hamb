@@ -2,6 +2,7 @@ import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../core/auth/auth.service";
 import {Router} from "@angular/router";
+import {Agenda} from "../core/agenda/agenda";
 
 @Component({
   selector: 'login',
@@ -62,11 +63,10 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('roles', res['roles']);
           }
 
-          //TODO mudar o redirecionamento para agenda/show/id
           if (this.currentUser.crm == null) {
             this.router.navigate(['/usuario']);
           } else {
-            this.router.navigate(['/agenda']);
+            this.router.navigate(['/agenda', 'show', Agenda.getStringDate()]);
           }
         },
         error => {

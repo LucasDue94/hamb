@@ -14,7 +14,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   dias;
 
   constructor(private render: Renderer2, private agendaService: AgendaService, private router: Router) {
-
   }
 
   ngOnInit() {
@@ -22,24 +21,36 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.agendaService.list().subscribe((agendas) => {
-      console.log(agendas);
       this.agendas = Agenda.mergeAgenda(agendas);
       this.dias = Array.from(this.agendas.keys());
-      console.log(this.agendas);
     });
   }
+
 
   dateToString(key) {
     let agenda = new Agenda(this.agendas.get(key));
     let dateUTC = new Date(Date.parse(agenda.dataHora));
-    return dateUTC.toISOString().substring(0, 10);
+    return Agenda.getStringDate(dateUTC);
   }
 
   send = (key) => this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
 
-  getToday = () => Agenda.getToday();
+  getToday = () => Agenda.getDay();
 
   getMes = () => Agenda.getMes();
+
+  getEfetivados(dia) {
+    return Agenda.getEfetivados(this.agendas.get(dia).pacientes);
+  }
+
+  getAgendados(dia) {
+    return this.agendas.get(dia).pacientes.length;
+  }
+
+//TODO
+  getAtendidos() {
+
+  }
 }
 
 

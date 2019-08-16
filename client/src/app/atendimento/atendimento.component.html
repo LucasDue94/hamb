@@ -46,7 +46,7 @@
 <section infinite-scroll class="section-historico" *ngFor="let atendimento of atendimentos">
   <article class="article-historico">
     <p>
-      {{atendimento.conteudo}}
+      {{atendimento?.conteudo}}
     </p>
     <legend class="legend-article">
       <strong class="historico-data-list"> {{atendimento.dataAtendimento}} </strong>

@@ -23,27 +23,32 @@
 
     &:hover {
       transition: 0.5s;
-      border-bottom: 1px solid $gray-70;
-      border-top: 1px solid $gray-70;
-      box-shadow: 1px 1px 10px $gray-60;
+      border-bottom: 1px solid $gray-60;
+      border-top: 1px solid $gray-60;
+      box-shadow: 1px 1px 10px $gray-80;
 
       .info {
         cursor: pointer;
         transition: 0.5s;
-        background: $gray-60;
+        background: $gray-50;
       }
+    }
+
+    .idade {
+      justify-content: center;
     }
 
     .nome {
       flex: 2 !important;
-      text-align: left;
     }
 
     .convenio {
-      text-align: center;
+      justify-content: center;
     }
 
     .info {
+      display: flex;
+      align-items: center;
       flex: 1;
       background: $gray-20;
       padding: 15px;
@@ -66,7 +71,8 @@
 }
 
 .btn-active {
-  background-color: $gray-100;
+  transition: 0.5s;
+  background-color: $gray-80;
 }
 
 

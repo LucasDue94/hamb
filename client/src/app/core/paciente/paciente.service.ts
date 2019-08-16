@@ -44,7 +44,7 @@ export class PacienteService extends HeadersHelper {
     )
   }
 
-  get(id: number): Observable<Paciente> {
+  get(id: string): Observable<Paciente> {
     let subject = new Subject<Paciente>();
     this.http.get(this.baseUrl + `paciente/` + id, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any) => {

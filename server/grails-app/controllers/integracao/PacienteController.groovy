@@ -17,7 +17,7 @@ class PacienteController {
         respond pacienteService.list(params, termo), model: [pacienteCount: pacienteService.count()]
     }
 
-    def show(Long id) {
-        respond pacienteService.get(id)
+    def show(String id) {
+        return pacienteService.get(id)
     }
 }
