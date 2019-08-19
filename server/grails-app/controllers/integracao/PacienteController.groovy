@@ -18,6 +18,6 @@ class PacienteController {
     }
 
     def show(String id) {
-        return pacienteService.get(id)
+        respond pacienteService.get(id)
     }
 }

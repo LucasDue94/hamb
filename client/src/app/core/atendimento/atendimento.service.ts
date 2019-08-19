@@ -4,25 +4,28 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
+import {HeadersHelper} from "../headersHelper";
 
 @Injectable()
-export class AtendimentoService {
+export class AtendimentoService extends HeadersHelper{
 
   private baseUrl = environment.serverUrl;
-  httpOptions = {
-    headers: new HttpHeaders({
+
+  getDefaultHttpOptions() {
+    return new HttpHeaders({
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
       "X-Auth-Token": localStorage.getItem('token')
     })
-  };
+  }
 
   constructor(private http: HttpClient) {
+    super()
   }
 
   list(max?: any, offset?: any, codPrt?: any): Observable<Atendimento[]> {
     let subject = new Subject<Atendimento[]>();
-    this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&cod=' + codPrt, {headers: this.httpOptions.headers})
+    this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&cod=' + codPrt, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
       });
@@ -43,7 +46,7 @@ export class AtendimentoService {
 
   get(id: number): Observable<Atendimento> {
     let subject = new Subject<Atendimento>();
-    this.http.get(this.baseUrl + `atendimento/` + id, {headers: this.httpOptions.headers})
+    this.http.get(this.baseUrl + `atendimento/` + id, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any) => {
         subject.next(new Atendimento(json));
       });
@@ -53,7 +56,7 @@ export class AtendimentoService {
   search(searchTerm, offset?: any, max?): Observable<any[]> {
     let subject = new Subject<Atendimento[]>();
     this.http.get(this.baseUrl + `atendimento/` + '?offset=' + offset + '&max=' + max, {
-      headers: this.httpOptions.headers,
+      headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
       console.log(json);
@@ -65,12 +68,12 @@ export class AtendimentoService {
   save(atendimento: Atendimento): Observable<Atendimento> {
     if (atendimento.id) {
       return this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
-        headers: this.httpOptions.headers,
+        headers: this.getDefaultHttpOptions(),
         responseType: 'json'
       });
     } else {
       return this.http.post<Atendimento>(this.baseUrl + `atendimento/`, atendimento, {
-        headers: this.httpOptions.headers,
+        headers: this.getDefaultHttpOptions(),
         responseType: 'json'
       });
     }
@@ -79,7 +82,7 @@ export class AtendimentoService {
 
   destroy(atendimento: Atendimento): Observable<Object> {
     return this.http.delete(this.baseUrl + `atendimento/` + atendimento.id, {
-      headers: this.httpOptions.headers,
+      headers: this.getDefaultHttpOptions(),
       observe: 'response'
     });
   }

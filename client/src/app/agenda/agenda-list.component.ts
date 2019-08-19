@@ -26,7 +26,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   dateToString(key) {
     let agenda = new Agenda(this.agendas.get(key));
     let dateUTC = new Date(Date.parse(agenda.dataHora));

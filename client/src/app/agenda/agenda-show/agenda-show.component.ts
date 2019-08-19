@@ -51,6 +51,13 @@ export class AgendaShowComponent implements OnInit {
         this.setHorario('manhã');
         this.toogle(this.btnManha);
       }
+    } else if (this.getHour(now) <= 11) {
+      this.setHorario('manhã');
+      this.toogle(this.btnManha);
+      if (this.countPacientes() == 0) {
+        this.setHorario('tarde');
+        this.toogle(this.btnTarde);
+      }
     }
 
   }

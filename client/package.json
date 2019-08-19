@@ -24,7 +24,6 @@
     "@fortawesome/free-regular-svg-icons": "^5.10.1",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "angular-highcharts": "^8.0.3",
-    "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "highcharts": "^7.1.2",
     "ngx-infinite-scroll": "^7.2.0",

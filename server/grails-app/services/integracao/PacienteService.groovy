@@ -5,12 +5,12 @@ import grails.gorm.services.Service
 @Service(Paciente)
 abstract class PacienteService {
 
-    List<Paciente> get(String id) {
+    Paciente get(String id) {
         def criteria = Paciente.createCriteria()
-        List<Paciente> pacienteList = (List<Paciente>) criteria.list() {
+        Paciente paciente = (Paciente) criteria.get() {
             eq 'id', id
         }
-        return pacienteList
+        return paciente
     }
 
     List<Paciente> list(Map args, String termo) {

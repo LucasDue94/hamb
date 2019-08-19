@@ -1,0 +1,7 @@
+import integracao.Cid
+
+model {
+	Cid cid
+}
+
+json g.render(cid, [resolveTemplate: false])

@@ -1,75 +1,32 @@
-<nav class="nav-top">
-  <a [routerLink]="['/agenda', 'show']" class="btn-back">
+<nav class="nav-container">
+  <a [routerLink]="['/agenda', 'show']" class="back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
   <p class="title-main">Histórico</p>
-  <div class="combobox-historico">
-    <p class="combobox-historico-text" (click)="openInfoCard($event)">
-      <fa-icon [icon]="['fas', 'info-circle']"></fa-icon>
-      José Flávio Menezes Almeida
-    </p>
-    <div #infoCard *ngIf="showInfoCard" class="combobox-info-historico">
-      <div class="combobox-info-text">
-        <div class="flex row justify-content-between">
-          <div>Paciente:</div>
-          <div>Data Nasc.</div>
-        </div>
-        <div class="flex row justify-content-between">
-          <strong>José Flávio Menezes Almeida</strong>
-          <strong>01/08/60</strong>
-        </div>
-        <div class="flex row justify-content-between">
-          <div>Nome da Mãe:</div>
-          <div>Idade:</div>
-        </div>
-        <div class="flex row justify-content-between">
-          <strong>Maria da Graça </strong>
-          <strong>28 anos</strong>
-        </div>
-        <div class="flex row justify-content-between">
-          <div>Registro:</div>
-          <div>Prontuário:</div>
-          <div>Convênio:</div>
-        </div>
-        <div class="flex row justify-content-between">
-          <strong>02215489</strong>
-          <strong>02216549</strong>
-          <strong>Unimed</strong>
-        </div>
-        <div>Telefone:</div>
-        <strong> (82) 99632-7587</strong>
-      </div>
-    </div>
-  </div>
 </nav>
-<section infinite-scroll class="section-historico" *ngFor="let atendimento of atendimentos">
-  <article class="article-historico">
-    <p>
-      {{atendimento?.conteudo}}
-    </p>
-    <legend class="legend-article">
-      <strong class="historico-data-list"> {{atendimento.dataAtendimento}} </strong>
-      <strong class="historico-cid-list"> CID: {{atendimento.cid.diagnostico}} </strong>
-      <strong class="historico-medico-list"> CRM: </strong>
-    </legend>
+<section class="container-atendimento">
+  <article *ngFor="let atendimento of atendimentos" class="card">
+    <p class="content-card">{{atendimento.conteudo}}</p>
+    <footer class="footer-card">
+      <span class="data">{{dateToString(atendimento?.dataAtendimento)}}</span>
+      <span class="cid">{{atendimento.cid.diagnostico}}</span>
+      <span class="usuario">CRM: {{atendimento.usuario.crm}} - {{atendimento.usuario.nome}}</span>
+    </footer>
   </article>
 </section>
-<div class="form-historico">
-  <textarea class="textarea-content" name="" id="" placeholder="> Digite o seu texto aqui <"></textarea>
-  <div class="flex wrap">
-    <button class="select-list-cid" (click)="collapse($event)">CID <span></span></button>
-    <div class="selected-cid">
-      <input class="search-cid" type="text" placeholder="Prontuário, nome, registro..." autofocus>
-      <button class="btn-search-cid">
-        <fa-icon [icon]="['fas','search']"></fa-icon>
-      </button>
-      <ul class="list-cid" *ngFor="let cid of cids">
-        <li>{{cid.id}} - {{cid.diagnostico}}</li>
-      </ul>
+<section class="atendimento-form">
+  <textarea [(ngModel)]="conteudo" class="form-control" name="" id="conteudo" cols="30"
+            rows="10"></textarea>
+  <div class="container-buttons">
+    <div [ngClass]="{'valid-cid' : cid.id!=null}" class="cid-container" (click)="search()">
+      <fa-icon class="cid-icon" [icon]="['fas','book-medical']"></fa-icon>
+      <span class="cid-selected">{{cid.diagnostico}}</span>
     </div>
-    <button class="btn-save">Salvar</button>
+    <button (click)="save()" class="button btn-save">Salvar</button>
   </div>
-</div>
-
-
+  <div class="container-search" *ngIf="activeSearch">
+    <fast-search (getData)="selectCid($event)" [service]="cidService" [fields]="['id','diagnostico']"
+                 [widthField]="['1','3']"></fast-search>
+  </div>
+</section>

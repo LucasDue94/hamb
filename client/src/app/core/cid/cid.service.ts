@@ -1,18 +1,89 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {api} from "../../../api";
-import {Observable} from "rxjs";
-import {Cid} from "./cid";
-
-@Injectable({
-  providedIn: 'root'
-})
-export class CidService {
+import {Injectable} from '@angular/core';
+import { Cid } from './cid';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../../environments/environment.prod";
+import {Observable, Subject} from "rxjs";
+import {map} from "rxjs/operators";
+import {HeadersHelper} from "../headersHelper";
 
 
-  constructor(private httpClient: HttpClient) { }
+@Injectable()
+export class CidService extends  HeadersHelper{
 
-  list(): Observable<Cid[]> {
-    return this.httpClient.get<Cid[]>(`${api}/cids`);
-  }
+    private baseUrl = environment.serverUrl;
+    getDefaultHttpOptions() {
+        return new HttpHeaders({
+            "Cache-Control": "no-cache",
+            "Content-Type": "application/json",
+            "X-Auth-Token": localStorage.getItem('token')
+        })
+    }
+
+    constructor(private http: HttpClient) {
+        super()
+    }
+
+    list(max?: any, offset?: any): Observable<Cid[]> {
+        let subject = new Subject<Cid[]>();
+        this.http.get(this.baseUrl + `cid?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
+            .subscribe((json: any[]) => {
+                subject.next(json.map((propertyName: any) => new Cid(propertyName)))
+            });
+        return subject.asObservable();
+    }
+
+    count() {
+        let quantity: number;
+        return this.http.get<Cid[]>(this.baseUrl + `cid/`).pipe(
+            map(
+                data => {
+                    quantity = data['total'];
+                    return quantity;
+                }
+            )
+        )
+    }
+
+    get(id: number): Observable<Cid> {
+        let subject = new Subject<Cid>();
+        this.http.get(this.baseUrl + `cid/` + id, {headers: this.getDefaultHttpOptions()})
+            .subscribe((json: any) => {
+                subject.next(new Cid(json));
+            });
+        return subject.asObservable();
+    }
+
+    search(searchTerm, offset?: any, max?): Observable<any[]> {
+        let subject = new Subject<Cid[]>();
+        this.http.get(this.baseUrl + `cid/` + '?offset=' + offset + '&max=' + max, {
+            headers: this.getDefaultHttpOptions(),
+            params: {termo: searchTerm}
+        }).subscribe((json: any) => {
+            console.log(json);
+            subject.next(json.map((obj: any) => new Cid(obj)))
+        });
+        return subject.asObservable();
+    }
+
+    save(cid: Cid): Observable<Cid> {
+        if (cid.id) {
+            return this.http.put<Cid>(this.baseUrl + `cid/` + cid.id, cid, {
+                headers: this.getDefaultHttpOptions(),
+                responseType: 'json'
+            });
+        } else {
+            return this.http.post<Cid>(this.baseUrl + `cid/`, cid, {
+                headers: this.getDefaultHttpOptions(),
+                responseType: 'json'
+            });
+        }
+    }
+
+
+    destroy(cid: Cid): Observable<Object> {
+        return this.http.delete(this.baseUrl + `cid/` + cid.id, {
+            headers: this.getDefaultHttpOptions(),
+            observe: 'response'
+        });
+    }
 }
