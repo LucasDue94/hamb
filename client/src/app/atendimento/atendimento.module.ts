@@ -8,6 +8,7 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {CoreModule} from '../core/core.module';
 import {FastSearchModule} from "../fast-search/fast-search.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     CoreModule,
     FastSearchModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ]
 })
 export class AtendimentoModule {

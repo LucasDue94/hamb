@@ -6,7 +6,7 @@ export class RegistroAtendimento {
   id: number;
   paciente: Paciente;
   origem: any;
-  atendimento: Atendimento;
+  // atendimento: Atendimento;
   convenio: Convenio;
 
   constructor(object?: any) {
@@ -16,11 +16,11 @@ export class RegistroAtendimento {
         this.paciente = new Paciente(object['paciente']);
         delete object['paciente'];
       }
-
+/*
       if (object.hasOwnProperty('atendimento')) {
         this.atendimento = new Atendimento(object['atendimento']);
         delete object['atendimento'];
-      }
+      }*/
 
       if (object.hasOwnProperty('convenio')) {
         this.convenio = new Convenio(object['convenio']);

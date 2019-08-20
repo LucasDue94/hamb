@@ -1,7 +1,7 @@
 import {UsuarioCid} from '../usuarioCid/usuarioCid';
 
 export class Cid {
-  id: number;
+  id: string;
   diagnostico: string;
   usuarios: UsuarioCid[];
 

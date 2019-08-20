@@ -6,7 +6,7 @@ import integracao.RegistroAtendimento
 class Atendimento {
     Usuario usuario
     RegistroAtendimento registroAtendimento
-    Date dataAtendimento
+    Date dataAtendimento = new Date()
     Cid cid
     String conteudo
 
@@ -19,6 +19,6 @@ class Atendimento {
         registroAtendimento nullable: false, blank: false
         dataAtendimento nullable: false, blank: false
         cid nullable: false, blank: false
-        conteudo nullable: false, blank: false
+        conteudo nullable: false, blank: false, type: "text"
     }
 }

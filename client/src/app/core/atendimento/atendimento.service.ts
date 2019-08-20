@@ -7,7 +7,7 @@ import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
 
 @Injectable()
-export class AtendimentoService extends HeadersHelper{
+export class AtendimentoService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
 
@@ -27,6 +27,7 @@ export class AtendimentoService extends HeadersHelper{
     let subject = new Subject<Atendimento[]>();
     this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&cod=' + codPrt, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
+        console.log(json)
         subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
       });
     return subject.asObservable();
@@ -65,7 +66,7 @@ export class AtendimentoService extends HeadersHelper{
     return subject.asObservable();
   }
 
-  save(atendimento: Atendimento): Observable<Atendimento> {
+  save(atendimento: Atendimento): any {
     if (atendimento.id) {
       return this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
         headers: this.getDefaultHttpOptions(),
@@ -74,11 +75,10 @@ export class AtendimentoService extends HeadersHelper{
     } else {
       return this.http.post<Atendimento>(this.baseUrl + `atendimento/`, atendimento, {
         headers: this.getDefaultHttpOptions(),
-        responseType: 'json'
+        observe: 'response'
       });
     }
   }
-
 
   destroy(atendimento: Atendimento): Observable<Object> {
     return this.http.delete(this.baseUrl + `atendimento/` + atendimento.id, {

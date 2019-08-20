@@ -20,6 +20,7 @@ export class AgendaShowComponent implements OnInit {
   hourMax;
   dataAgenda;
   horario = '';
+  atendimentoPath;
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
               private router: Router, private route: ActivatedRoute,
@@ -30,6 +31,7 @@ export class AgendaShowComponent implements OnInit {
     this.spinner.show();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
+      this.prepareRouter();
       this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) {
@@ -59,7 +61,17 @@ export class AgendaShowComponent implements OnInit {
         this.toogle(this.btnTarde);
       }
     }
+  }
 
+  prepareRouter() {
+    this.atendimentoPath = this.router.config.find(r => r.path == 'atendimento/:id');
+    if (this.atendimentoPath != undefined) this.atendimentoPath.data = {data: this.dataAgenda};
+  }
+
+  goAtendimento(paciente) {
+    console.log(paciente);
+    this.atendimentoPath.data = {registro: paciente.registro.id};
+    this.router.navigate(['/atendimento', paciente.registro.paciente.id]);
   }
 
   getMes = () => Agenda.getMes();

@@ -2,14 +2,13 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from "./login/login.component";
 import {ErrorComponent} from "./error/error.component";
-import {AuthGuard} from "./core/guards/auth.guard";
 import {FastSearchComponent} from "./fast-search/fast-search.component";
 import {BuscaComponent} from "./busca/busca.component";
 import {AtendimentoComponent} from "./atendimento/atendimento.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent, outlet: 'login'},
-  {path: 'error', component: ErrorComponent, canActivate: [AuthGuard]},
+  {path: 'error', component: ErrorComponent},
   {path: 'fastSearch', component: FastSearchComponent},
   {path: 'busca', component: BuscaComponent},
   {path: 'atendimento/:id', component: AtendimentoComponent},

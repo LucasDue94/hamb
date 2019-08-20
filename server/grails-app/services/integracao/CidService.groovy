@@ -7,7 +7,7 @@ import org.hibernate.sql.JoinType
 @Service(Cid)
 abstract class CidService {
 
-    abstract Cid get(Serializable id)
+    abstract Cid get(String id)
 
     List<Cid> list(Usuario usuario, Map args) {
         if (usuario != null && usuario.id != null) {

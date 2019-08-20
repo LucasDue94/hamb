@@ -18,7 +18,7 @@ class AtendimentoController {
 
     def index(Integer max, String codPrt) {
         params.max = Math.min(max ?: 10, 100)
-        respond atendimentoService.list(params, codPrt), model:[atendimentoCount: atendimentoService.count()]
+        respond atendimentoService.list(params, codPrt), model: [atendimentoCount: atendimentoService.count()]
     }
 
     def show(Long id) {
@@ -44,7 +44,7 @@ class AtendimentoController {
             return
         }
 
-        respond atendimento, [status: CREATED, view:"show"]
+        respond atendimento, [status: CREATED, view: "show"]
     }
 
     @Transactional
@@ -66,7 +66,7 @@ class AtendimentoController {
             return
         }
 
-        respond atendimento, [status: OK, view:"show"]
+        respond atendimento, [status: OK, view: "show"]
     }
 
     @Transactional

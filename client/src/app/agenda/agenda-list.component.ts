@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'agenda-list',
@@ -13,16 +14,19 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   agendas: Map<string, Agenda>;
   dias;
 
-  constructor(private render: Renderer2, private agendaService: AgendaService, private router: Router) {
+  constructor(private render: Renderer2, private agendaService: AgendaService,
+              private router: Router, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
+    this.spinner.show();
   }
 
   ngAfterViewInit(): void {
     this.agendaService.list().subscribe((agendas) => {
       this.agendas = Agenda.mergeAgenda(agendas);
       this.dias = Array.from(this.agendas.keys());
+      this.spinner.hide();
     });
   }
 
@@ -32,7 +36,9 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     return Agenda.getStringDate(dateUTC);
   }
 
-  send = (key) => this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
+  send (key){
+    this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
+  }
 
   getToday = () => Agenda.getDay();
 
