@@ -3,6 +3,7 @@ import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
+import {AtendimentoService} from "../core/atendimento/atendimento.service";
 
 @Component({
   selector: 'agenda-list',
@@ -15,7 +16,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   dias;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private spinner: NgxSpinnerService) {
+              private router: Router, private spinner: NgxSpinnerService,
+              private atendimentoService: AtendimentoService) {
   }
 
   ngOnInit() {
@@ -25,6 +27,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.agendaService.list().subscribe((agendas) => {
       this.agendas = Agenda.mergeAgenda(agendas);
+      // this.getAtendidos();
       this.dias = Array.from(this.agendas.keys());
       this.spinner.hide();
     });
@@ -53,8 +56,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   }
 
 //TODO
-  getAtendidos() {
-
+  getAtendidos(dia) {
+    let pacientes = this.agendas.get(dia).pacientes;
   }
 }
 

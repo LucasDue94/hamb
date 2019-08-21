@@ -81,7 +81,7 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   }
 
   attach(idForm) {
-    this.validateForm()
+    this.validateForm();
     if (idForm == 'perfil') {
       this.usuario['perfil'].id = this.usuarioForm.get(idForm).value;
     } else {

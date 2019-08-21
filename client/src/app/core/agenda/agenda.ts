@@ -122,6 +122,7 @@ export class Agenda {
 
   //TODO
   static getAtendidos(pacientes: PacienteAgendado[]) {
+
     let total = 0;
   }
 

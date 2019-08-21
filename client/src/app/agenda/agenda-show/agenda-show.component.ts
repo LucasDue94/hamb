@@ -34,10 +34,8 @@ export class AgendaShowComponent implements OnInit {
       this.prepareRouter();
       this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
-        if (this.agendas.size == 0) {
-          this.router.navigate(['/agenda', 'list']);
-        }
-        this.getPacientes();
+        if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
+        this.pacientes = this.getPacientes();
         this.spinner.hide();
         this.verificaAgenda()
       })
@@ -69,8 +67,7 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
-    console.log(paciente);
-    this.atendimentoPath.data = {registro: paciente.registro.id};
+    this.atendimentoPath.data = {registro: paciente.registro.id, dataAgenda: this.dataAgenda};
     this.router.navigate(['/atendimento', paciente.registro.paciente.id]);
   }
 
@@ -81,7 +78,7 @@ export class AgendaShowComponent implements OnInit {
   getPacientes() {
     let keys = this.agendas.keys();
     if (this.agendas != undefined)
-      this.pacientes = this.agendas.get(keys.next().value).pacientes;
+      return this.agendas.get(keys.next().value).pacientes;
   }
 
   getIdade(stringData) {

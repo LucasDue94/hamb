@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -8,7 +8,6 @@ import {Atendimento} from "../core/atendimento/atendimento";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
 import {NgxSpinnerService} from "ngx-spinner";
-import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
 
 @Component({
   selector: 'atendimento',
@@ -17,16 +16,17 @@ import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimen
 })
 export class AtendimentoComponent implements OnInit {
 
-  cids: Cid[];
-  pacientes: Paciente[];
+  @ViewChild('cidContainer', {static: false}) cidContainer;
   atendimentos: Atendimento[];
   paciente: Paciente;
   registro;
   dataAgenda;
   cid: Cid;
-  activeSearch = false;
   usuarioLogado;
   conteudo;
+  activeSearch = false;
+  isValidForm = null;
+  controls;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
@@ -35,31 +35,30 @@ export class AtendimentoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cid = new Cid({diagnostico: 'CID', id: null});
+    this.controls = new Object({
+      conteudo: false,
+      cid: false
+    });
+    this.cid = new Cid({diagnostico: 'CID', id: ''});
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
-
+    this.receiveData();
     this.spinner.show();
+
     this.route.params.subscribe((params: Params) => {
-      this.pacienteService.get(params['id']).subscribe(paciente => this.paciente = paciente);
+      this.pacienteService.get(params['id']).subscribe(paciente => {
+        this.paciente = paciente;
+        this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
+          this.atendimentos = atendimentos;
+          this.spinner.hide();
+        });
+      });
     });
-
-    this.cidService.list('', '').subscribe(cids => {
-      this.cids = cids;
-    });
-
-    this.atendimentoService.list('', '', localStorage.getItem('crm')).subscribe(atendimentos => {
-      this.atendimentos = atendimentos;
-      console.log(atendimentos);
-      this.spinner.hide();
-    });
-    this.receiveData()
   }
 
   receiveData() {
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
-    this.dataAgenda = r.data['data'];
+    this.dataAgenda = r.data['dataAgenda'];
     this.registro = r.data['registro'];
-    console.log(this.registro)
   }
 
   dateToString(stringData) {
@@ -70,9 +69,10 @@ export class AtendimentoComponent implements OnInit {
   }
 
   selectCid(event) {
-    console.log(event);
+    this.render.removeClass(this.cidContainer.nativeElement, 'invalid-cid');
     this.activeSearch = false;
     this.cid.id = event.id;
+    console.log(this.cid);
     this.cutString(event.diagnostico)
   }
 
@@ -80,40 +80,56 @@ export class AtendimentoComponent implements OnInit {
     this.activeSearch = !this.activeSearch;
   }
 
-
   setFields() {
-    console.log(this.registro);
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
     atendimento.conteudo = this.conteudo;
-    atendimento.registroAtendimento = new RegistroAtendimento({id: this.registro});
-    atendimento.cid = new Cid({id: this.cid.id});
-    this.deleteProperties(atendimento.cid);
-    this.deleteProperties(atendimento.usuario);
-    delete atendimento.dataAtendimento;
-    console.log(atendimento);
-    this.atendimentoService.save(atendimento).subscribe(res => {
-      if (res.status == 201){
-        this.spinner.show()
-        this.atendimentoService.list('', '', localStorage.getItem('crm')).subscribe(atendimentos => {
-          this.atendimentos = atendimentos;
-          this.spinner.hide();
-        });
-      }
-
-    });
+    atendimento.registroAtendimento = this.registro;
+    atendimento.cid = this.cid;
+    delete atendimento.cid.diagnostico;
+    return atendimento;
   }
 
-  deleteProperties(obj) {
-    for (let key in obj) {
-      if (key != 'id') {
-        delete obj[key];
-      }
+  updateAtendimentos() {
+    this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
+      this.atendimentos = atendimentos;
+      this.spinner.hide();
+    });
+    const r = this.router.config.find(r => r.path == 'atendimento/:id');
+    r.data = {registro: this.paciente.id, dataAgenda: this.dataAgenda};
+  }
+
+  checkField = (field) => field != null && field != '' && field != undefined;
+
+  validate = (atendimento: Atendimento) => this.checkField(atendimento.usuario.id) &&
+    this.checkField(atendimento.conteudo) && this.checkField(atendimento.registroAtendimento) &&
+    this.checkField(atendimento.cid.id);
+
+  setErros(atendimento) {
+    if (!this.checkField(atendimento.conteudo)) {
+
+    }
+
+    if (!this.checkField(atendimento.cid.id)) {
+
     }
   }
 
   save() {
-    this.setFields();
+    const atendimento = this.setFields();
+    this.isValidForm = this.validate(atendimento);
+    if (this.isValidForm) {
+      this.render.removeClass(this.cidContainer.nativeElement, 'invalid-cid');
+      this.atendimentoService.save(atendimento).subscribe(res => {
+        if (res.status == 201) {
+          this.spinner.show();
+          this.updateAtendimentos();
+        }
+      });
+    } else {
+      this.setErros(atendimento)
+
+    }
   }
 
   cutString(longString) {

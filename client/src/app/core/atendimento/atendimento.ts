@@ -24,7 +24,7 @@ export class Atendimento {
       }
 
       if (object.hasOwnProperty('cid')) {
-        this.cid = new Cid();
+        this.cid = new Cid(object['cid']);
         delete object['cid'];
       }
 

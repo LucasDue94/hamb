@@ -25,9 +25,8 @@ export class AtendimentoService extends HeadersHelper {
 
   list(max?: any, offset?: any, codPrt?: any): Observable<Atendimento[]> {
     let subject = new Subject<Atendimento[]>();
-    this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&cod=' + codPrt, {headers: this.getDefaultHttpOptions()})
+    this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&codPrt=' + codPrt, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
-        console.log(json)
         subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
       });
     return subject.asObservable();
