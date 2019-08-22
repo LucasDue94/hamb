@@ -93,6 +93,11 @@
     flex-direction: column;
     justify-content: space-between;
 
+    .errors{
+      width: 200px;
+      bottom: 125px;
+    }
+
     .cid-container {
       display: flex;
       align-items: center;
@@ -122,14 +127,27 @@
         }
       }
 
+      .cid-info {
+        text-align: center;
+        font-size: 15px;
+        width: 100%;
+        padding: 0;
+        background-color: transparent;
+
+        &:first-child {
+          font-size: 16px;
+          font-weight: 700;
+        }
+      }
+
       .cid-icon {
         font-size: 40px;
       }
     }
 
     .btn-save {
-      border-radius: 5px;
       flex: 1;
+      border-radius: 5px;
       letter-spacing: 1px;
       font-weight: 400;
       background-color: rgba($blue-default, 0.8);
@@ -143,7 +161,7 @@
 }
 
 .valid-cid {
-  color: $green-default;
+  color: $green-default !important;
 }
 
 .invalid-cid {
@@ -157,34 +175,25 @@
 }
 
 .errors {
-  display: flex;
-  top: -50px;
-  padding: 5px;
-  font-size: 15px;
+  display: flex!important;
   position: absolute;
-  border-radius: 5px;
-  background-color: $light-danger;
-  color: $white;
-  animation: validation-error 1s;
-  opacity: 1;
+  width: 250px;
+  bottom: 160px;
 
-  .icon{
-    margin-left: 2px;
+  & {
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 5px;
+    color: $white;
+    transition: 500ms;
+    background-color: $light-danger;
   }
 
-  @keyframes valitation-error {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  .icon {
+    margin-left: 2px;
   }
 }
 
-.content-error{
-  position: relative;
-  top: 15px;
-  bottom: 0;
-  width: 20%;
+.none {
+  display: none;
 }

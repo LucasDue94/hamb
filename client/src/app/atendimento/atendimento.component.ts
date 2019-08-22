@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, DoCheck, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -8,6 +8,8 @@ import {Atendimento} from "../core/atendimento/atendimento";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
 import {NgxSpinnerService} from "ngx-spinner";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {debounceTime, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'atendimento',
@@ -16,17 +18,23 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class AtendimentoComponent implements OnInit {
 
-  @ViewChild('cidContainer', {static: false}) cidContainer;
   atendimentos: Atendimento[];
   paciente: Paciente;
   registro;
   dataAgenda;
-  cid: Cid;
   usuarioLogado;
-  conteudo;
   activeSearch = false;
   isValidForm = null;
-  controls;
+  atendimentoForm = new FormGroup({
+    conteudo: new FormControl('', {
+      updateOn: 'blur',
+      validators: Validators.required,
+    }),
+    cid: new FormGroup({
+      id: new FormControl('', [Validators.required]),
+      diagnostico: new FormControl('CID', [Validators.required])
+    })
+  });
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
@@ -35,14 +43,10 @@ export class AtendimentoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.controls = new Object({
-      conteudo: false,
-      cid: false
-    });
-    this.cid = new Cid({diagnostico: 'CID', id: ''});
+    this.atendimentoForm.get('cid').get('diagnostico').reset('CID');
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
     this.receiveData();
-    this.spinner.show();
+    // this.spinner.show();
 
     this.route.params.subscribe((params: Params) => {
       this.pacienteService.get(params['id']).subscribe(paciente => {
@@ -53,6 +57,7 @@ export class AtendimentoComponent implements OnInit {
         });
       });
     });
+    this.atendimentoForm.get('conteudo').valueChanges.subscribe(res => console.log(res));
   }
 
   receiveData() {
@@ -69,11 +74,9 @@ export class AtendimentoComponent implements OnInit {
   }
 
   selectCid(event) {
-    this.render.removeClass(this.cidContainer.nativeElement, 'invalid-cid');
     this.activeSearch = false;
-    this.cid.id = event.id;
-    console.log(this.cid);
-    this.cutString(event.diagnostico)
+    this.atendimentoForm.get('cid').get('id').setValue(event.id);
+    this.cutString(event.diagnostico);
   }
 
   search() {
@@ -83,9 +86,12 @@ export class AtendimentoComponent implements OnInit {
   setFields() {
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
-    atendimento.conteudo = this.conteudo;
+    atendimento.conteudo = this.atendimentoForm.get('conteudo').value;
     atendimento.registroAtendimento = this.registro;
-    atendimento.cid = this.cid;
+    atendimento.cid = new Cid({
+      id: this.atendimentoForm.get('cid').get('id').value,
+      diagnostico: this.atendimentoForm.get('cid').get('diagnostico').value
+    });
     delete atendimento.cid.diagnostico;
     return atendimento;
   }
@@ -102,40 +108,33 @@ export class AtendimentoComponent implements OnInit {
   checkField = (field) => field != null && field != '' && field != undefined;
 
   validate = (atendimento: Atendimento) => this.checkField(atendimento.usuario.id) &&
-    this.checkField(atendimento.conteudo) && this.checkField(atendimento.registroAtendimento) &&
-    this.checkField(atendimento.cid.id);
-
-  setErros(atendimento) {
-    if (!this.checkField(atendimento.conteudo)) {
-
-    }
-
-    if (!this.checkField(atendimento.cid.id)) {
-
-    }
-  }
+    this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento);
 
   save() {
     const atendimento = this.setFields();
     this.isValidForm = this.validate(atendimento);
     if (this.isValidForm) {
-      this.render.removeClass(this.cidContainer.nativeElement, 'invalid-cid');
       this.atendimentoService.save(atendimento).subscribe(res => {
+        console.log(res);
         if (res.status == 201) {
           this.spinner.show();
           this.updateAtendimentos();
         }
       });
-    } else {
-      this.setErros(atendimento)
-
     }
   }
 
+  getControl(string) {
+    if(string=='conteudo') return this.atendimentoForm.get('conteudo');
+    if(string=='diagnostico') return this.atendimentoForm.get('cid').get('diagnostico');
+    if(string=='id') return this.atendimentoForm.get('cid').get('id')
+  }
+
   cutString(longString) {
-    this.cid.diagnostico = longString.substring(0, 20);
+    let diagnostico = this.getControl('diagnostico');
+    diagnostico.setValue(longString.substring(0, 20));
     if (longString.length > 20) {
-      this.cid.diagnostico = this.cid.diagnostico.concat('...');
+      diagnostico.setValue(diagnostico.value.concat('...'));
     }
   }
 }
