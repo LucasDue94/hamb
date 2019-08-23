@@ -1,7 +1,7 @@
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
 
 export class Paciente {
-  id: number;
+  id: string;
   nome: string;
   nascimento: any;
   nomeMae: string;

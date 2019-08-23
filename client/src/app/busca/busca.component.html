@@ -34,7 +34,7 @@
         <span class="td">{{paciente.telefone}}</span>
         <div class="td options">
           <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
-          <fa-icon [routerLink]="['/agenda','list',paciente]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+          <fa-icon [routerLink]="['/atendimento',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
         </div>
       </div>
       <div class="withoutData" *ngIf="pacientes.length == 0">

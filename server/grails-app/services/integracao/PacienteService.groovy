@@ -17,13 +17,7 @@ abstract class PacienteService {
         def criteria = Paciente.createCriteria()
         List<Paciente> pacienteList = (List<Paciente>) criteria.list(args) {
 
-            //TODO não esquecer de descomentar este trecho
-            /*registros {
-                atendimento {
-                    isNotNull('id')
-                }
-            }*/
-
+            isNotEmpty('atendimentos')
             if (termo != null && !termo.isEmpty()) {
                 or {
                     ilike('nome', "%${termo}%")

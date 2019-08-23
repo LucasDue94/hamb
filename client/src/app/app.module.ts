@@ -21,6 +21,7 @@ import {AuthGuard} from "./core/guards/auth.guard";
 import {ErrorComponent} from "./error/error.component";
 import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
+import { PacienteAgendadoModule } from './pacienteAgendado/pacienteAgendado.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {AtendimentoModule} from "./atendimento/atendimento.module";
     PerfectScrollbarModule,
     ReactiveFormsModule,
     LoginModule,
-    FastSearchModule
+    FastSearchModule,
+    PacienteAgendadoModule
 ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -10,6 +10,7 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class FastSearchComponent implements OnInit {
 
+  @ViewChild('spinner', {static: false}) spinner;
   @Input() service;
   /* Instância do service,passada pelo elemento pai cujo a busca será realizada  */
   @Input() fields: String[];
@@ -31,8 +32,7 @@ export class FastSearchComponent implements OnInit {
   max = 25;
   offset = 0;
 
-  constructor(private spinner: NgxSpinnerService) {
-  }
+  constructor(private render: Renderer2) {}
 
   ngOnInit() {
     this.searchControl = new FormControl();
@@ -70,12 +70,22 @@ export class FastSearchComponent implements OnInit {
   }
 
   scrollDown() {
-    this.spinner.show();
+    this.loading();
     this.offset += 25;
     this.service.search(this.searchControl.value, this.offset, this.max).subscribe(data => {
       data.forEach(d => this.dataArray.push(d));
-      this.spinner.hide();
+      // this.loaded();
       console.log(data);
     });
+  }
+
+  loading() {
+    this.render.removeClass(this.spinner.nativeElement,'loaded');
+    this.render.addClass(this.spinner.nativeElement,'loading');
+  }
+
+  loaded(){
+    this.render.removeClass(this.spinner.nativeElement,'loading');
+    this.render.addClass(this.spinner.nativeElement,'loaded')
   }
 }

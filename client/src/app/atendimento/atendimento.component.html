@@ -1,9 +1,10 @@
 <nav class="nav-container">
-  <a [routerLink]="['/agenda', 'show', dataAgenda]" class="back">
+  <a (click)="back()" class="back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
   <p class="title-main">Histórico de Atendimentos</p>
+  <h3>{{paciente?.nome}}</h3>
 </nav>
 <section class="container-atendimento">
   <article *ngFor="let atendimento of atendimentos" class="card">
@@ -19,17 +20,16 @@
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
 </section>
-<div class="none" [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors':'none']">
+<div class="none" [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors':'none']"
+     #conteudo>
   Você não escreveu nada no histórico.
   <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
 </div>
 <form class="atendimento-form" [formGroup]="atendimentoForm" (ngSubmit)="save()">
-  <textarea formControlName="conteudo"
-            placeholder="Digite o registro deste atendimento"
-            class="form-control"></textarea>
+  <textarea (input)="updateConteudo()" formControlName="conteudo"
+            placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control"></textarea>
   <section class="container-buttons">
-    <div class="none"
-         [ngClass]="[getControl('id').invalid && getControl('id').dirty ? 'errors':'none']">
+    <div class="none" [ngClass]="[getControl('id').invalid && getControl('id').dirty ? 'errors':'none']" #cid>
       Você não selecionou um cid.
       <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
     </div>
@@ -37,8 +37,7 @@
          [ngClass]="{'valid-cid': atendimentoForm.get('cid').get('id').valid}">
       <fa-icon *ngIf="atendimentoForm.get('cid').get('id').invalid" class="cid-icon"
                [icon]="['fas','book-medical']"></fa-icon>
-      <input *ngIf="atendimentoForm.get('cid').get('id').valid" formControlName="id"
-             class="cid-info">
+      <input *ngIf="atendimentoForm.get('cid').get('id').valid" formControlName="id" class="cid-info">
       <input formControlName="diagnostico" class="cid-info">
     </div>
     <button type="submit" class="button btn-save">Salvar</button>

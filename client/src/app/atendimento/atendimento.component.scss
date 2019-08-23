@@ -58,6 +58,8 @@
   height: 120px;
 
   .form-control {
+    display: flex;
+    flex-direction: column;
     resize: none;
     border-radius: 8px 0 0 8px;
     padding: 10px;
@@ -68,7 +70,10 @@
     background-color: $white;
 
     &::placeholder {
+      color: $gray-70;
+      padding-top:35px;
       text-align: center;
+      margin-top: 100px;
     }
 
     &:hover {
@@ -93,7 +98,7 @@
     flex-direction: column;
     justify-content: space-between;
 
-    .errors{
+    .errors {
       width: 200px;
       bottom: 125px;
     }
@@ -175,7 +180,7 @@
 }
 
 .errors {
-  display: flex!important;
+  display: flex !important;
   position: absolute;
   width: 250px;
   bottom: 160px;

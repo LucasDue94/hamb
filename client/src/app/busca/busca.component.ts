@@ -36,7 +36,7 @@ export class BuscaComponent implements OnInit {
   scrollDown() {
     this.spinner.show();
     this.offset += 15;
-    this.pacienteService.search(this.searchControl.value, this.offset,this.max).subscribe(pacientes => {
+    this.pacienteService.search(this.searchControl.value, this.offset, this.max).subscribe(pacientes => {
       pacientes.forEach(paciente => this.pacientes.push(paciente));
       this.spinner.hide();
       console.log(this.pacientes);
@@ -50,7 +50,7 @@ export class BuscaComponent implements OnInit {
         this.spinner.show();
         this.offset = 0;
         if (this.pacientes != undefined) this.pacientes.length = 0;
-        return this.pacienteService.search(changes, this.offset)
+        return this.pacienteService.search(changes, this.offset, this.max)
       })
     ).subscribe(res => {
       this.pacientes = res;

@@ -79,6 +79,7 @@ $nav-height: 35px;
     color: $gray-80;
 
     &:hover {
+      cursor: pointer;
       transition: 0.3s;
       color: $gray-100;
     }
@@ -210,6 +211,7 @@ $nav-height: 35px;
   }
 
   .row {
+    align-items: center;
     background-color: $white;
   }
 

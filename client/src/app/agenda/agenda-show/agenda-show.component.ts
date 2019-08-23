@@ -31,11 +31,14 @@ export class AgendaShowComponent implements OnInit {
     this.spinner.show();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
-      this.prepareRouter();
       this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
+        this.pacientes.sort(function (a, b) {
+          if (a.nome > b.nome) return 1;
+          if (a.nome < b.nome) return -1;
+        });
         this.spinner.hide();
         this.verificaAgenda()
       })
@@ -61,14 +64,8 @@ export class AgendaShowComponent implements OnInit {
     }
   }
 
-  prepareRouter() {
-    this.atendimentoPath = this.router.config.find(r => r.path == 'atendimento/:id');
-    if (this.atendimentoPath != undefined) this.atendimentoPath.data = {data: this.dataAgenda};
-  }
-
   goAtendimento(paciente) {
-    this.atendimentoPath.data = {registro: paciente.registro.id, dataAgenda: this.dataAgenda};
-    this.router.navigate(['/atendimento', paciente.registro.paciente.id]);
+    this.router.navigate(['/atendimento', paciente.registro.id]);
   }
 
   getMes = () => Agenda.getMes();

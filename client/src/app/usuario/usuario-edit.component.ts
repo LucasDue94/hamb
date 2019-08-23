@@ -89,6 +89,8 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
     }
   }
 
+
+
   changeStatus() {
     setTimeout(() => {
       this.render.removeClass(this.ativo.nativeElement, 'offStatus');
