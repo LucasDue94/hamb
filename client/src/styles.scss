@@ -15,12 +15,13 @@
   }
 }
 
-usuario-list, usuario-edit, agenda-show, agenda-list, busca, login, app-error, fast-search, atendimento {
+usuario-list, usuario-edit, agenda-show, agenda-list,
+busca, login, app-error, fast-search, atendimento, paciente-info {
   width: 100%;
   height: 100%;
 }
 
-atendimento{
+atendimento {
   display: flex;
   flex-direction: column;
 }

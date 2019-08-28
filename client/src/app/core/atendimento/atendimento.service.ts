@@ -53,6 +53,15 @@ export class AtendimentoService extends HeadersHelper {
     return subject.asObservable();
   }
 
+  findAtendimento(registroId: string): Observable<Atendimento[]> {
+    let subject = new Subject<Atendimento[]>();
+    this.http.get(this.baseUrl + `atendimento/findAtendimento/` + registroId, {headers: this.getDefaultHttpOptions()})
+      .subscribe((json: any[]) => {
+        subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
+      });
+    return subject.asObservable();
+  }
+
   search(searchTerm, offset?: any, max?): Observable<any[]> {
     let subject = new Subject<Atendimento[]>();
     this.http.get(this.baseUrl + `atendimento/` + '?offset=' + offset + '&max=' + max, {

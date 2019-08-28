@@ -5,6 +5,7 @@ import {ErrorComponent} from "./error/error.component";
 import {FastSearchComponent} from "./fast-search/fast-search.component";
 import {BuscaComponent} from "./busca/busca.component";
 import {AtendimentoComponent} from "./atendimento/atendimento.component";
+import {PacienteInfoComponent} from "./paciente-info/paciente-info.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent, outlet: 'login'},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'fastSearch', component: FastSearchComponent},
   {path: 'busca', component: BuscaComponent},
   {path: 'atendimento/:id', component: AtendimentoComponent},
+  {path: 'pacienteInfo', component: PacienteInfoComponent},
 ];
 
 @NgModule({

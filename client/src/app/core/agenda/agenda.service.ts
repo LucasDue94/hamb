@@ -26,7 +26,7 @@ export class AgendaService extends HeadersHelper {
 
   list(max?: any, offset?: any, data?: any): Observable<Agenda[]> {
     let subject = new Subject<Agenda[]>();
-    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + '&data=' + data, {headers: this.getDefaultHttpOptions()})
+    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + max + '&data=' + data, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Agenda(propertyName)))
       });
@@ -60,7 +60,6 @@ export class AgendaService extends HeadersHelper {
       headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
-      console.log(json);
       subject.next(json.map((obj: any) => new Agenda(obj)))
     });
     return subject.asObservable();

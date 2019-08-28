@@ -11,7 +11,8 @@
 </nav>
 <section class="content-default">
   <main class="pacientes-container">
-    <section *ngFor="let paciente of pacientes" (click)="goAtendimento(paciente)">
+    <section [ngClass]="{'atendido': wasAtendido(paciente)}" *ngFor="let paciente of pacientes"
+             (click)="goAtendimento(paciente)">
       <div *ngIf="getHour(paciente?.hora) > this.hourMin && getHour(paciente?.hora) < this.hourMax " class="row-agenda">
         <span class="info">{{paciente?.id}}</span>
         <span class="info">{{paciente?.registro?.id}}</span>

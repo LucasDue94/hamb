@@ -1,6 +1,7 @@
 package integracao
 
 import grails.gorm.services.Service
+import hamb.Atendimento
 
 @Service(Paciente)
 abstract class PacienteService {
@@ -32,6 +33,11 @@ abstract class PacienteService {
             }
         }
         return pacienteList
+    }
+
+    Atendimento getLastAtendimento(String id){
+        def paciente = Paciente.get id
+        return paciente.atendimentos.last()
     }
 
     abstract Long count()

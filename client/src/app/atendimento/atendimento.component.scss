@@ -71,7 +71,7 @@
 
     &::placeholder {
       color: $gray-70;
-      padding-top:35px;
+      padding-top: 35px;
       text-align: center;
       margin-top: 100px;
     }
@@ -201,4 +201,37 @@
 
 .none {
   display: none;
+}
+
+.paciente-info {
+  position: relative;
+  display: flex;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  border: 1px solid $gray-60;
+
+  .icon {
+    margin-right: 5px;
+    //background-color: red;
+  }
+
+  &:hover {
+    color: $blue-default;
+    box-shadow: 1px 1px 15px $gray-100;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+}
+
+.paciente-container{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.nav-container{
+  *{
+    flex: 1;
+  }
 }

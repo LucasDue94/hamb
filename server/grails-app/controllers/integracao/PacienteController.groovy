@@ -20,4 +20,8 @@ class PacienteController {
     def show(String id) {
         respond pacienteService.get(id)
     }
+
+    def getLastAtendimento(String id){
+        respond pacienteService.getLastAtendimento(id)
+    }
 }

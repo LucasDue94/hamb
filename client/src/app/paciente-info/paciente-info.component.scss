@@ -1,0 +1,61 @@
+@import "../../assets/colors";
+
+.card-container {
+  position: absolute;
+  margin-top: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: $gray-30;
+  text-transform: capitalize;
+  box-shadow: 1px 1px 10px $gray-100;
+  border-radius: 8px;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    .info-container {
+      .label {
+        font-weight: 400;
+        font-size: 15px;
+      }
+
+      .subject {
+        font-weight: 600;
+        font-size: 17px;
+      }
+    }
+
+    .big {
+      flex: 3;
+    }
+
+    .medium {
+      flex: 2;
+    }
+
+    .small {
+      flex: 1;
+    }
+
+    .right {
+      //text-align: right;
+    }
+  }
+}
+
+
+.show {
+  display: initial;
+  opacity: 1;
+  transition: 1s;
+}
+
+.close {
+  display: none;
+  opacity: 0;
+  transition: 1s;
+}

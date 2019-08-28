@@ -1,4 +1,6 @@
 package integracao
+
+import hamb.Atendimento
 import hamb.Origem
 
 class RegistroAtendimento {
@@ -7,6 +9,8 @@ class RegistroAtendimento {
     Origem origem
     Convenio convenio
     Paciente paciente
+
+    static hasMany = [atendimentos: Atendimento]
 
     static mapping = {
         id generator: 'assigned'

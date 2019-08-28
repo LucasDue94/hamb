@@ -44,7 +44,7 @@ export class PacienteAgendadoService extends  HeadersHelper{
         )
     }
 
-    get(id: number): Observable<PacienteAgendado> {
+    get(id: string): Observable<PacienteAgendado> {
         let subject = new Subject<PacienteAgendado>();
         this.http.get(this.baseUrl + `pacienteAgendado/` + id, {headers: this.getDefaultHttpOptions()})
             .subscribe((json: any) => {

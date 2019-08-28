@@ -1,9 +1,11 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {AtendimentoService} from "../core/atendimento/atendimento.service";
+import {PacienteService} from "../core/paciente/paciente.service";
+import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
 
 @Component({
   selector: 'agenda-list',
@@ -17,7 +19,9 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
               private router: Router, private spinner: NgxSpinnerService,
-              private atendimentoService: AtendimentoService) {
+              private atendimentoService: AtendimentoService,
+              private pacienteService: PacienteService,
+              private pacienteAgendadoService: PacienteAgendadoService) {
   }
 
   ngOnInit() {
@@ -27,7 +31,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.agendaService.list().subscribe((agendas) => {
       this.agendas = Agenda.mergeAgenda(agendas);
-      // this.getAtendidos();
+      // this.countAtendidos();
+      console.log(this.agendas);
       this.dias = Array.from(this.agendas.keys());
       this.spinner.hide();
     });
@@ -39,7 +44,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     return Agenda.getStringDate(dateUTC);
   }
 
-  send (key){
+  send(key) {
     this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
   }
 
@@ -47,17 +52,25 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   getMes = () => Agenda.getMes();
 
-  getEfetivados(dia) {
-    return Agenda.getEfetivados(this.agendas.get(dia).pacientes);
+  countEfetivados(dia) {
+    return Agenda.countEfetivados(this.agendas.get(dia).pacientes);
   }
 
-  getAgendados(dia) {
+  countAgendados(dia) {
     return this.agendas.get(dia).pacientes.length;
   }
 
-//TODO
-  getAtendidos(dia) {
-    let pacientes = this.agendas.get(dia).pacientes;
+  countAtendidos(dia) {
+    let total = 0;
+    let pacientesAgendados = this.agendas.get(dia).pacientes;
+    pacientesAgendados.forEach(paciente => {
+      if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
+        if (paciente.registro.atendimentos.length > 0) {
+          total++;
+        }
+      }
+    });
+    return total;
   }
 }
 

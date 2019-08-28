@@ -20,7 +20,6 @@ export class AgendaShowComponent implements OnInit {
   hourMax;
   dataAgenda;
   horario = '';
-  atendimentoPath;
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
               private router: Router, private route: ActivatedRoute,
@@ -35,6 +34,7 @@ export class AgendaShowComponent implements OnInit {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
+        console.log(this.pacientes);
         this.pacientes.sort(function (a, b) {
           if (a.nome > b.nome) return 1;
           if (a.nome < b.nome) return -1;
@@ -64,9 +64,7 @@ export class AgendaShowComponent implements OnInit {
     }
   }
 
-  goAtendimento(paciente) {
-    this.router.navigate(['/atendimento', paciente.registro.id]);
-  }
+  goAtendimento = (paciente) => this.router.navigate(['/atendimento', paciente.registro.id]);
 
   getMes = () => Agenda.getMes();
 
@@ -125,5 +123,12 @@ export class AgendaShowComponent implements OnInit {
     this.setIntervalo();
     if (this.horario == 'manhã') this.toogle(this.btnManha);
     else if (this.horario == 'tarde') this.toogle(this.btnTarde)
+  }
+
+  wasAtendido(paciente: PacienteAgendado) {
+    if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
+      console.log(paciente);
+      return paciente.registro.atendimentos.length > 0
+    }
   }
 }

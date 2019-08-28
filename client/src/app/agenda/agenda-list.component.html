@@ -17,9 +17,9 @@
     <h1 [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
       class="day">{{dia}}</h1>
     <div class="informations">
-      <p>Atendidos:-</p>
-      <p>Efetivados:{{getEfetivados(dia)}}</p>
-      <p>Agendados:{{getAgendados(dia)}}</p>
+      <p>Atendidos:{{countAtendidos(dia)}}</p>
+      <p>Efetivados:{{countEfetivados(dia)}}</p>
+      <p>Agendados:{{countAgendados(dia)}}</p>
     </div>
   </section>
   <div class="withoutData" *ngIf="agendas?.size == 0">

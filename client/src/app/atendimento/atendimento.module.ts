@@ -9,11 +9,12 @@ import {CoreModule} from '../core/core.module';
 import {FastSearchModule} from "../fast-search/fast-search.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {PacienteInfoModule} from '../paciente-info/paciente-info.module';
 
 
 @NgModule({
   declarations: [
-    AtendimentoComponent
+    AtendimentoComponent,
   ],
   imports: [
     CommonModule,
@@ -24,7 +25,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
     FastSearchModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    PacienteInfoModule
   ]
 })
 export class AtendimentoModule {

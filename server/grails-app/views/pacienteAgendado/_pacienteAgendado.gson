@@ -4,4 +4,4 @@ model {
     PacienteAgendado pacienteAgendado
 }
 
-json g.render(pacienteAgendado, [expand: ['convenio', 'registro'], resolveTemplate: false])
+json g.render(pacienteAgendado, [expand: ['convenio', 'registro','registro.atendimentos'], resolveTemplate: false])

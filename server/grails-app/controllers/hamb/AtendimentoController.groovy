@@ -80,4 +80,8 @@ class AtendimentoController {
 
         render status: NO_CONTENT
     }
+
+    def findAtendimento(String registroId) {
+        respond atendimentoService.findAtendimento(registroId)
+    }
 }

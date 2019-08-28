@@ -22,6 +22,18 @@ abstract class AtendimentoService {
         return atendimentoList
     }
 
+    List<Atendimento> findAtendimento(String registroId) {
+        def criteria = Atendimento.createCriteria()
+        List<Atendimento> atendimentos = (List<Atendimento>) criteria.list() {
+            if (registroId != null && !registroId.isEmpty()) {
+                registroAtendimento {
+                    eq 'id', registroId
+                }
+            }
+            order("dataAtentimento", "desc")
+        }
+        return atendimentos
+    }
 
     abstract Long count()
 

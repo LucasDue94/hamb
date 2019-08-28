@@ -4,7 +4,13 @@
     Voltar
   </a>
   <p class="title-main">Histórico de Atendimentos</p>
-  <h3>{{paciente?.nome}}</h3>
+  <section class="paciente-container">
+    <div class="paciente-info" (click)="toggle()">
+      <fa-icon class="icon" [icon]="['fas','info-circle']"></fa-icon>
+      <p>{{paciente?.nome}}</p>
+    </div>
+    <paciente-info *ngIf="showCard" class="show" [pacienteAgendado]="pacienteAgendado" [paciente]="paciente"></paciente-info>
+  </section>
 </nav>
 <section class="container-atendimento">
   <article *ngFor="let atendimento of atendimentos" class="card">

@@ -44,4 +44,5 @@ export class Atendimento {
   toString(): string {
     return 'hamb.Atendimento : ' + (this.id ? this.id : '(unsaved)');
   }
+
 }

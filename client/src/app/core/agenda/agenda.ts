@@ -1,5 +1,6 @@
 import {PacienteAgendado} from '../pacienteAgendado/pacienteAgendado';
 import {Sala} from '../sala/sala';
+import {Atendimento} from "../atendimento/atendimento";
 
 export class Agenda {
   id: number;
@@ -119,13 +120,7 @@ export class Agenda {
     return stringData;
   }
 
-  //TODO
-  static getAtendidos(pacientes: PacienteAgendado[]) {
-
-    let total = 0;
-  }
-
-  static getEfetivados(pacientes: PacienteAgendado[]) {
+  static countEfetivados(pacientes: PacienteAgendado[]) {
     let total = 0;
     pacientes.forEach(paciente => {
       if (paciente.registro != null) total++;

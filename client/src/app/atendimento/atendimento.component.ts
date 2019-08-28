@@ -13,6 +13,7 @@ import {Location} from '@angular/common';
 import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
 import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
+import {PacienteInfoComponent} from "../paciente-info/paciente-info.component";
 
 @Component({
   selector: 'atendimento',
@@ -30,9 +31,11 @@ export class AtendimentoComponent implements OnInit {
   usuarioLogado;
   activeSearch = false;
   isValidForm = null;
+  //TODO fazer o offset
+  max = 1000;
   static REGISTRO_LENGTH = 7;
   static PRONTUARIO_LENGTH = 9;
-
+  showCard = false;
   atendimentoForm: FormGroup;
 
   constructor(private render: Renderer2, private cidService: CidService,
@@ -49,7 +52,6 @@ export class AtendimentoComponent implements OnInit {
     this.spinner.show();
     this.route.params.subscribe((params: Params) => {
       const id = params['id'];
-      console.log(id);
       if (id.length == AtendimentoComponent.PRONTUARIO_LENGTH) {
         this.pacienteService.get(id).subscribe(paciente => {
           this.paciente = paciente;
@@ -67,9 +69,8 @@ export class AtendimentoComponent implements OnInit {
     });
   }
 
-  getAtendimentos = () => this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
+  getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
-    console.log(atendimentos);
     this.spinner.hide();
   });
 
@@ -145,12 +146,10 @@ export class AtendimentoComponent implements OnInit {
   save() {
     const atendimento = this.setFields();
     this.isValidForm = this.validate(atendimento);
-    console.log(atendimento);
     if (this.isValidForm) {
       this.render.removeClass(this.cid.nativeElement, 'errors');
       this.render.removeClass(this.conteudo.nativeElement, 'errors');
       this.atendimentoService.save(atendimento).subscribe(res => {
-        console.log(res);
         if (res.status == 201) {
           this.spinner.show();
           this.updateAtendimentos();
@@ -163,7 +162,6 @@ export class AtendimentoComponent implements OnInit {
       if (this.getControl('id').invalid) {
         this.render.addClass(this.cid.nativeElement, 'errors');
       }
-
     }
   }
 
@@ -179,5 +177,9 @@ export class AtendimentoComponent implements OnInit {
     if (longString.length > 20) {
       diagnostico.setValue(diagnostico.value.concat('...'));
     }
+  }
+
+  toggle() {
+    this.showCard = !this.showCard;
   }
 }

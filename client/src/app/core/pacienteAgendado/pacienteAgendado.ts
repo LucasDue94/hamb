@@ -3,7 +3,7 @@ import {Convenio} from '../convenio/convenio';
 import {Agenda} from "../agenda/agenda";
 
 export class PacienteAgendado {
-  id: number;
+  id: string;
   agenda: Agenda;
   hora: any;
   nome: string;
