@@ -53,6 +53,15 @@
       background: $gray-20;
       padding: 15px;
     }
+
+    .retorno{
+      align-self: center;
+      color: $danger;
+    }
+    .italic{
+      font-style: italic;
+      font-weight: 600;
+    }
   }
 }
 

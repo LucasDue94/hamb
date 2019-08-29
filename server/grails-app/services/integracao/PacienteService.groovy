@@ -35,11 +35,6 @@ abstract class PacienteService {
         return pacienteList
     }
 
-    Atendimento getLastAtendimento(String id){
-        def paciente = Paciente.get id
-        return paciente.atendimentos.last()
-    }
-
     abstract Long count()
 
     abstract void delete(Serializable id)

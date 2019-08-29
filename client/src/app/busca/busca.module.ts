@@ -6,6 +6,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {PacienteInfoModule} from "../paciente-info/paciente-info.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    PacienteInfoModule
   ]
 })
 export class BuscaModule { }

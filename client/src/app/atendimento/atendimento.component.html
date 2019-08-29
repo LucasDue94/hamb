@@ -3,13 +3,14 @@
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <p class="title-main">Histórico de Atendimentos</p>
+  <h3 class="main-title">Atendimentos</h3>
   <section class="paciente-container">
     <div class="paciente-info" (click)="toggle()">
       <fa-icon class="icon" [icon]="['fas','info-circle']"></fa-icon>
       <p>{{paciente?.nome}}</p>
     </div>
-    <paciente-info *ngIf="showCard" class="show" [pacienteAgendado]="pacienteAgendado" [paciente]="paciente"></paciente-info>
+    <paciente-info *ngIf="showCard" class="show" [pacienteAgendado]="pacienteAgendado"
+                   [paciente]="paciente"></paciente-info>
   </section>
 </nav>
 <section class="container-atendimento">
@@ -26,14 +27,15 @@
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
 </section>
-<div class="none" [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors':'none']"
-     #conteudo>
-  Você não escreveu nada no histórico.
-  <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
-</div>
 <form class="atendimento-form" [formGroup]="atendimentoForm" (ngSubmit)="save()">
   <textarea (input)="updateConteudo()" formControlName="conteudo"
             placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control"></textarea>
+    <div class="none"
+         [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors historico-errors':'none']"
+         #conteudo>
+      Você não escreveu nada no histórico.
+      <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
+    </div>
   <section class="container-buttons">
     <div class="none" [ngClass]="[getControl('id').invalid && getControl('id').dirty ? 'errors':'none']" #cid>
       Você não selecionou um cid.

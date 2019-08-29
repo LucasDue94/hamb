@@ -17,6 +17,8 @@ export class BuscaComponent implements OnInit {
   searchControl: FormControl;
   offset = 0;
   max = 15;
+  showCard = false;
+  currentPaciente;
 
   constructor(private spinner: NgxSpinnerService,
               private render: Renderer2, private pacienteService: PacienteService) {
@@ -58,4 +60,10 @@ export class BuscaComponent implements OnInit {
       this.spinner.hide();
     });
   }
+
+  toogle(paciente){
+    this.currentPaciente = paciente;
+    this.showCard = !this.showCard;
+  }
+
 }

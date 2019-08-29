@@ -14,8 +14,11 @@
     <section [ngClass]="{'atendido': wasAtendido(paciente)}" *ngFor="let paciente of pacientes"
              (click)="goAtendimento(paciente)">
       <div *ngIf="getHour(paciente?.hora) > this.hourMin && getHour(paciente?.hora) < this.hourMax " class="row-agenda">
+        <span class="retorno" *ngIf="paciente?.registro?.origem == 'RETORNO'"><fa-icon
+          [icon]="['fas','registered']"></fa-icon></span>
         <span class="info">{{paciente?.id}}</span>
-        <span class="info">{{paciente?.registro?.id}}</span>
+        <span [ngClass]="[paciente?.registro?.id == undefined ? 'italic': '']"
+              class="info">{{paciente?.registro?.id == undefined ? 'Não efetivado' : paciente?.registro?.id }}</span>
         <span class="info nome">{{paciente?.nome}}</span>
         <span class="info idade">{{getIdade(paciente?.nascimento)}}</span>
         <span class="info convenio">{{paciente?.convenio?.fantasia}}</span>

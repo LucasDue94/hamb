@@ -4,39 +4,39 @@
       <h4 class="label">Paciente</h4>
       <h1 class="subject">{{paciente?.nome}}</h1>
     </div>
-    <div class="info-container small right">
+    <div class="info-container small">
       <h4 class="label">Data Nasc.</h4>
-      <h1 class="subject">{{getDate()}}</h1>
+      <h1 class="subject">{{getDate() == undefined ? 'Não informado' : getDate()}}</h1>
     </div>
   </section>
   <section class="row">
     <div class="info-container big">
       <h4 class="label">Nome da Mãe</h4>
-      <h1 class="subject">{{paciente?.nomeMae}}</h1>
+      <h1 class="subject">{{paciente?.nomeMae == undefined ? 'Não informado' : paciente?.nomeMae}}</h1>
     </div>
-    <div class="info-container small right">
+    <div class="info-container small">
       <h4 class="label">Idade</h4>
-      <h1 class="subject">{{getIdade()}}</h1>
+      <h1 class="subject">{{getIdade()== undefined ? 'Não informado' : getIdade()}}</h1>
     </div>
   </section>
   <section class="row">
-    <div class="info-container small">
-      <h4 class="label">Registro</h4>
-      <h1 class="subject">{{pacienteAgendado?.id}}</h1>
+    <div class="info-container big">
+      <h4 class="label">Telefone</h4>
+      <h1 class="subject">{{paciente?.contato == undefined ? 'Não informado' : paciente?.contato}}</h1>
     </div>
-    <div class="info-container medium">
-      <h4 class="label">Prontuário</h4>
-      <h1 class="subject">{{paciente?.id}}</h1>
-    </div>
-    <div class="info-container small right">
+    <div class="info-container small ">
       <h4 class="label">Convênio</h4>
       <h1 class="subject">{{pacienteAgendado?.convenio?.fantasia}}</h1>
     </div>
   </section>
   <section class="row">
-    <div class="info-container">
-      <h4 class="label">Telefone</h4>
-      <h1 class="subject">{{paciente?.contato}}</h1>
+    <div class="info-container big">
+      <h4 class="label">Prontuário</h4>
+      <h1 class="subject">{{paciente?.id}}</h1>
+    </div>
+    <div class="info-container small">
+      <h4 class="label">Registro</h4>
+      <h1 class="subject">{{pacienteAgendado?.id}}</h1>
     </div>
   </section>
 </main>

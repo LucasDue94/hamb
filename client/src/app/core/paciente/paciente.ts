@@ -44,4 +44,9 @@ export class Paciente {
     return 'integracao.Paciente : ' + (this.id ? this.id : '(unsaved)');
   }
 
+  getLastRegistro() {
+    console.log(this.atendimentos);
+    const lastIndex = this.atendimentos.length - 1;
+    return this.atendimentos[lastIndex].registroAtendimento;
+  }
 }

@@ -13,7 +13,6 @@ import {Location} from '@angular/common';
 import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
 import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
-import {PacienteInfoComponent} from "../paciente-info/paciente-info.component";
 
 @Component({
   selector: 'atendimento',
@@ -27,7 +26,6 @@ export class AtendimentoComponent implements OnInit {
   atendimentos: Atendimento[];
   paciente: Paciente;
   pacienteAgendado: PacienteAgendado;
-  dataAgenda;
   usuarioLogado;
   activeSearch = false;
   isValidForm = null;
@@ -114,18 +112,19 @@ export class AtendimentoComponent implements OnInit {
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
     atendimento.conteudo = this.atendimentoForm.get('conteudo').value;
-    atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});
     atendimento.paciente = new Paciente({id: this.paciente.id});
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
       diagnostico: this.atendimentoForm.get('cid').get('diagnostico').value
     });
-    delete atendimento.cid.diagnostico;
+    if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro().id});
+    else atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});
     return atendimento;
   }
 
   updateConteudo() {
-    if (this.getControl('conteudo').value) this.render.removeClass(this.conteudo.nativeElement, 'errors');
+    if (this.getControl('conteudo').value)
+      this.render.removeClass(this.conteudo.nativeElement, 'errors historico-errors');
   }
 
   updateAtendimentos() {
@@ -145,10 +144,12 @@ export class AtendimentoComponent implements OnInit {
 
   save() {
     const atendimento = this.setFields();
+    console.log(atendimento)
     this.isValidForm = this.validate(atendimento);
     if (this.isValidForm) {
       this.render.removeClass(this.cid.nativeElement, 'errors');
       this.render.removeClass(this.conteudo.nativeElement, 'errors');
+      this.render.removeClass(this.conteudo.nativeElement, 'historico-errors');
       this.atendimentoService.save(atendimento).subscribe(res => {
         if (res.status == 201) {
           this.spinner.show();
@@ -156,12 +157,9 @@ export class AtendimentoComponent implements OnInit {
         }
       });
     } else {
-      if (this.getControl('conteudo').invalid) {
-        this.render.addClass(this.conteudo.nativeElement, 'errors');
-      }
-      if (this.getControl('id').invalid) {
-        this.render.addClass(this.cid.nativeElement, 'errors');
-      }
+      if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'errors');
+      if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'historico-errors');
+      if (this.getControl('id').invalid) this.render.addClass(this.cid.nativeElement, 'errors');
     }
   }
 
@@ -179,7 +177,5 @@ export class AtendimentoComponent implements OnInit {
     }
   }
 
-  toggle() {
-    this.showCard = !this.showCard;
-  }
+  toggle = () => this.showCard = !this.showCard;
 }

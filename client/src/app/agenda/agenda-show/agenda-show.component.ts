@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {NgxSpinnerService} from "ngx-spinner";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
+import {PacienteAgendadoService} from "../../core/pacienteAgendado/pacienteAgendado.service";
+import {hasOwnProperty} from "tslint/lib/utils";
 
 @Component({
   selector: 'agenda-show',
@@ -23,7 +25,8 @@ export class AgendaShowComponent implements OnInit {
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
               private router: Router, private route: ActivatedRoute,
-              private spinner: NgxSpinnerService) {
+              private spinner: NgxSpinnerService,
+              private pacienteAgendadoService: PacienteAgendadoService) {
   }
 
   ngOnInit() {
@@ -34,7 +37,6 @@ export class AgendaShowComponent implements OnInit {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
-        console.log(this.pacientes);
         this.pacientes.sort(function (a, b) {
           if (a.nome > b.nome) return 1;
           if (a.nome < b.nome) return -1;
@@ -64,7 +66,15 @@ export class AgendaShowComponent implements OnInit {
     }
   }
 
-  goAtendimento = (paciente) => this.router.navigate(['/atendimento', paciente.registro.id]);
+  goAtendimento(paciente) {
+      console.log(paciente);
+    if (paciente.registro != undefined)
+      this.router.navigate(['/atendimento', paciente.registro.id]);
+    else {
+      if(paciente.hasOwnProperty('registro'))
+      this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
+    }
+  }
 
   getMes = () => Agenda.getMes();
 
@@ -127,7 +137,6 @@ export class AgendaShowComponent implements OnInit {
 
   wasAtendido(paciente: PacienteAgendado) {
     if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
-      console.log(paciente);
       return paciente.registro.atendimentos.length > 0
     }
   }

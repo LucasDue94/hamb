@@ -20,21 +20,22 @@
     <section class="thead">
       <span class="th">PRONTUÁRIO</span>
       <span class="th">NOME</span>
-      <span class="th ">MÃE</span>
-      <span class="th">TELEFONE</span>
       <div class="th options">
         <fa-icon [icon]="['fas','cog']"></fa-icon>
       </div>
     </section>
     <section *ngIf="pacientes!=null" class="tbody">
       <div *ngFor="let paciente of pacientes" class="row">
-        <span class="td">{{paciente.id }}</span>
-        <span class="td">{{paciente.nome}}</span>
-        <span class="td">{{paciente.nomeMae}}</span>
-        <span class="td">{{paciente.telefone}}</span>
-        <div class="td options">
-          <fa-icon [routerLink]="['/paciente','edit',paciente]" class="icon login" [icon]="['fas','eye']"></fa-icon>
-          <fa-icon [routerLink]="['/atendimento',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+        <span class="td">{{paciente?.id }}</span>
+        <span class="td flex-2">{{paciente?.nome}}</span>
+        <div class="td options flex-2">
+          <section>
+            <fa-icon (click)="toogle(paciente)" [routerLink]="['/paciente','edit',paciente]" class="icon login"
+                     [icon]="['fas','eye']"></fa-icon>
+            <fa-icon [routerLink]="['/atendimento',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+          </section>
+          <paciente-info id="{{paciente.id}}" *ngIf="showCard && paciente == this.currentPaciente"
+                         [paciente]="paciente"></paciente-info>
         </div>
       </div>
       <div class="withoutData" *ngIf="pacientes.length == 0">
