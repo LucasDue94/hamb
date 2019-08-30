@@ -5,7 +5,6 @@ import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
 import {AuthGuard} from "../core/guards/auth.guard";
 
 const routes: Routes = [
-  //TODO mudar o index para agenda/show
   {
     path: 'agenda', canActivate: [AuthGuard], children: [
       {path: '', redirectTo: 'list', pathMatch: 'full'},

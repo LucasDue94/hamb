@@ -37,9 +37,20 @@ abstract class AtendimentoService {
 
     abstract Long count()
 
-    // TODO: incrementar contador de uso de CID ao incluir novo atendimento
     abstract void delete(Serializable id)
 
-    abstract Atendimento save(Atendimento atendimento)
+    Atendimento save(Atendimento atendimento) {
+        atendimento.save()
+
+        def relacao = [
+                usuario: atendimento.usuario,
+                cid    : atendimento.cid
+        ]
+
+        UsuarioCid novaRelacao = UsuarioCid.findOrCreateWhere(relacao)
+        novaRelacao.contadorUso += 1
+        novaRelacao.save(flush: true)
+        return atendimento
+    }
 
 }

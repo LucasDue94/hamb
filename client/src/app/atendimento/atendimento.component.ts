@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -19,13 +19,15 @@ import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimen
   templateUrl: './atendimento.component.html',
   styleUrls: ['./atendimento.component.scss']
 })
-export class AtendimentoComponent implements OnInit {
+export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('conteudo', {static: false}) conteudo;
   @ViewChild('cid', {static: false}) cid;
+  @ViewChild('atendimentoContainer', {static: false}) atendimentoContainer;
   atendimentos: Atendimento[];
   paciente: Paciente;
   pacienteAgendado: PacienteAgendado;
+  atendimentoForm: FormGroup;
   usuarioLogado;
   activeSearch = false;
   isValidForm = null;
@@ -34,7 +36,6 @@ export class AtendimentoComponent implements OnInit {
   static REGISTRO_LENGTH = 7;
   static PRONTUARIO_LENGTH = 9;
   showCard = false;
-  atendimentoForm: FormGroup;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
@@ -65,6 +66,11 @@ export class AtendimentoComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  ngAfterViewChecked(): void {
+    this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
@@ -123,14 +129,17 @@ export class AtendimentoComponent implements OnInit {
   }
 
   updateConteudo() {
-    if (this.getControl('conteudo').value)
-      this.render.removeClass(this.conteudo.nativeElement, 'errors historico-errors');
+    if (this.getControl('conteudo').value) {
+      this.render.removeClass(this.conteudo.nativeElement, 'errors');
+      this.render.removeClass(this.conteudo.nativeElement, 'historico-errors');
+    }
   }
 
   updateAtendimentos() {
     this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
       this.atendimentos = atendimentos;
       this.spinner.hide();
+      this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
     r.data = {registro: this.paciente.id};
@@ -141,6 +150,11 @@ export class AtendimentoComponent implements OnInit {
   validate = (atendimento: Atendimento) => this.checkField(atendimento.usuario.id) &&
     this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento) &&
     this.checkField(atendimento.paciente.id);
+
+  clear() {
+    this.atendimentoForm.reset();
+    this.getControl('diagnostico').reset('CID');
+  }
 
   save() {
     const atendimento = this.setFields();

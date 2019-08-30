@@ -15,11 +15,11 @@ class CidController {
 
     static responseFormats = ['json', 'xml']
 
-    def index(Integer max) {
+    def index(Integer max, String termo) {
         Usuario usuarioAtual = springSecurityService.loadCurrentUser() as Usuario
 
         params.max = Math.min(max ?: 10, 100)
-        respond cidService.list(usuarioAtual, params), model: [cidCount: cidService.count()]
+        respond cidService.list(usuarioAtual, params, termo), model: [cidCount: cidService.count()]
     }
 
     def show(String id) {

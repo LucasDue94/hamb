@@ -13,7 +13,7 @@
                    [paciente]="paciente"></paciente-info>
   </section>
 </nav>
-<section class="container-atendimento">
+<section class="container-atendimento" #atendimentoContainer>
   <article *ngFor="let atendimento of atendimentos" class="card">
     <p class="content-card">{{atendimento.conteudo}}</p>
     <footer class="footer-card">

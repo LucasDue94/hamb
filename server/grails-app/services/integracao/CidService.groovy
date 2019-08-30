@@ -9,7 +9,7 @@ abstract class CidService {
 
     abstract Cid get(String id)
 
-    List<Cid> list(Usuario usuario, Map args) {
+    List<Cid> list(Usuario usuario, Map args, String termo) {
         if (usuario != null && usuario.id != null) {
             String sort = args.sort ?: 'u.contadorUso'
             String sortOrder = args.order ?: 'desc'
@@ -20,10 +20,20 @@ abstract class CidService {
             return criteria.list(args) {
                 createAlias 'usuarios', 'u', JoinType.LEFT_OUTER_JOIN
 
+
+             /*   if (termo != null) {
+                    or {
+                        ilike 'id', "%${termo}%"
+                        ilike 'diagnostico', "%${termo}%"
+                    }
+                }*/
+
                 or {
                     eq 'u.usuario', usuario
                     isNull 'u.usuario'
+
                 }
+
 
                 if (!args.containsKey('sort')) {
                     // Torna os cids já utilizados 'maiores' que os que nunca foram usados

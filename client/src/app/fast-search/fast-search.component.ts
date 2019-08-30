@@ -44,7 +44,7 @@ export class FastSearchComponent implements OnInit {
     this.service.list(this.max, this.offset).subscribe(
       res => {
         this.dataArray = res;
-        this.spinner.hide();
+        // this.spinner.hide();
       });
     this.search()
   }
@@ -58,14 +58,14 @@ export class FastSearchComponent implements OnInit {
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(changes => {
-        this.spinner.show();
+        // this.spinner.show();
         this.offset = 0;
         if (this.dataArray != undefined) this.dataArray.length = 0;
         return this.service.search(changes, this.offset)
       })
     ).subscribe(res => {
       this.dataArray = res;
-      this.spinner.hide();
+      // this.spinner.hide();
     });
   }
 
