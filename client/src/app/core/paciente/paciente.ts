@@ -45,7 +45,6 @@ export class Paciente {
   }
 
   getLastRegistro() {
-    console.log(this.atendimentos);
     const lastIndex = this.atendimentos.length - 1;
     return this.atendimentos[lastIndex].registroAtendimento;
   }

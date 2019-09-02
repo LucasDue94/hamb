@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -7,7 +7,6 @@ import {AtendimentoService} from "../core/atendimento/atendimento.service";
 import {Atendimento} from "../core/atendimento/atendimento";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
-import {NgxSpinnerService} from "ngx-spinner";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Location} from '@angular/common';
 import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
@@ -24,58 +23,54 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('conteudo', {static: false}) conteudo;
   @ViewChild('cid', {static: false}) cid;
   @ViewChild('atendimentoContainer', {static: false}) atendimentoContainer;
+  @ViewChild('pacienteCard', {static: false}) pacienteCard;
   atendimentos: Atendimento[];
   paciente: Paciente;
   pacienteAgendado: PacienteAgendado;
   atendimentoForm: FormGroup;
-  usuarioLogado;
+  usuarioLogado: Usuario;
   activeSearch = false;
   isValidForm = null;
-  //TODO fazer o offset
   max = 1000;
-  static REGISTRO_LENGTH = 7;
-  static PRONTUARIO_LENGTH = 9;
   showCard = false;
+  spinner = false;
+
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
               private pacienteAgendadoService: PacienteAgendadoService,
-              private route: ActivatedRoute, private spinner: NgxSpinnerService,
+              private route: ActivatedRoute,
               private router: Router,
               private location: Location) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
+    console.log(this.usuarioLogado)
   }
+
+  //TODO fazer o scroll reverso
 
   ngOnInit() {
     this.buildForm();
-    this.spinner.show();
+    this.loading();
     this.route.params.subscribe((params: Params) => {
       const id = params['id'];
-      if (id.length == AtendimentoComponent.PRONTUARIO_LENGTH) {
-        this.pacienteService.get(id).subscribe(paciente => {
+      this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
+        this.pacienteAgendado = pacienteAgendado;
+        this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
           this.paciente = paciente;
           this.getAtendimentos();
         })
-      } else if (id.length == AtendimentoComponent.REGISTRO_LENGTH) {
-        this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
-          this.pacienteAgendado = pacienteAgendado;
-          this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
-            this.paciente = paciente;
-            this.getAtendimentos();
-          })
-        });
-      }
+      });
     });
-
   }
 
   ngAfterViewChecked(): void {
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
+  hasCrm = ()=> this.usuarioLogado.crm!= 'null' && this.usuarioLogado.crm!= null && this.usuarioLogado.crm !='';
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
-    this.spinner.hide();
+    this.loaded();
   });
 
   buildForm() {
@@ -110,7 +105,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.render.removeClass(this.cid.nativeElement, 'errors');
   }
 
-  search() {
+  searchCid() {
     this.activeSearch = !this.activeSearch;
   }
 
@@ -138,7 +133,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   updateAtendimentos() {
     this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
       this.atendimentos = atendimentos;
-      this.spinner.hide();
+      this.loaded();
       this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
@@ -158,23 +153,30 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   save() {
     const atendimento = this.setFields();
-    console.log(atendimento)
     this.isValidForm = this.validate(atendimento);
     if (this.isValidForm) {
-      this.render.removeClass(this.cid.nativeElement, 'errors');
-      this.render.removeClass(this.conteudo.nativeElement, 'errors');
-      this.render.removeClass(this.conteudo.nativeElement, 'historico-errors');
+      this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
         if (res.status == 201) {
-          this.spinner.show();
+          this.loading();
           this.updateAtendimentos();
         }
       });
     } else {
-      if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'errors');
-      if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'historico-errors');
-      if (this.getControl('id').invalid) this.render.addClass(this.cid.nativeElement, 'errors');
+      this.showErrors();
     }
+  }
+
+  showErrors() {
+    if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'errors');
+    if (this.getControl('conteudo').invalid) this.render.addClass(this.conteudo.nativeElement, 'historico-errors');
+    if (this.getControl('id').invalid) this.render.addClass(this.cid.nativeElement, 'errors');
+  }
+
+  removeErrors() {
+    this.render.removeClass(this.cid.nativeElement, 'errors');
+    this.render.removeClass(this.conteudo.nativeElement, 'errors');
+    this.render.removeClass(this.conteudo.nativeElement, 'historico-errors');
   }
 
   getControl(string) {
@@ -191,5 +193,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  loading = () => this.spinner = true;
+  loaded = () => this.spinner = false;
   toggle = () => this.showCard = !this.showCard;
 }

@@ -16,9 +16,15 @@
 }
 
 usuario-list, usuario-edit, agenda-show, agenda-list,
-busca, login, app-error, fast-search, atendimento, paciente-info {
+busca, login, app-error, fast-search, atendimento,
+paciente-info, spinner, app-root {
   width: 100%;
   height: 100%;
+}
+
+app-header {
+  position: relative;
+  z-index: 10;
 }
 
 atendimento {
@@ -76,7 +82,7 @@ $nav-height: 35px;
     letter-spacing: 1px;
   }
 
-  .main-title{
+  .main-title {
     flex: 1;
   }
 

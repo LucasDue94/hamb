@@ -3,7 +3,6 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'usuario-edit',
@@ -28,10 +27,12 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
     ativo: false,
     isValid: true
   };
+  spinner = false;
+
+
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private usuarioService: UsuarioService, private render: Renderer2,
-              private spinner: NgxSpinnerService) {
+              private usuarioService: UsuarioService, private render: Renderer2) {
 
     this.searchControl = new FormControl();
     this.searchForm = new FormGroup({
@@ -51,12 +52,12 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.spinner.show();
+    this.loading();
     this.route.params.subscribe((params: Params) => {
       this.usuarioService.get(+params['id']).subscribe((usuario: Usuario) => {
         this.usuario = usuario;
         this.setFormGroup();
-        this.spinner.hide();
+        this.loaded();
       })
     });
   }
@@ -124,6 +125,7 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
         }, 2000);
       });
     }
-
   }
+  loading = () => this.spinner = true;
+  loaded = () => this.spinner = false;
 }

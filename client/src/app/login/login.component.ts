@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
     this.authUser.senha = this.loginForm.get('senha').value;
     if (!this.loginForm.invalid) {
       this.authService.authentication(this.authUser).subscribe(res => {
+        console.log(res)
           this.currentUser = res;
           if (res.hasOwnProperty('access_token')) {
             localStorage.setItem('id', res['id']);
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
+        console.log(error)
           this.error = true;
           this.messageError = 'Usuário ou senha iválida!';
         });

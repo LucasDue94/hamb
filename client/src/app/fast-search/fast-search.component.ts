@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
-import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'fast-search',
@@ -10,7 +9,6 @@ import {NgxSpinnerService} from "ngx-spinner";
 })
 export class FastSearchComponent implements OnInit {
 
-  @ViewChild('spinner', {static: false}) spinner;
   @Input() service;
   /* Instância do service,passada pelo elemento pai cujo a busca será realizada  */
   @Input() fields: String[];
@@ -31,10 +29,13 @@ export class FastSearchComponent implements OnInit {
   dataArray;
   max = 25;
   offset = 0;
+  spinner = false;
 
-  constructor(private render: Renderer2) {}
+  constructor(private render: Renderer2) {
+  }
 
   ngOnInit() {
+    this.loading();
     this.searchControl = new FormControl();
     this.searchControl.setValue('');
     this.searchForm = new FormGroup({
@@ -44,7 +45,7 @@ export class FastSearchComponent implements OnInit {
     this.service.list(this.max, this.offset).subscribe(
       res => {
         this.dataArray = res;
-        // this.spinner.hide();
+        this.loaded();
       });
     this.search()
   }
@@ -58,14 +59,14 @@ export class FastSearchComponent implements OnInit {
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(changes => {
-        // this.spinner.show();
+        this.loading();
         this.offset = 0;
         if (this.dataArray != undefined) this.dataArray.length = 0;
         return this.service.search(changes, this.offset)
       })
     ).subscribe(res => {
       this.dataArray = res;
-      // this.spinner.hide();
+      this.loaded();
     });
   }
 
@@ -74,18 +75,11 @@ export class FastSearchComponent implements OnInit {
     this.offset += 25;
     this.service.search(this.searchControl.value, this.offset, this.max).subscribe(data => {
       data.forEach(d => this.dataArray.push(d));
-      // this.loaded();
-      console.log(data);
+      this.loaded();
     });
   }
 
-  loading() {
-    this.render.removeClass(this.spinner.nativeElement,'loaded');
-    this.render.addClass(this.spinner.nativeElement,'loading');
-  }
+  loading = () => this.spinner = true;
 
-  loaded(){
-    this.render.removeClass(this.spinner.nativeElement,'loading');
-    this.render.addClass(this.spinner.nativeElement,'loaded')
-  }
+  loaded = () => this.spinner = false;
 }

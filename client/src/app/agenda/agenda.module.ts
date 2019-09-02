@@ -8,7 +8,7 @@ import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
 import {RouterModule} from "@angular/router";
 import {CoreModule} from '../core/core.module';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import {NgxSpinnerModule} from "ngx-spinner";
+import {SpinnerModule} from "../spinner/spinner.module";
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
     RouterModule,
     CoreModule,
     InfiniteScrollModule,
-    NgxSpinnerModule
+    SpinnerModule
   ],
   declarations: [AgendaListComponent, AgendaShowComponent]
 })

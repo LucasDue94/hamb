@@ -64,6 +64,9 @@
     top: -50px !important;
   }
 
+  .disabled{
+    cursor: not-allowed;
+  }
   .form-control {
     display: flex;
     flex-direction: column;

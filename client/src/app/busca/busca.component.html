@@ -1,6 +1,4 @@
-<ngx-spinner bdColor="rgba(255,255,255, 0.7)" color="#4DC2B3" size="medium" type="ball-pulse">
-  <p class="spinner-title">Carregando...</p>
-</ngx-spinner>
+<spinner *ngIf="spinner"></spinner>
 <nav class="nav-container">
   <a [routerLink]="['/usuario','list']" class="back" [ngStyle]="{'visibility': 'hidden'}">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
@@ -32,7 +30,8 @@
           <section>
             <fa-icon (click)="toogle(paciente)" [routerLink]="['/paciente','edit',paciente]" class="icon login"
                      [icon]="['fas','eye']"></fa-icon>
-            <fa-icon [routerLink]="['/atendimento',paciente.id]" class="icon" [icon]="['fas','book-medical']"></fa-icon>
+            <fa-icon [routerLink]="['/atendimento',paciente.getLastRegistro().id]" class="icon"
+                     [icon]="['fas','book-medical']"></fa-icon>
           </section>
           <paciente-info id="{{paciente.id}}" *ngIf="showCard && paciente == this.currentPaciente"
                          [paciente]="paciente"></paciente-info>

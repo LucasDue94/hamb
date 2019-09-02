@@ -2,10 +2,6 @@ import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {Router} from "@angular/router";
-import {NgxSpinnerService} from "ngx-spinner";
-import {AtendimentoService} from "../core/atendimento/atendimento.service";
-import {PacienteService} from "../core/paciente/paciente.service";
-import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
 
 @Component({
   selector: 'agenda-list',
@@ -16,16 +12,14 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   agendas: Map<string, Agenda>;
   dias;
+  spinner = false;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private spinner: NgxSpinnerService,
-              private atendimentoService: AtendimentoService,
-              private pacienteService: PacienteService,
-              private pacienteAgendadoService: PacienteAgendadoService) {
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.spinner.show();
+   this.loading();
   }
 
   ngAfterViewInit(): void {
@@ -34,7 +28,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       // this.countAtendidos();
       console.log(this.agendas);
       this.dias = Array.from(this.agendas.keys());
-      this.spinner.hide();
+     this.loaded();
     });
   }
 
@@ -72,6 +66,9 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     });
     return total;
   }
+
+  loading = () => this.spinner = true;
+  loaded = () => this.spinner = false;
 }
 
 

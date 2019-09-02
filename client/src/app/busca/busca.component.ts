@@ -1,6 +1,5 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {NgxSpinnerService} from "ngx-spinner";
 import {PacienteService} from "../core/paciente/paciente.service";
 import {Paciente} from "../core/paciente/paciente";
 import {debounceTime, switchMap} from "rxjs/operators";
@@ -12,36 +11,34 @@ import {debounceTime, switchMap} from "rxjs/operators";
 })
 export class BuscaComponent implements OnInit {
   pacientes: Paciente[];
-  paciente: Paciente;
   searchForm: FormGroup;
   searchControl: FormControl;
   offset = 0;
   max = 15;
   showCard = false;
   currentPaciente;
-
-  constructor(private spinner: NgxSpinnerService,
-              private render: Renderer2, private pacienteService: PacienteService) {
-  }
+  spinner = false;
+  loading = () => this.spinner = true;
+  loaded = () => this.spinner = false;
+  constructor(private render: Renderer2, private pacienteService: PacienteService) {}
 
   ngOnInit() {
-    this.spinner.show();
+    this.loading();
     this.searchControl = new FormControl();
     this.searchControl.setValue('');
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
     });
-    this.spinner.hide();
+    this.loaded();
   }
 
 
   scrollDown() {
-    this.spinner.show();
+    this.loading();
     this.offset += 15;
     this.pacienteService.search(this.searchControl.value, this.offset, this.max).subscribe(pacientes => {
       pacientes.forEach(paciente => this.pacientes.push(paciente));
-      this.spinner.hide();
-      console.log(this.pacientes);
+      this.loaded();
     });
   }
 
@@ -49,19 +46,18 @@ export class BuscaComponent implements OnInit {
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(changes => {
-        this.spinner.show();
+        this.loading();
         this.offset = 0;
         if (this.pacientes != undefined) this.pacientes.length = 0;
         return this.pacienteService.search(changes, this.offset, this.max)
       })
     ).subscribe(res => {
       this.pacientes = res;
-      console.log(this.pacientes)
-      this.spinner.hide();
+      this.loaded();
     });
   }
 
-  toogle(paciente){
+  toogle(paciente) {
     this.currentPaciente = paciente;
     this.showCard = !this.showCard;
   }

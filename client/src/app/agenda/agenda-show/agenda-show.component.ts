@@ -2,10 +2,7 @@ import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
-import {NgxSpinnerService} from "ngx-spinner";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
-import {PacienteAgendadoService} from "../../core/pacienteAgendado/pacienteAgendado.service";
-import {hasOwnProperty} from "tslint/lib/utils";
 
 @Component({
   selector: 'agenda-show',
@@ -22,26 +19,30 @@ export class AgendaShowComponent implements OnInit {
   hourMax;
   dataAgenda;
   horario = '';
+  spinner = false;
+
+  loading = () => this.spinner = true;
+  loaded = () => this.spinner = false;
+  
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute,
-              private spinner: NgxSpinnerService,
-              private pacienteAgendadoService: PacienteAgendadoService) {
+              private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.spinner.show();
+    this.loading();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
+        console.log(this.agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
         this.pacientes.sort(function (a, b) {
           if (a.nome > b.nome) return 1;
           if (a.nome < b.nome) return -1;
         });
-        this.spinner.hide();
+        this.loaded();
         this.verificaAgenda()
       })
     });

@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Paciente} from "../core/paciente/paciente";
 import {Agenda} from "../core/agenda/agenda";
 import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
@@ -8,20 +8,14 @@ import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
   templateUrl: './paciente-info.component.html',
   styleUrls: ['./paciente-info.component.scss']
 })
-export class PacienteInfoComponent implements OnInit, AfterViewChecked {
+export class PacienteInfoComponent implements OnInit {
 
   @Input() paciente: Paciente;
   @Input() pacienteAgendado: PacienteAgendado;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
-  ngAfterViewChecked(): void {
-    console.log(this.paciente);
-  }
+  ngOnInit() {}
 
   getDate() {
     if (this.paciente != undefined && this.paciente.nascimento != undefined) {

@@ -2,7 +2,9 @@
 @import '../../assets/colors';
 
 $header-height: 70px;
-.header {
+.container-header {
+  z-index: 1;
+  position: relative;
   display: flex;
   align-items: center;
   height: $header-height;

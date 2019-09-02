@@ -2,6 +2,7 @@
 @import '../../assets/colors';
 
 .container-fast-search {
+  position: relative;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -28,7 +29,7 @@
       border-radius: 0;
 
       &:hover {
-        border-radius: 0px;
+        border-radius: 0;
         transition: 0.3s;
         cursor: pointer;
         background-color: $gray-60;
@@ -46,35 +47,3 @@
   width: 200px;
   font-size: 17px;
 }
-
-.loading {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  text-align: center;
-  top: 0;
-  left: 0;
-  //z-index: 99;
-  position: absolute;
-  width: 100%;
-  height: calc(100% - 20px);
-  background-color: $white;
-  font-size: 30px;
-
-  .heart {
-    z-index: 1;
-    color: $light-danger;
-    animation: heart-animation 300ms alternate infinite;
-
-    @keyframes heart-animation {
-      100% {
-        color: $danger;
-      }
-    }
-  }
-}
-
-.loaded {
-  display: none;
-}
-
