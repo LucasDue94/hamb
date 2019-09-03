@@ -1,7 +1,9 @@
 import {AfterViewInit, Component, OnInit, Renderer2} from '@angular/core';
 import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Usuario} from "../core/usuario/usuario";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'agenda-list',
@@ -13,24 +15,39 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   agendas: Map<string, Agenda>;
   dias;
   spinner = false;
+  usuarioLogado: Usuario;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router) {
+              private router: Router, private route: ActivatedRoute, private location: Location) {
+    this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
   ngOnInit() {
-   this.loading();
+    this.loading();
   }
 
   ngAfterViewInit(): void {
-    this.agendaService.list().subscribe((agendas) => {
-      this.agendas = Agenda.mergeAgenda(agendas);
-      // this.countAtendidos();
-      console.log(this.agendas);
-      this.dias = Array.from(this.agendas.keys());
-     this.loaded();
-    });
+    if (Usuario.isMedico(this.usuarioLogado.crm)) {
+      this.agendaService.list().subscribe((agendas) => {
+        this.agendas = Agenda.mergeAgenda(agendas);
+        this.dias = Array.from(this.agendas.keys());
+        this.loaded();
+      });
+    } else {
+      this.route.params.subscribe((params: Params) => {
+        console.log(params);
+        this.agendaService.list('', '', '', params['id']).subscribe((agendas) => {
+          this.agendas = Agenda.mergeAgenda(agendas);
+          this.dias = Array.from(this.agendas.keys());
+          this.loaded();
+        });
+      });
+    }
   }
+
+  back = () => this.router.navigate(['/usuario','list']);
+
+  isMedico = (crm) => Usuario.isMedico(crm);
 
   dateToString(key) {
     let agenda = new Agenda(this.agendas.get(key));
@@ -39,7 +56,15 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   }
 
   send(key) {
-    this.router.navigate(['/agenda', 'show', this.dateToString(key)]);
+    if (Usuario.isMedico(this.usuarioLogado.crm)) {
+      this.router.navigate(['/agenda', 'show', this.dateToString(key), this.usuarioLogado.id]);
+    } else {
+      this.route.params.subscribe(params => {
+        console.log(params);
+        this.router.navigate(['/agenda', 'show', this.dateToString(key), params['id']]);
+      })
+
+    }
   }
 
   getToday = () => Agenda.getDay();

@@ -19,7 +19,6 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   max = 25;
   offset = 0;
   messageStatus;
-  responseOk = 200;
   spinner = false;
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;

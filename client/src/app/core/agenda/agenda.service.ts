@@ -24,9 +24,9 @@ export class AgendaService extends HeadersHelper {
     super()
   }
 
-  list(max?: any, offset?: any, data?: any): Observable<Agenda[]> {
+  list(max?: any, offset?: any, data?: any, usuarioId?: number): Observable<Agenda[]> {
     let subject = new Subject<Agenda[]>();
-    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + max + '&data=' + data, {headers: this.getDefaultHttpOptions()})
+    this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + max + '&data=' + data + '&usuarioId=' + usuarioId, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Agenda(propertyName)))
       });

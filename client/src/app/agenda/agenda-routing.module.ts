@@ -6,15 +6,27 @@ import {AuthGuard} from "../core/guards/auth.guard";
 
 const routes: Routes = [
   {
-    path: 'agenda', canActivate: [AuthGuard], children: [
-      {path: '', redirectTo: 'list', pathMatch: 'full'},
+    path: 'agenda',
+    canActivate: [AuthGuard],
+    data: {permissao: 'ROLE_MEDICO'},
+    children: [
       {
-        path: 'show/:data',
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full'
+      },
+      {
+        path: 'show/:data/:id',
         component: AgendaShowComponent,
         canActivate: [AuthGuard],
         data: {permissao: 'ROLE_MEDICO', agenda: ''}
       },
-      {path: 'list', component: AgendaListComponent, canActivate: [AuthGuard], data: {permissao: 'ROLE_MEDICO'}},
+      {
+        path: 'list',
+        component: AgendaListComponent,
+        canActivate: [AuthGuard],
+        data: {permissao: 'ROLE_MEDICO'}
+      },
     ]
   }
 ];

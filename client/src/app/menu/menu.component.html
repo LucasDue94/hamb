@@ -3,7 +3,7 @@
     <a *ngIf="checkPermission('ROLE_ADMIN')" [routerLink]="'usuario'" class="menu-item">
       <fa-icon [icon]="['fas','user']"></fa-icon>
     </a>
-    <a *ngIf="checkPermission('ROLE_MEDICO')"  [routerLink]="['/agenda','list']" class="menu-item">
+    <a *ngIf="isMedico()"  [routerLink]="['/agenda','list']" class="menu-item">
       <fa-icon [icon]="['fas','calendar-alt']"></fa-icon>
     </a>
     <a [routerLink]="'busca'" class="menu-item" href="">

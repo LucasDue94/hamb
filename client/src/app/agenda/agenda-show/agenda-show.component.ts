@@ -3,6 +3,9 @@ import {AgendaService} from "../../core/agenda/agenda.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
+import {Location} from '@angular/common';
+import {Usuario} from "../../core/usuario/usuario";
+
 
 @Component({
   selector: 'agenda-show',
@@ -23,19 +26,28 @@ export class AgendaShowComponent implements OnInit {
 
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
-  
+
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute, private location: Location) {
+  }
+
+  back() {
+    if (Usuario.isMedico(localStorage.getItem('crm'))) {
+      this.router.navigate(['/agenda', 'list', localStorage.getItem('id')]);
+    } else {
+      this.route.params.subscribe(params => {
+        this.router.navigate(['/agenda', 'list', params['id']]);
+      })
+    }
   }
 
   ngOnInit() {
     this.loading();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
-      this.agendaService.list('', '', this.dataAgenda).subscribe(agendas => {
+      this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
-        console.log(this.agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
         this.pacientes.sort(function (a, b) {
@@ -68,12 +80,11 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
-      console.log(paciente);
     if (paciente.registro != undefined)
       this.router.navigate(['/atendimento', paciente.registro.id]);
     else {
-      if(paciente.hasOwnProperty('registro'))
-      this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
+      if (paciente.hasOwnProperty('registro'))
+        this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
     }
   }
 

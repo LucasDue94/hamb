@@ -14,8 +14,14 @@ abstract class AgendaService {
 
     abstract Agenda get(Serializable id)
 
-    List<Agenda> list(String data) {
-        Usuario usuario = Usuario.get(springSecurityService.principal.id as Long)
+    List<Agenda> list(String data, Serializable usuarioId) {
+        Usuario usuario
+
+        if (usuarioId == null) {
+            usuario = Usuario.get(springSecurityService.principal.id as Long)
+        } else {
+            usuario = Usuario.get(usuarioId)
+        }
 
         Calendar calendar = GregorianCalendar.instance
         calendar.time = new Date()
@@ -36,7 +42,7 @@ abstract class AgendaService {
         Date lastDayMonth = calendar.time
 
         def criteria = Agenda.createCriteria()
-        ArrayList<Agenda> agendaList = new ArrayList<Agenda>()
+        ArrayList<Agenda> agendaList
 
         if (data == null) {
             agendaList = criteria.list() {

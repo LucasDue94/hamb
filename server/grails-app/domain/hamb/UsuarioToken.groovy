@@ -12,10 +12,12 @@ class UsuarioToken {
     }
 
     def afterLoad() {
-        Date agora = new Date()
-        if (ultimoAcesso.time < agora.time - 1) {
-            ultimoAcesso = agora
-            save flush: true
+        withTransaction {
+            Date agora = new Date()
+            if (ultimoAcesso.time < agora.time - 1) {
+                ultimoAcesso = agora
+                save flush: true
+            }
         }
     }
 }

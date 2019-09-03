@@ -1,6 +1,5 @@
 import {PacienteAgendado} from '../pacienteAgendado/pacienteAgendado';
 import {Sala} from '../sala/sala';
-import {Atendimento} from "../atendimento/atendimento";
 
 export class Agenda {
   id: number;

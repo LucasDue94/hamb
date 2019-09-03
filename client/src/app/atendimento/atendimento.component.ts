@@ -24,6 +24,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('cid', {static: false}) cid;
   @ViewChild('atendimentoContainer', {static: false}) atendimentoContainer;
   @ViewChild('pacienteCard', {static: false}) pacienteCard;
+  @ViewChild('status', {static: false}) status;
   atendimentos: Atendimento[];
   paciente: Paciente;
   pacienteAgendado: PacienteAgendado;
@@ -34,7 +35,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   max = 1000;
   showCard = false;
   spinner = false;
-
+  messageStatus;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
@@ -43,7 +44,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
               private router: Router,
               private location: Location) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
-    console.log(this.usuarioLogado)
   }
 
   //TODO fazer o scroll reverso
@@ -67,7 +67,8 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
-  hasCrm = ()=> this.usuarioLogado.crm!= 'null' && this.usuarioLogado.crm!= null && this.usuarioLogado.crm !='';
+  hasCrm = () => this.usuarioLogado.crm != 'null' && this.usuarioLogado.crm != null && this.usuarioLogado.crm != '';
+
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
     this.loaded();
@@ -108,6 +109,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   searchCid() {
     this.activeSearch = !this.activeSearch;
   }
+
 
   setFields() {
     let atendimento = new Atendimento();
@@ -151,20 +153,27 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.getControl('diagnostico').reset('CID');
   }
 
+  formatText(){
+    console.log(this.atendimentoForm.get('conteudo').value);
+    let text = this.atendimentoForm.get('conteudo').value;
+    console.log(text.replace(/\n/g, "'<br>'"));
+  }
   save() {
+    this.formatText()
     const atendimento = this.setFields();
     this.isValidForm = this.validate(atendimento);
-    if (this.isValidForm) {
+   /* if (this.isValidForm) {
       this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
         if (res.status == 201) {
           this.loading();
           this.updateAtendimentos();
+          this.changeStatus()
         }
       });
     } else {
       this.showErrors();
-    }
+    }*/
   }
 
   showErrors() {
@@ -196,4 +205,17 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
   toggle = () => this.showCard = !this.showCard;
+
+  changeStatus() {
+    setTimeout(() => {
+      this.render.removeClass(this.status.nativeElement, 'offStatus');
+      this.render.addClass(this.status.nativeElement, 'onStatus');
+      this.messageStatus = false;
+    }, 300);
+    this.render.addClass(this.status.nativeElement, 'offStatus');
+    this.render.removeClass(this.status.nativeElement, 'onStatus');
+    setTimeout(()=>{
+    this.location.back();
+    },2300);
+  }
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Authentic} from "../authentic";
+import {Usuario} from "../core/usuario/usuario";
 
 @Component({
   selector: 'app-menu',
@@ -12,8 +13,9 @@ export class MenuComponent extends Authentic implements OnInit {
     super()
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
+  isMedico = () => Usuario.isMedico(localStorage.getItem('crm'));
 
   checkPermission: (permission: string) => boolean;
 

@@ -1,5 +1,6 @@
 <nav class="nav-container">
-  <a [ngStyle]="{'visibility': 'hidden'}" [routerLink]="['/']" class="btn-back">
+  <a (click)="back()" [ngStyle]="{'visibility': isMedico(usuarioLogado.crm) ? 'hidden': 'visible'}" [routerLink]="['/']"
+     class="back">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
@@ -14,7 +15,8 @@
 </nav>
 <section infinite-scroll class="content-default">
   <section (click)="send(dia)" class="card" *ngFor="let dia of dias">
-    <h1 [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
+    <h1
+      [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
       class="day">{{dia}}</h1>
     <div class="informations">
       <p>Atendidos:{{countAtendidos(dia)}}</p>

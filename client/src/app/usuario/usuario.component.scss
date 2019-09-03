@@ -12,64 +12,6 @@
   color: $gray-70;
 }
 
-.onStatus {
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  height: 0;
-  width: 0;
-  z-index: 99;
-  font-size: 25px;
-
-  & {
-    background-color: $green-default;
-    color: transparent;
-    border-radius: 2px;
-    opacity: 1;
-    -webkit-animation: show 2s;
-    -o-animation: success 2s;
-    animation: success 2s;
-    box-shadow: 1px 2px 6px black;
-  }
-
-  .title-status {
-    font-weight: 500;
-  }
-
-  .icon {
-    font-size: 35px;
-    text-align: center;
-    margin-left: 10px;
-  }
-
-  @keyframes success {
-    0% {
-      opacity: 0.3;
-      height: 50%;
-      width: 50%;
-    }
-    50% {
-      color: $white;
-      opacity: 1;
-      height: 50%;
-      width: 50%;
-    }
-    100% {
-      opacity: 0;
-      font-size: 30px !important;
-    }
-  }
-}
-
-.offStatus {
-  color: transparent;
-  display: none;
-}
-
 .container-edit-usuario {
   display: flex;
   align-items: flex-start;
