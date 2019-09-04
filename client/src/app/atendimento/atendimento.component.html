@@ -5,7 +5,7 @@
   </a>
   <h3 class="main-title">Atendimentos</h3>
   <section class="paciente-container">
-    <div class="paciente-info" (click)="toggle()">
+    <div class="paciente-info" (mouseenter)="toggle(true)" (mouseleave)="toggle(false)">
       <fa-icon class="icon" [icon]="['fas','info-circle']"></fa-icon>
       <p>{{paciente?.nome}}</p>
     </div>
@@ -15,20 +15,21 @@
 </nav>
 <section class="container-atendimento" #atendimentoContainer>
   <article *ngFor="let atendimento of atendimentos" class="card">
-    <p class="content-card">{{atendimento.conteudo}}</p>
+    <p [innerHTML]="formatText(atendimento?.conteudo)" class="content-card"></p>
     <footer class="footer-card">
-      <span class="data">{{dateToString(atendimento?.dataAtendimento)}}</span>
+      <span class="data">{{atendimento?.dataAtendimento | date:'dd/MM/yyyy HH:mm'}}</span>
       <span class="cid">{{atendimento.cid.id}} - {{atendimento.cid.diagnostico}}</span>
       <span class="usuario">CRM: {{atendimento.usuario.crm}} - {{atendimento.usuario.nome}}</span>
     </footer>
   </article>
-  <div class="withoutData" *ngIf="atendimentos?.length == 0">
-    O paciente ainda não possui atendimentos.
+  <div class="withoutData" *ngIf="atendimentos?.length == 0 || !hasRegistro">
+    {{!this.hasRegistro ?  'O paciente ainda não foi efetivado, portanto, não possui um registro.': 'O paciente ainda não possui atendimentos.'}}
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
 </section>
-<form *ngIf="hasCrm()" class="atendimento-form" [formGroup]="atendimentoForm" (ngSubmit)="save()">
-  <textarea (input)="updateConteudo()"
+<form *ngIf="hasCrm()" class="atendimento-form" [formGroup]="atendimentoForm"
+      (ngSubmit)="save()">
+  <textarea *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
             formControlName="conteudo"
             placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control"></textarea>
   <div class="none"
@@ -37,7 +38,7 @@
     Você não escreveu nada no histórico.
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
-  <section class="container-buttons">
+  <section *ngIf="!atendimentoForm.disabled" class="container-buttons">
     <div class="none" [ngClass]="[getControl('id').invalid && getControl('id').dirty ? 'errors':'none']" #cid>
       Você não selecionou um cid.
       <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>

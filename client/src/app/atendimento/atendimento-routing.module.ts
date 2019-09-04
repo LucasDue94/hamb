@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'atendimento',
     children: [
       {path: '', redirectTo: 'atendimento', pathMatch: 'full'},
-      {path: 'list/:codPrt', component: AtendimentoComponent, data: {permissao: 'ROLE_ADMIN'}}
+      {path: ':id', component: AtendimentoComponent, data: {permissao: 'ROLE_MEDICO'}}
     ]
   }
 ];

@@ -80,11 +80,15 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
+    console.log(paciente.registro)
     if (paciente.registro != undefined)
       this.router.navigate(['/atendimento', paciente.registro.id]);
     else {
-      if (paciente.hasOwnProperty('registro'))
+      if (paciente.registro != undefined) {
         this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
+      } else {
+        this.router.navigate(['/atendimento','null'])
+      }
     }
   }
 

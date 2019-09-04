@@ -33,7 +33,6 @@
 
     .content-card {
       word-wrap: break-word;
-      width: 60%;
       margin-bottom: 5px;
     }
 
@@ -65,9 +64,10 @@
     top: -50px !important;
   }
 
-  .disabled{
+  .disabled {
     cursor: not-allowed;
   }
+
   .form-control {
     display: flex;
     flex-direction: column;
@@ -244,4 +244,15 @@
   width: 100%;
 }
 
-
+.show {
+  z-index: 1;
+  animation: showCard 1s;
+  @keyframes showCard {
+    0%{
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -36,7 +36,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   showCard = false;
   spinner = false;
   messageStatus;
-
+  hasRegistro = true;
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
               private pacienteAgendadoService: PacienteAgendadoService,
@@ -53,17 +53,28 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.loading();
     this.route.params.subscribe((params: Params) => {
       const id = params['id'];
-      this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
-        this.pacienteAgendado = pacienteAgendado;
-        this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
-          this.paciente = paciente;
-          this.getAtendimentos();
-        })
-      });
+
+      if (id != 'null') {
+        this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
+          this.pacienteAgendado = pacienteAgendado;
+          this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
+            this.paciente = paciente;
+            this.getAtendimentos();
+          })
+        });
+      }else{
+        this.hasRegistro = false;
+        console.log('sem registro');
+        this.loaded();
+        this.atendimentoForm.disable({emitEvent:true});
+        console.log(this.atendimentoForm.disabled);
+      }
     });
   }
 
   ngAfterViewChecked(): void {
+    if(this.atendimentoForm.disabled)
+    this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
@@ -71,6 +82,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
+    console.log(atendimentos)
     this.loaded();
   });
 
@@ -91,13 +103,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   }
 
   back = () => this.location.back();
-
-  dateToString(stringData) {
-    let data = new Date(stringData);
-    let dataFormatada = data.toISOString().substring(0, 10);
-    let horaFormatada = data.toISOString().substring(11, 16);
-    return dataFormatada.replace(/-/g, "/") + ' ' + horaFormatada;
-  }
 
   selectCid(event) {
     this.activeSearch = false;
@@ -153,16 +158,14 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.getControl('diagnostico').reset('CID');
   }
 
-  formatText(){
-    console.log(this.atendimentoForm.get('conteudo').value);
-    let text = this.atendimentoForm.get('conteudo').value;
-    console.log(text.replace(/\n/g, "'<br>'"));
+  formatText(conteudo) {
+    return conteudo.replace(/\n/g || /\r\n/g || /\r/g, '<br>');
   }
+
   save() {
-    this.formatText()
     const atendimento = this.setFields();
     this.isValidForm = this.validate(atendimento);
-   /* if (this.isValidForm) {
+    if (this.isValidForm) {
       this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
         if (res.status == 201) {
@@ -173,7 +176,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
       });
     } else {
       this.showErrors();
-    }*/
+    }
   }
 
   showErrors() {
@@ -204,7 +207,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
-  toggle = () => this.showCard = !this.showCard;
+  toggle = (status) => this.showCard = status
 
   changeStatus() {
     setTimeout(() => {
@@ -214,8 +217,8 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     }, 300);
     this.render.addClass(this.status.nativeElement, 'offStatus');
     this.render.removeClass(this.status.nativeElement, 'onStatus');
-    setTimeout(()=>{
-    this.location.back();
-    },2300);
+    setTimeout(() => {
+      this.location.back();
+    }, 2300);
   }
 }
