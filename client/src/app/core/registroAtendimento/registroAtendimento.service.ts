@@ -55,7 +55,6 @@ export class RegistroAtendimentoService {
             headers: this.httpOptions.headers,
             params: {termo: searchTerm}
         }).subscribe((json: any) => {
-            console.log(json);
             subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
         });
         return subject.asObservable();

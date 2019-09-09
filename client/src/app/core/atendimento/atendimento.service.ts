@@ -68,7 +68,6 @@ export class AtendimentoService extends HeadersHelper {
       headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
-      console.log(json);
       subject.next(json.map((obj: any) => new Atendimento(obj)))
     });
     return subject.asObservable();

@@ -115,7 +115,6 @@ export class UsuarioEditComponent implements OnInit, AfterViewChecked {
 
   save() {
     this.validateForm();
-    console.log(this.validateArray);
     if (this.validateArray.isValid) {
       this.usuarioService.save(this.usuario).subscribe(res => {
         let r = this.router;

@@ -35,7 +35,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.route.params.subscribe((params: Params) => {
-        console.log(params);
         this.agendaService.list('', '', '', params['id']).subscribe((agendas) => {
           this.agendas = Agenda.mergeAgenda(agendas);
           this.dias = Array.from(this.agendas.keys());
@@ -60,7 +59,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/agenda', 'show', this.dateToString(key), this.usuarioLogado.id]);
     } else {
       this.route.params.subscribe(params => {
-        console.log(params);
         this.router.navigate(['/agenda', 'show', this.dateToString(key), params['id']]);
       })
 

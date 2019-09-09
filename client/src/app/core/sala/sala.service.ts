@@ -56,7 +56,6 @@ export class SalaService {
             headers: this.httpOptions.headers,
             params: {termo: searchTerm}
         }).subscribe((json: any) => {
-            console.log(json);
             subject.next(json.map((obj: any) => new Sala(obj)))
         });
         return subject.asObservable();

@@ -51,11 +51,12 @@
       padding: 15px;
     }
 
-    .retorno{
+    .retorno {
       align-self: center;
       color: $danger;
     }
-    .italic{
+
+    .italic {
       font-style: italic;
       font-weight: 600;
     }
@@ -68,21 +69,24 @@
   margin-left: 10px;
 
   & {
+    //background-color: $gray-70;
     border: 1px solid $gray-70;
     border-radius: 5px;
     font-size: 20px;
     cursor: pointer;
-    color: white;
+    color: $gray-100;
   }
 }
 
 .btn-active {
   transition: 0.5s;
   background-color: $gray-80;
+  color: $white!important;
+
 }
 
-.atendido{
-  color: $gray-70!important;
+.atendido {
+  color: $gray-70 !important;
 }
 
 

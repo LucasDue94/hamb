@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import {HashLocationStrategy, LocationStrategy, PathLocationStrategy} from "@angular/common";
 import {HeaderModule} from "./header/header.module";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {MenuModule} from "./menu/menu.module";
@@ -50,7 +50,7 @@ import {SpinnerDirective} from './spinner/spinner.directive';
     PacienteInfoModule
 ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
     AuthGuard
   ],
   bootstrap: [AppComponent]

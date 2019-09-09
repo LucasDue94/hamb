@@ -7,7 +7,7 @@ export class RegistroAtendimento {
   paciente: Paciente;
   origem: any;
   convenio: Convenio;
-  atendimentos: Atendimento[];
+  atendimentos: Atendimento[] = new Array<Atendimento>();
 
   constructor(object?: any) {
     if (object) {

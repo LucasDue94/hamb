@@ -64,10 +64,8 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
         });
       }else{
         this.hasRegistro = false;
-        console.log('sem registro');
         this.loaded();
         this.atendimentoForm.disable({emitEvent:true});
-        console.log(this.atendimentoForm.disabled);
       }
     });
   }
@@ -82,7 +80,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
-    console.log(atendimentos)
     this.loaded();
   });
 

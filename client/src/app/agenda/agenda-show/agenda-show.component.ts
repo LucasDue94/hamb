@@ -50,13 +50,33 @@ export class AgendaShowComponent implements OnInit {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
-        this.pacientes.sort(function (a, b) {
-          if (a.nome > b.nome) return 1;
-          if (a.nome < b.nome) return -1;
-        });
+        this.sortPacientes();
         this.loaded();
         this.verificaAgenda()
       })
+    });
+  }
+
+  sortPacientes() {
+    this.pacientes.sort(function (a, b) {
+      if (a.nome > b.nome) return 1;
+      if (a.nome < b.nome) return -1;
+    });
+
+    this.pacientes.sort(function (a, b) {
+      if (a.registro == undefined && b.registro != undefined) return 1;
+      else if (b.registro == undefined && a.registro != undefined) return -1;
+    });
+
+    this.pacientes.sort(function (a, b) {
+      function wasAtendido(paciente) {
+        if (paciente.registro != undefined && paciente.registro.atendimentos != undefined)
+          return paciente.registro.atendimentos.length > 0
+      }
+
+      if (wasAtendido(a) && !wasAtendido(b)) return 1;
+      else if (!wasAtendido(a) && wasAtendido(b)) return -1;
+
     });
   }
 
@@ -80,14 +100,13 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
-    console.log(paciente.registro)
     if (paciente.registro != undefined)
       this.router.navigate(['/atendimento', paciente.registro.id]);
     else {
       if (paciente.registro != undefined) {
         this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
       } else {
-        this.router.navigate(['/atendimento','null'])
+        this.router.navigate(['/atendimento', 'null'])
       }
     }
   }
@@ -136,9 +155,7 @@ export class AgendaShowComponent implements OnInit {
     if (this.pacientes != undefined) {
       this.pacientes.forEach(paciente => {
         let hora = this.getHour(paciente.hora);
-        if (hora > this.hourMin && hora < this.hourMax) {
-          total++;
-        }
+        if (hora > this.hourMin && hora < this.hourMax) total++;
       });
       return total;
     }
