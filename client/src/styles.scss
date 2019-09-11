@@ -1,10 +1,12 @@
 @import 'assets/colors';
 @import 'assets/mixins';
+@import 'fonts/roboto';
+@import 'fonts/manjari';
 
 * {
   padding: 0;
   margin: 0;
-  font-family: Roboto, 'sans-serif';
+  font-family: 'Roboto', sans-serif;
   text-decoration: none;
   color: inherit;
   border: none;

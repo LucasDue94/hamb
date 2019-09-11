@@ -17,7 +17,8 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
   constructor(private render: Renderer2) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit(): void {
     this.root = document.getElementsByTagName('app-root')[0];

@@ -5,12 +5,14 @@ import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
+import {AuthService} from "../auth/auth.service";
 
 
 @Injectable()
 export class AgendaService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
+  static UNAUTHORIZED = 401;
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -20,7 +22,7 @@ export class AgendaService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super()
   }
 
@@ -29,6 +31,10 @@ export class AgendaService extends HeadersHelper {
     this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + max + '&data=' + data + '&usuarioId=' + usuarioId, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Agenda(propertyName)))
+      },error => {
+        if(error.status == AgendaService.UNAUTHORIZED){
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -50,6 +56,10 @@ export class AgendaService extends HeadersHelper {
     this.http.get(this.baseUrl + `agenda/` + id, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any) => {
         subject.next(new Agenda(json));
+      },error => {
+        if(error.status == AgendaService.UNAUTHORIZED){
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -61,6 +71,10 @@ export class AgendaService extends HeadersHelper {
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
       subject.next(json.map((obj: any) => new Agenda(obj)))
+    },error => {
+      if(error.status == AgendaService.UNAUTHORIZED){
+        this.authService.logout(localStorage.getItem('token'))
+      }
     });
     return subject.asObservable();
   }

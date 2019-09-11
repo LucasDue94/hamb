@@ -1,10 +1,10 @@
-import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
-import {Location} from '@angular/common';
 import {Usuario} from "../../core/usuario/usuario";
+import {AuthService} from "../../core/auth/auth.service";
 
 
 @Component({
@@ -27,9 +27,8 @@ export class AgendaShowComponent implements OnInit {
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
 
-
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute, private location: Location) {
+              private router: Router, private route: ActivatedRoute) {
   }
 
   back() {
@@ -50,8 +49,8 @@ export class AgendaShowComponent implements OnInit {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
-        this.sortPacientes();
         this.loaded();
+        this.sortPacientes();
         this.verificaAgenda()
       })
     });
@@ -100,15 +99,9 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
-    if (paciente.registro != undefined)
-      this.router.navigate(['/atendimento', paciente.registro.id]);
-    else {
-      if (paciente.registro != undefined) {
-        this.router.navigate(['/atendimento', paciente.registro.paciente.atendimentos.getLastRegistro().id])
-      } else {
-        this.router.navigate(['/atendimento', 'null'])
-      }
-    }
+    if (paciente.registro != undefined) this.router.navigate(['/atendimento', paciente.registro.id]);
+    else this.router.navigate(['/atendimento', 'null'])
+
   }
 
   getMes = () => Agenda.getMes();

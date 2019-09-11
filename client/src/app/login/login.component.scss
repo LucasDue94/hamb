@@ -1,4 +1,5 @@
 @import "../../assets/colors";
+@import "../../fonts/manjari";
 
 .login-container {
   position: relative;
@@ -30,13 +31,29 @@
       color: $white;
     }
 
+
     .system-name, .system-description {
+      margin: 4px auto;
 
       & {
         text-shadow: 2px 2px 5px $gray-100;
-        font-weight: 500;
         letter-spacing: 1px;
       }
+    }
+
+    .system-name {
+      display: flex;
+
+      .bold, .thin {
+        font-family: 'manjari-Bold', sans-serif;
+        letter-spacing: 4px;
+      }
+
+      .thin {
+        font-family: 'manjari-thin', sans-serif;
+        font-weight: 100;
+      }
+
     }
 
     .system-description {
@@ -50,6 +67,7 @@
     }
 
     .img-login {
+      margin-top: 7px;
       opacity: 1;
       width: 100px;
     }
@@ -173,7 +191,7 @@
   }
 }
 
-  .valid {
-    display: none;
+.valid {
+  display: none;
 
-  }
+}

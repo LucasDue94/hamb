@@ -28,7 +28,7 @@
         <span class="td flex-2">{{paciente?.nome}}</span>
         <div class="td options flex-2">
           <section>
-            <fa-icon (click)="toogle(paciente)" [routerLink]="['/paciente','edit',paciente]" class="icon login"
+            <fa-icon (click)="toogle(paciente)"  class="icon login"
                      [icon]="['fas','eye']"></fa-icon>
             <fa-icon [routerLink]="['/atendimento',paciente.getLastRegistro().id]" class="icon"
                      [icon]="['fas','book-medical']"></fa-icon>

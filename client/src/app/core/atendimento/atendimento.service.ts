@@ -5,11 +5,13 @@ import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class AtendimentoService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
+  static UNAUTHORIZED = 401;
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -19,15 +21,20 @@ export class AtendimentoService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient) {
-    super()
+  constructor(private http: HttpClient, private authService: AuthService) {
+    super();
   }
+
 
   list(max?: any, offset?: any, codPrt?: any): Observable<Atendimento[]> {
     let subject = new Subject<Atendimento[]>();
     this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&codPrt=' + codPrt, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
+      }, error => {
+        if (error.status == AtendimentoService.UNAUTHORIZED) {
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -49,6 +56,10 @@ export class AtendimentoService extends HeadersHelper {
     this.http.get(this.baseUrl + `atendimento/` + id, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any) => {
         subject.next(new Atendimento(json));
+      }, error => {
+        if (error.status == AtendimentoService.UNAUTHORIZED) {
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -58,6 +69,10 @@ export class AtendimentoService extends HeadersHelper {
     this.http.get(this.baseUrl + `atendimento/findAtendimento/` + registroId, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
+      }, error => {
+        if (error.status == AtendimentoService.UNAUTHORIZED) {
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -69,6 +84,10 @@ export class AtendimentoService extends HeadersHelper {
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
       subject.next(json.map((obj: any) => new Atendimento(obj)))
+    }, error => {
+      if (error.status == AtendimentoService.UNAUTHORIZED) {
+        this.authService.logout(localStorage.getItem('token'))
+      }
     });
     return subject.asObservable();
   }

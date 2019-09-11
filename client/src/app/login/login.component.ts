@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
           if (this.currentUser.crm == null) {
             this.router.navigate(['/usuario']);
           } else {
-            this.router.navigate(['/agenda', 'show', Agenda.getStringDate(),this.currentUser.id]);
+            this.router.navigate(['/agenda', 'show', Agenda.getStringDate(), this.currentUser.id]);
           }
         },
         error => {

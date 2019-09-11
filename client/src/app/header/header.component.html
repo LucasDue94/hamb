@@ -3,9 +3,10 @@
     <p> Usuário: {{usuarioLogado.nome}}</p>
     <p *ngIf="usuarioLogado.crm!=='null'">Crm: {{usuarioLogado.crm}}</p>
   </div>
-  <h1 class="system-name">{{systemName}}
-    <fa-icon [icon]="['fas','user-md']"></fa-icon>
-  </h1>
+  <div class="system-name">
+    <h1 class="bold">Amb</h1>
+    <h1 class="thin">Cor</h1>
+  </div>
   <a href="#" id="exit">
     <fa-icon (click)="logout()" [icon]="['fas','sign-out-alt']"></fa-icon>
   </a>

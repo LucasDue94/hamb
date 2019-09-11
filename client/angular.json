@@ -23,7 +23,10 @@
               "src/images"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/fonts/roboto.scss",
+              "src/fonts/manjari.scss",
+              "src/assets/colors.scss"
             ],
             "scripts": []
           },

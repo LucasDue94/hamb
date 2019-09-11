@@ -36,7 +36,9 @@ export class Agenda {
       if (agendasMap.get(key)) {
         agendasMap.get(key).pacientes = agendasMap.get(key).pacientes.concat(agenda.pacientes);
       } else {
-        agendasMap.set(key, agenda);
+        if (agenda.pacientes.length > 0) {
+          agendasMap.set(key, agenda);
+        }
       }
     });
     return agendasMap;

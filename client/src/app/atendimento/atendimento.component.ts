@@ -141,7 +141,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
       this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
-    r.data = {registro: this.paciente.id};
+    if(r!=undefined) r.data = {registro: this.paciente.id};
   }
 
   checkField = (field) => field != null && field != '' && field != undefined;
@@ -204,7 +204,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
-  toggle = (status) => this.showCard = status
+  toggle = (status) => this.showCard = status;
 
   changeStatus() {
     setTimeout(() => {

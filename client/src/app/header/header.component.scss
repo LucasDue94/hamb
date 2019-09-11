@@ -1,5 +1,7 @@
 @import '../../assets/mixins';
 @import '../../assets/colors';
+@import '../../fonts/manjari';
+
 
 $header-height: 70px;
 .container-header {
@@ -15,17 +17,33 @@ $header-height: 70px;
     box-shadow: 0 3px 6px $gray-90;
   }
 
-  .user-information, .system-name, #exit {
+  .system-name {
+    justify-content: center;
+    display: flex;
+    flex: 1;
+    text-align: center;
+    letter-spacing: 7px;
+    font-size: 20px;
+
+    .bold, .thin {
+      text-shadow: 2px 2px 5px $gray-100;
+      font-family: 'manjari-Bold', sans-serif;
+      letter-spacing: 4px;
+    }
+
+    .thin {
+      font-family: 'manjari-thin', sans-serif;
+      font-weight: 100;
+    }
+  }
+
+  .user-information, #exit {
     flex: 1;
     margin: 0 20px;
     text-align: left;
     text-transform: capitalize;
   }
 
-  .system-name {
-    text-align: center;
-    letter-spacing: 2px;
-  }
 
   #exit {
     @include icons-hover(0.3s, $white);

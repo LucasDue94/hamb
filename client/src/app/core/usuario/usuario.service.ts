@@ -4,11 +4,14 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {HeadersHelper} from "../headersHelper";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class UsuarioService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
+  static UNAUTHORIZED = 401;
+
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -18,10 +21,9 @@ export class UsuarioService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super();
   }
-
 
   list(max?: any, offset?: any): Observable<Usuario[]> {
     let subject = new Subject<Usuario[]>();
@@ -29,6 +31,10 @@ export class UsuarioService extends HeadersHelper {
     this.http.get(this.baseUrl + `usuario?offset=${offset}&max=${max}`, {headers: this.getDefaultHttpOptions()})
       .subscribe((json: any[]) => {
         subject.next(json.map((usuario: any) => new Usuario(usuario)))
+      },error => {
+        if(error.status == UsuarioService.UNAUTHORIZED){
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -38,6 +44,10 @@ export class UsuarioService extends HeadersHelper {
     this.http.get(this.baseUrl + 'usuario/' + id, {headers:this.getDefaultHttpOptions()})
       .subscribe((json: any) => {
         subject.next(new Usuario(json));
+      },error => {
+        if(error.status == UsuarioService.UNAUTHORIZED){
+          this.authService.logout(localStorage.getItem('token'))
+        }
       });
     return subject.asObservable();
   }
@@ -50,6 +60,10 @@ export class UsuarioService extends HeadersHelper {
       params: {termo: searchTerm}
     }).subscribe((json: any) => {
       subject.next(json.map((usuario: any) => new Usuario(usuario)))
+    },error => {
+      if(error.status == UsuarioService.UNAUTHORIZED){
+        this.authService.logout(localStorage.getItem('token'))
+      }
     });
     return subject.asObservable();
   }
