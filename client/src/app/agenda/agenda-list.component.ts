@@ -3,7 +3,6 @@ import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
-import {Location} from '@angular/common';
 
 @Component({
   selector: 'agenda-list',
@@ -18,7 +17,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   usuarioLogado: Usuario;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private route: ActivatedRoute, private location: Location) {
+              private router: Router, private route: ActivatedRoute) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 

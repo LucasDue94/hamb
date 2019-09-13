@@ -17,10 +17,14 @@ class Atendimento {
                 return ['noCrm']
             }
         }
-        paciente nullable: false, blank:false
+        paciente nullable: false, blank: false
         registroAtendimento nullable: false, blank: false
         dataAtendimento nullable: false, blank: false
         cid nullable: false, blank: false
         conteudo nullable: false, blank: false, type: "text"
+    }
+
+    static mapping = {
+        version defaultValue: 0
     }
 }
