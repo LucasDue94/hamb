@@ -49,9 +49,10 @@ export class AgendaShowComponent implements OnInit {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
         this.pacientes = this.getPacientes();
+        console.log(this.pacientes);
         this.loaded();
         this.sortPacientes();
-        this.verificaAgenda()
+        this.verificaAgenda();
       })
     });
   }
@@ -80,18 +81,18 @@ export class AgendaShowComponent implements OnInit {
   }
 
   verificaAgenda() {
-    let now = new Date();
-    if (this.getHour(now) > 11) {
+    let hour = new Date().getHours();
+    if (hour > 12) {
       this.setHorario('tarde');
       this.toogle(this.btnTarde);
-      if (this.countPacientes() == 0) {
+      if (this.countPacientes('tarde') == 0) {
         this.setHorario('manhã');
         this.toogle(this.btnManha);
       }
-    } else if (this.getHour(now) <= 11) {
+    } else if (hour <= 12) {
       this.setHorario('manhã');
       this.toogle(this.btnManha);
-      if (this.countPacientes() == 0) {
+      if (this.countPacientes('manhã') == 0) {
         this.setHorario('tarde');
         this.toogle(this.btnTarde);
       }
@@ -101,7 +102,6 @@ export class AgendaShowComponent implements OnInit {
   goAtendimento(paciente) {
     if (paciente.registro != undefined) this.router.navigate(['/atendimento', paciente.registro.id]);
     else this.router.navigate(['/atendimento', 'null'])
-
   }
 
   getMes = () => Agenda.getMes();
@@ -121,7 +121,10 @@ export class AgendaShowComponent implements OnInit {
     return idade > 1 ? idade + ' anos' : idade + 'ano';
   }
 
-  getHour = (stringData) => Agenda.getHour(stringData);
+  getHour(date) {
+    const stringDate = new Date(date).toLocaleString();
+    return new Date(stringDate).getHours();
+  }
 
   toogle(button) {
     if (button == this.btnManha) {
@@ -136,19 +139,23 @@ export class AgendaShowComponent implements OnInit {
   setIntervalo() {
     if (this.horario == "manhã") {
       this.hourMin = 0;
-      this.hourMax = 11;
-    } else if (this.horario == 'tarde') {
-      this.hourMin = 11;
-      this.hourMax = 23;
+      this.hourMax = 13;
+    } else if (this.horario == "tarde") {
+      this.hourMin = 13;
+      this.hourMax = 24;
     }
   }
 
-  countPacientes(): number {
+  countPacientes(horario): number {
     let total = 0;
     if (this.pacientes != undefined) {
       this.pacientes.forEach(paciente => {
         let hora = this.getHour(paciente.hora);
-        if (hora > this.hourMin && hora < this.hourMax) total++;
+        if (horario == "manhã") {
+          if (hora >= 0 && hora <= 12) total++;
+        } else if (horario == "tarde") {
+          if (hora > 12 && hora <= 23) total++;
+        }
       });
       return total;
     }

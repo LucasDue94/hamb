@@ -13,7 +13,7 @@
   <main class="pacientes-container">
     <section [ngClass]="{'atendido': wasAtendido(paciente)}" *ngFor="let paciente of pacientes"
              (click)="goAtendimento(paciente)">
-      <div *ngIf="getHour(paciente?.hora) > this.hourMin && getHour(paciente?.hora) < this.hourMax " class="row-agenda">
+      <div *ngIf="getHour(paciente?.hora) >= this.hourMin && getHour(paciente?.hora) < this.hourMax " class="row-agenda">
         <span class="retorno" *ngIf="paciente?.registro?.origem == 'RETORNO'">
           <fa-icon [icon]="['fas','registered']"></fa-icon>
         </span>
@@ -25,7 +25,7 @@
         <span class="info convenio">{{paciente?.convenio?.fantasia}}</span>
       </div>
     </section>
-    <div class="withoutData" *ngIf="countPacientes() == 0">
+    <div class="withoutData" *ngIf="countPacientes(this.horario) == 0">
       Você não possui pacientes neste horário!
       <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
     </div>

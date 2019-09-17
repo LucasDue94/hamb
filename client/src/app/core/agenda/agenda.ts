@@ -101,6 +101,7 @@ export class Agenda {
   static getHour(stringData?) {
     if (stringData) {
       let dataFormat = new Date(stringData);
+      console.log(dataFormat)
       return dataFormat.getHours();
     }
     return new Date().getHours();
