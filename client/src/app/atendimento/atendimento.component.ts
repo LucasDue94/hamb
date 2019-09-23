@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -120,7 +120,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     atendimento.paciente = new Paciente({id: this.paciente.id});
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
-      diagnostico: this.atendimentoForm.get('cid').get('diagnostico').value
     });
     if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro().id});
     else atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});

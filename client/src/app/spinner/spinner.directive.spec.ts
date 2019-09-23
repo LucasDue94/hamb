@@ -1,4 +1,4 @@
-import { SpinnerDirective } from './spinner.directive';
+import {SpinnerDirective} from './spinner.directive';
 
 describe('SpinnerDirective', () => {
   it('should create an instance', () => {

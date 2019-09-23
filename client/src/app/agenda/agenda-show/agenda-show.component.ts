@@ -1,10 +1,9 @@
-import {AfterContentInit, Component, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AgendaService} from "../../core/agenda/agenda.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 import {Usuario} from "../../core/usuario/usuario";
-import {AuthService} from "../../core/auth/auth.service";
 
 
 @Component({
@@ -17,7 +16,7 @@ export class AgendaShowComponent implements OnInit {
   @ViewChild('btnManha', {static: false}) btnManha;
   @ViewChild('btnTarde', {static: false}) btnTarde;
   agendas: Map<string, Agenda>;
-  pacientes: PacienteAgendado[];
+  pacientes: PacienteAgendado[] = [];
   hourMin;
   hourMax;
   dataAgenda;
@@ -47,12 +46,14 @@ export class AgendaShowComponent implements OnInit {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
-        if (this.agendas.size == 0) this.router.navigate(['/agenda', 'list']);
-        this.pacientes = this.getPacientes();
-        console.log(this.pacientes);
-        this.loaded();
-        this.sortPacientes();
-        this.verificaAgenda();
+        if (this.agendas.size > 0) {
+          this.pacientes = this.getPacientes();
+          this.loaded();
+          this.sortPacientes();
+          this.verificaAgenda();
+        } else {
+          this.router.navigate(['/agenda', 'list']);
+        }
       })
     });
   }
@@ -109,9 +110,11 @@ export class AgendaShowComponent implements OnInit {
   getDay = (data) => Agenda.getDay(data) + 1;
 
   getPacientes() {
-    let keys = this.agendas.keys();
-    if (this.agendas != undefined)
+    if (this.agendas != undefined) {
+      let keys = this.agendas.keys();
       return this.agendas.get(keys.next().value).pacientes;
+    }
+    return [];
   }
 
   getIdade(stringData) {

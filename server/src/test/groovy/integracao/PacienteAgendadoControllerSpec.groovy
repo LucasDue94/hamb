@@ -1,14 +1,11 @@
 package integracao
 
-import spock.lang.*
-import static org.springframework.http.HttpStatus.OK
-import static org.springframework.http.HttpStatus.NOT_FOUND
-import static org.springframework.http.HttpStatus.NO_CONTENT
-import static org.springframework.http.HttpStatus.CREATED
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY
-import grails.validation.ValidationException
-import grails.testing.web.controllers.ControllerUnitTest
 import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
+import grails.validation.ValidationException
+import spock.lang.Specification
+
+import static org.springframework.http.HttpStatus.*
 
 class PacienteAgendadoControllerSpec extends Specification implements ControllerUnitTest<PacienteAgendadoController>, DomainUnitTest<PacienteAgendado> {
 

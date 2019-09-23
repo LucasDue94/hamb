@@ -1,4 +1,4 @@
-import { Ng2ProjectPage } from './app.po';
+import {Ng2ProjectPage} from './app.po';
 
 describe('ng2-project App', function() {
   let page: Ng2ProjectPage;

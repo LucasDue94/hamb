@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ListComponent} from './${propertyName}-list.component';
-import {editComponent} from './${propertyName}-persist.component';
 import {ShowComponent} from './${propertyName}-show.component';
 import {AuthGuard} from "../guards/auth.guard";
 

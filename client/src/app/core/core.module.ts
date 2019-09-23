@@ -9,8 +9,8 @@ import {AgendaService} from './agenda/agenda.service';
 import {SalaService} from './sala/sala.service';
 import {AtendimentoService} from './atendimento/atendimento.service';
 import {CidService} from './cid/cid.service';
-import { ConvenioService } from './convenio/convenio.service';
-import { PacienteAgendadoService } from './pacienteAgendado/pacienteAgendado.service';
+import {ConvenioService} from './convenio/convenio.service';
+import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.service';
 
 @NgModule({
   declarations: [],

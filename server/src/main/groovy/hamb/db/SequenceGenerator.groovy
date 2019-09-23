@@ -1,9 +1,9 @@
 package hamb.db
 
-import org.hibernate.type.Type
 import org.hibernate.MappingException
-import org.hibernate.service.ServiceRegistry
 import org.hibernate.id.enhanced.SequenceStyleGenerator
+import org.hibernate.service.ServiceRegistry
+import org.hibernate.type.Type
 
 class SequenceGenerator extends SequenceStyleGenerator {
     @Override

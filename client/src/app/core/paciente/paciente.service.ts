@@ -5,7 +5,6 @@ import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
-import {Atendimento} from "../atendimento/atendimento";
 
 @Injectable()
 export class PacienteService extends HeadersHelper {

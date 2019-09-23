@@ -4,6 +4,7 @@ import grails.gorm.services.Service
 import grails.plugin.springsecurity.SpringSecurityService
 import hamb.Usuario
 import org.springframework.beans.factory.annotation.Autowired
+
 import java.text.SimpleDateFormat
 
 @Service(Agenda)

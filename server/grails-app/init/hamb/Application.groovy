@@ -2,7 +2,6 @@ package hamb
 
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
-
 import groovy.transform.CompileStatic
 import org.springframework.scheduling.annotation.EnableScheduling
 

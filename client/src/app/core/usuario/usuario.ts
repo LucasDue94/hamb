@@ -1,5 +1,5 @@
-import { Perfil } from '../perfil/perfil';
-import { Atendimento } from '../atendimento/atendimento';
+import {Perfil} from '../perfil/perfil';
+import {Atendimento} from '../atendimento/atendimento';
 
 export class Usuario {
   id: number;

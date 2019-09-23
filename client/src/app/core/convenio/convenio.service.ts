@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Convenio } from './convenio';
+import {Convenio} from './convenio';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
 import {Observable, Subject} from "rxjs";

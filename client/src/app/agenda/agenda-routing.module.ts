@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {AgendaListComponent} from "./agenda-list.component";
 import {AgendaShowComponent} from "./agenda-show/agenda-show.component";
 import {AuthGuard} from "../core/guards/auth.guard";
-import {AtendimentoComponent} from "../atendimento/atendimento.component";
 
 const routes: Routes = [
   {

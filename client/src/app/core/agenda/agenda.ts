@@ -98,15 +98,6 @@ export class Agenda {
     return new Date().getDate();
   }
 
-  static getHour(stringData?) {
-    if (stringData) {
-      let dataFormat = new Date(stringData);
-      console.log(dataFormat)
-      return dataFormat.getHours();
-    }
-    return new Date().getHours();
-  }
-
   static getIdade(nasc) {
     let nascimento = new Date(nasc);
     return Math.floor(Math.ceil(Math.abs(nascimento.getTime() - (new Date()).getTime()) / (1000 * 3600 * 24)) / 365.25);
