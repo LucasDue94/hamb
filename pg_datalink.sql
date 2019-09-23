@@ -67,7 +67,14 @@ CREATE FOREIGN TABLE convenio (
   OPTIONS (table '(select COD_CON, FANTASIA from admwpd.FACONCAD)', readonly 'true');
 
 
-
+--TODO RUN IN PROD
+alter table usuario alter column id set default nextval('usuario_id_seq'::regclass);
+alter table usuario alter column version set default 0;
+alter table usuario alter column senha_expirada set default false;
+alter table usuario alter column expirado set default false;
+alter table usuario alter column bloqueado set default false;
+alter table atendimento alter column id set default nextval('atendimento_id_seq'::regclass);
+alter table atendimento alter column version set default 0;
 
 
 
