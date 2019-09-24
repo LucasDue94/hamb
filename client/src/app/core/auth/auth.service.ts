@@ -38,11 +38,13 @@ export class AuthService extends HeadersHelper {
     if (auth != null) this.token = auth;
     const header = {
       auth: new HttpHeaders({
-        "X-Auth-Token": this.token
+        "X-Auth-Token": this.token,
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json",
       })
     };
 
-    return this.http.post(url, null, {headers: header.auth, responseType: 'json'}).subscribe(
+    return this.http.post(url, {}, {headers: header.auth, responseType: 'json'}).subscribe(
       resp => {
         localStorage.clear();
         this.router.navigate(['/']);

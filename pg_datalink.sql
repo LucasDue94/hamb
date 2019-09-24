@@ -1,7 +1,7 @@
 CREATE EXTENSION oracle_fdw;
 CREATE SERVER wpd FOREIGN DATA WRAPPER oracle_fdw OPTIONS (dbserver '//BD01/PROD');
-GRANT USAGE ON FOREIGN SERVER wpd TO hamb;
-CREATE USER MAPPING FOR hamb SERVER wpd OPTIONS (user 'financeiro', password 'financeiro');
+GRANT USAGE ON FOREIGN SERVER wpd TO ambcor;
+CREATE USER MAPPING FOR ambcor SERVER wpd OPTIONS (user 'financeiro', password 'financeiro');
 
 DROP FOREIGN TABLE IF EXISTS paciente;
 CREATE FOREIGN TABLE paciente (
