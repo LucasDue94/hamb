@@ -46,6 +46,27 @@ OPTIONS (table '(select COD_AGENDA,
 from ADMWPD.IMAGNCAD agn
     inner join ADMWPD.FAPROCAD pro on pro.COD_PRO = agn.COD_PRO)', readonly 'true');
 
+drop foreign table paciente_agendado;
+create foreign table paciente_agendado
+    (
+        id varchar(9) options (key 'true') not null,
+        nome varchar(70) not null,
+        nascimento date,
+        convenio_id varchar(3),
+        agenda_id varchar(8) not null,
+        registro_id varchar(7),
+        hora timestamp not null
+        )
+    server wpd
+    options (table '(select ap.COD_PRT_PROV,
+       ap.NOME_PAC,
+       ap.NASCIMENTO,
+       ap.COD_CON,
+       exa.cod_agenda,
+       trim(exa.COD_PAC),
+       exa.hora_ini
+from ADMWPD.IMAGNPAC ap left join ADMWPD.IMAGNEXA exa on exa.COD_PRT_PROV = ap.COD_PRT_PROV)', readonly 'true');
+
 DROP FOREIGN TABLE IF EXISTS registro_atendimento;
 CREATE FOREIGN TABLE registro_atendimento(
     id VARCHAR(7) OPTIONS (key 'true') NOT NULL,
