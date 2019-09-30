@@ -1,6 +1,7 @@
 package hamb
 
 import grails.gorm.services.Service
+import grails.gorm.transactions.Transactional
 
 @Service(Usuario)
 abstract class UsuarioService {
@@ -32,6 +33,16 @@ abstract class UsuarioService {
     void onOff(Usuario usuario) {
         usuario.ativo = !usuario.ativo
         usuario.save flush: true
+    }
+
+    @Transactional
+    void gerarSenhasPadrao() {
+        final String DEFAULT_ENCRYPTION_PREFIX = '{bcrypt}$2a$10$%'
+
+        Usuario.findAllBySenhaNotLike(DEFAULT_ENCRYPTION_PREFIX).each {
+            it.senha = it.login
+            it.save()
+        }
     }
 
 }
