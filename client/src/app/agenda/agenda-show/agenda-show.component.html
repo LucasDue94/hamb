@@ -3,7 +3,7 @@
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     Voltar
   </a>
-  <h3>{{getDay(dataAgenda)}} de {{getMes()}}</h3>
+  <h3>{{(getDay())}} de {{getMes()}}</h3>
   <div>
     <button #btnManha class="btn-horario btn-active" (click)="setHorario('manhã')">Manhã</button>
     <button #btnTarde class="btn-horario" (click)="setHorario('tarde')">Tarde</button>

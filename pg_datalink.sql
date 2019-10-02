@@ -96,6 +96,7 @@ alter table usuario alter column expirado set default false;
 alter table usuario alter column bloqueado set default false;
 alter table atendimento alter column id set default nextval('atendimento_id_seq'::regclass);
 alter table atendimento alter column version set default 0;
+alter sequence atendimento_id_seq restart  with 1;
 
 
 

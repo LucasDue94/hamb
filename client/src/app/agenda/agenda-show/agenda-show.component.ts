@@ -107,8 +107,9 @@ export class AgendaShowComponent implements OnInit {
 
   getMes = () => Agenda.getMes();
 
-  getDay = (data) => Agenda.getDay(data) + 1;
-
+  getDay(){
+    return new Date(this.dataAgenda).getUTCDate()
+  }
   getPacientes() {
     if (this.agendas != undefined) {
       let keys = this.agendas.keys();

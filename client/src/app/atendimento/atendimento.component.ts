@@ -37,6 +37,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   spinner = false;
   messageStatus;
   hasRegistro = true;
+
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
               private pacienteAgendadoService: PacienteAgendadoService,
@@ -62,17 +63,17 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
             this.getAtendimentos();
           })
         });
-      }else{
+      } else {
         this.hasRegistro = false;
         this.loaded();
-        this.atendimentoForm.disable({emitEvent:true});
+        this.atendimentoForm.disable({emitEvent: true});
       }
     });
   }
 
   ngAfterViewChecked(): void {
-    if(this.atendimentoForm.disabled)
-    this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
+    if (this.atendimentoForm.disabled)
+      this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
@@ -140,7 +141,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
       this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
-    if(r!=undefined) r.data = {registro: this.paciente.id};
+    if (r != undefined) r.data = {registro: this.paciente.id};
   }
 
   checkField = (field) => field != null && field != '' && field != undefined;
