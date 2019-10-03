@@ -20,24 +20,25 @@ abstract class CidService {
             return criteria.list(args) {
                 createAlias 'usuarios', 'u', JoinType.LEFT_OUTER_JOIN
 
-
-                if (termo != null) {
+                if (termo != null && !termo.isEmpty()) {
                     or {
                         ilike 'id', "%${termo}%"
                         ilike 'diagnostico', "%${termo}%"
                     }
+                } else {
+                    or {
+                        eq 'u.usuario', usuario
+                        isNull 'u.usuario'
+                    }
+
+                    if (!args.containsKey('sort')) {
+                        // Torna os cids já utilizados 'maiores' que os que nunca foram usados
+                        order 'u.usuario', 'asc'
+                    }
+
+                    order sort, sortOrder
                 }
 
-                or {
-                    eq 'u.usuario', usuario
-                    isNull 'u.usuario'
-                }
-
-                if (!args.containsKey('sort')) {
-                    // Torna os cids já utilizados 'maiores' que os que nunca foram usados
-                    order 'u.usuario', 'asc'
-                }
-                order sort, sortOrder
                 order 'diagnostico', 'asc'
             } as List<Cid>
         } else {
