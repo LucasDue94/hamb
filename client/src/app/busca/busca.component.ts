@@ -53,6 +53,7 @@ export class BuscaComponent implements OnInit {
       })
     ).subscribe(res => {
       this.pacientes = res;
+      console.log(res)
       this.loaded();
     });
   }
@@ -60,6 +61,10 @@ export class BuscaComponent implements OnInit {
   toogle(paciente) {
     this.currentPaciente = paciente;
     this.showCard = !this.showCard;
+  }
+
+  goAtendimento(atendimentos){
+    console.log(atendimentos);
   }
 
 }

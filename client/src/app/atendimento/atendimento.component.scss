@@ -52,7 +52,6 @@
     }
   }
 }
-
 .atendimento-form {
   position: relative;
   border-radius: 8px;
@@ -67,6 +66,8 @@
   .disabled {
     cursor: not-allowed;
   }
+
+
 
   .form-control {
     display: flex;
@@ -248,7 +249,7 @@
   z-index: 1;
   animation: showCard 1s;
   @keyframes showCard {
-    0%{
+    0% {
       opacity: 0;
     }
     100% {
@@ -256,3 +257,5 @@
     }
   }
 }
+
+

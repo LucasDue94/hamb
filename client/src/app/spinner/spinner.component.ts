@@ -23,6 +23,7 @@ export class SpinnerComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.root = document.getElementsByTagName('app-root')[0];
     this.spinnerComponent = this.render.parentNode(this.spinnerContainer.nativeElement);
+
     if (this.fullScreen) this.render.appendChild(this.root, this.spinnerComponent);
     if (this.width != undefined) this.render.setStyle(this.spinnerContainer.nativeElement, 'width', this.width);
     if (this.height != undefined) {

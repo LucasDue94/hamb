@@ -12,6 +12,7 @@ import {Location} from '@angular/common';
 import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
 import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
+import {RegistroAtendimentoService} from "../core/registroAtendimento/registroAtendimento.service";
 
 @Component({
   selector: 'atendimento',
@@ -39,7 +40,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
-              private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
+              private pacienteService: PacienteService, private atendimentoService: AtendimentoService,private registroAtendimento: RegistroAtendimentoService,
               private pacienteAgendadoService: PacienteAgendadoService,
               private route: ActivatedRoute,
               private router: Router,
@@ -47,23 +48,20 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
-  //TODO fazer o scroll reverso
-
   ngOnInit() {
     this.buildForm();
     this.loading();
     this.route.params.subscribe((params: Params) => {
-      const id = params['id'];
-
-      if (id != 'null') {
-        this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
-          this.pacienteAgendado = pacienteAgendado;
-          this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
+      const registro = params['id'];
+      if (registro != 'null') {
+        this.registroAtendimento.get(registro).subscribe(registro => {
+          this.pacienteService.get(registro.paciente.id).subscribe(paciente => {
             this.paciente = paciente;
             this.getAtendimentos();
           })
         });
       } else {
+          console.log(this.pacienteAgendado);
         this.hasRegistro = false;
         this.loaded();
         this.atendimentoForm.disable({emitEvent: true});
@@ -118,11 +116,10 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
     atendimento.conteudo = this.atendimentoForm.get('conteudo').value;
-    atendimento.paciente = new Paciente({id: this.paciente.id});
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
     });
-    if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro().id});
+    if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro()});
     else atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});
     return atendimento;
   }
@@ -147,8 +144,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   checkField = (field) => field != null && field != '' && field != undefined;
 
   validate = (atendimento: Atendimento) => this.checkField(atendimento.usuario.id) &&
-    this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento) &&
-    this.checkField(atendimento.paciente.id);
+    this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento);
 
   clear() {
     this.atendimentoForm.reset();

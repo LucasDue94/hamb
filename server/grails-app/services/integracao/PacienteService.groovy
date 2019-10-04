@@ -1,6 +1,7 @@
 package integracao
 
 import grails.gorm.services.Service
+import org.hibernate.sql.JoinType
 
 @Service(Paciente)
 abstract class PacienteService {
@@ -15,22 +16,28 @@ abstract class PacienteService {
 
     List<Paciente> list(Map args, String termo) {
         def criteria = Paciente.createCriteria()
-        List<Paciente> pacienteList = (List<Paciente>) criteria.list(args) {
-
-            isNotEmpty('atendimentos')
+        List<String> pacienteIds = (List<String>) criteria.list(args) {
             if (termo != null && !termo.isEmpty()) {
+                createAlias 'registros', 'r', JoinType.LEFT_OUTER_JOIN
+                createAlias 'r.paciente', 'p', JoinType.LEFT_OUTER_JOIN
+
                 or {
                     ilike('nome', "%${termo}%")
                     ilike('id', "%${termo}%")
-                    registros {
-                        ilike('id', "%${termo}%")
-                        projections {
-                            distinct('paciente')
-                        }
-                    }
+                    ilike('r.id', "%${termo}%")
+                    ilike('p.id', "%${termo}%")
+                }
+
+                isNotEmpty('r.atendimentos')
+
+                projections {
+                    distinct 'id'
                 }
             }
         }
+
+        List<Paciente> pacienteList = Paciente.getAll pacienteIds
+
         return pacienteList
     }
 

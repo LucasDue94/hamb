@@ -1,5 +1,6 @@
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
 import {Atendimento} from "../atendimento/atendimento";
+import {last} from "rxjs/operators";
 
 export class Paciente {
   id: string;
@@ -9,7 +10,6 @@ export class Paciente {
   contato: string;
   registros: RegistroAtendimento[];
   atendimentos: Atendimento[];
-  atendimento: Atendimento;
 
   constructor(object?: any) {
     if (object) {
@@ -19,11 +19,6 @@ export class Paciente {
           return new RegistroAtendimento(obj);
         });
         delete object['registros'];
-      }
-
-      if (object.hasOwnProperty('atendimento')) {
-        this.atendimento = new Atendimento(object['atendimento']);
-        delete object['atendimento'];
       }
 
       if (object.hasOwnProperty('atendimentos')) {
@@ -45,7 +40,8 @@ export class Paciente {
   }
 
   getLastRegistro() {
-    const lastIndex = this.atendimentos.length - 1;
-    return this.atendimentos[lastIndex].registroAtendimento;
+
+      const lastIndex = this.atendimentos.length - 1;
+      return this.atendimentos[lastIndex];
   }
 }

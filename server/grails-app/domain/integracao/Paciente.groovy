@@ -1,7 +1,5 @@
 package integracao
 
-import hamb.Atendimento
-
 class Paciente {
     String id
     String nome
@@ -9,7 +7,7 @@ class Paciente {
     String contato
     Date nascimento
 
-    static hasMany = [registros: RegistroAtendimento, atendimentos: Atendimento]
+    static hasMany = [registros: RegistroAtendimento]
 
     static constraints = {
         nome nullable: false, blank: false

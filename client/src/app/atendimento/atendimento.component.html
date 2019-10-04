@@ -31,7 +31,7 @@
       (ngSubmit)="save()">
   <textarea *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
             formControlName="conteudo"
-            placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control"></textarea>
+            placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control text-historico"></textarea>
   <div class="none"
        [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors historico-errors':'none']"
        #conteudo>
