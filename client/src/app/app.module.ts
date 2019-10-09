@@ -23,18 +23,22 @@ import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
 import {SpinnerDirective} from './spinner/spinner.directive';
+import { ForgotComponent } from './forgot/forgot.component';
+import {ForgotModule} from "./forgot/forgot.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     ErrorComponent,
     SpinnerDirective,
+    ForgotComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
+    ForgotModule,
     HeaderModule,
     MenuModule,
     MainModule,

@@ -20,6 +20,9 @@
                  [icon]="['fas','eye-slash']"></fa-icon>
         <input class="login-form-control" [type]="'password'" formControlName="senha" placeholder="senha" #password>
       </div>
+      <div>
+        <a class="label-forgot"  href="#" [routerLink]="['/forgot']">Esqueceu a senha ?</a>
+      </div>
       <div class="login-form-group">
         <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <button (click)="login()" class="button-login">Entrar</button>

@@ -8,6 +8,13 @@
   height: 440px;
   flex-direction: column;
 
+  & .label-forgot {
+    position: relative;
+    top:-25px;
+    font-size: 12px;
+    margin-bottom: 150px;
+  }
+
   & {
     border-radius: 0 50px 20px 100px;
     box-shadow: -5px 0 15px -7px, 5px 0 15px -7px;

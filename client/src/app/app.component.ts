@@ -13,6 +13,7 @@ export class AppComponent extends Authentic implements DoCheck {
   isLogged = false;
   currentRoute;
   currentUser;
+  publicUrl = false;
 
   constructor(private route: Router, private auth: AuthService) {
     super();
@@ -21,6 +22,7 @@ export class AppComponent extends Authentic implements DoCheck {
 
   ngDoCheck(): void {
     this.isLogged = localStorage.getItem('token') != null;
+    this.publicUrl = this.route.url === '/forgot';
     this.currentRoute = this.route.url;
   }
 
