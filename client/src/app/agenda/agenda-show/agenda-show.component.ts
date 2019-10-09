@@ -101,15 +101,15 @@ export class AgendaShowComponent implements OnInit {
   }
 
   goAtendimento(paciente) {
-    if (paciente.registro != undefined) this.router.navigate(['/atendimento', paciente.registro.id]);
-    else this.router.navigate(['/atendimento', 'null'])
+    this.router.navigate(['/atendimento', paciente.id]);
   }
 
   getMes = () => Agenda.getMes();
 
-  getDay(){
+  getDay() {
     return new Date(this.dataAgenda).getUTCDate()
   }
+
   getPacientes() {
     if (this.agendas != undefined) {
       let keys = this.agendas.keys();

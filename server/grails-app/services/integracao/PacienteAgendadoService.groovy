@@ -5,15 +5,7 @@ import grails.gorm.services.Service
 @Service(PacienteAgendado)
 abstract class PacienteAgendadoService {
 
-    PacienteAgendado get(String id) {
-        def criteria = PacienteAgendado.createCriteria()
-        PacienteAgendado pacienteAgendado = (PacienteAgendado) criteria.get {
-            registro {
-                eq 'id', id
-            }
-        }
-        return pacienteAgendado
-    }
+    abstract PacienteAgendado get(Serializable id)
 
     abstract List<PacienteAgendado> list(Map args)
 

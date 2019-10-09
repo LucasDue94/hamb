@@ -40,7 +40,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
-              private pacienteService: PacienteService, private atendimentoService: AtendimentoService,private registroAtendimento: RegistroAtendimentoService,
+              private pacienteService: PacienteService, private atendimentoService: AtendimentoService, private registroAtendimento: RegistroAtendimentoService,
               private pacienteAgendadoService: PacienteAgendadoService,
               private route: ActivatedRoute,
               private router: Router,
@@ -52,20 +52,33 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.buildForm();
     this.loading();
     this.route.params.subscribe((params: Params) => {
-      const registro = params['id'];
-      if (registro != 'null') {
-        this.registroAtendimento.get(registro).subscribe(registro => {
-          this.pacienteService.get(registro.paciente.id).subscribe(paciente => {
-            this.paciente = paciente;
-            this.getAtendimentos();
-          })
-        });
+      const prontuarioProvisorio = params['id'];
+      if (prontuarioProvisorio.length == 7) {
+        this.pacienteService.get(prontuarioProvisorio).subscribe(paciente => {
+          this.paciente = paciente;
+          this.getAtendimentos();
+        })
       } else {
-          console.log(this.pacienteAgendado);
+
         this.hasRegistro = false;
         this.loaded();
         this.atendimentoForm.disable({emitEvent: true});
       }
+
+
+      /*   if (registro != 'null') {
+           this.registroAtendimento.get(registro).subscribe(registro => {
+             this.pacienteService.get(registro.paciente.id).subscribe(paciente => {
+               this.paciente = paciente;
+               this.getAtendimentos();
+             })
+           });
+         } else {
+             console.log(this.pacienteAgendado);
+           this.hasRegistro = false;
+           this.loaded();
+           this.atendimentoForm.disable({emitEvent: true});
+         }*/
     });
   }
 

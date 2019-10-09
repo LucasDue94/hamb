@@ -6,13 +6,7 @@ import org.hibernate.sql.JoinType
 @Service(Paciente)
 abstract class PacienteService {
 
-    Paciente get(String id) {
-        def criteria = Paciente.createCriteria()
-        Paciente paciente = (Paciente) criteria.get() {
-            eq 'id', id
-        }
-        return paciente
-    }
+    abstract Paciente get(Serializable id)
 
     List<Paciente> list(Map args, String termo) {
         def criteria = Paciente.createCriteria()
