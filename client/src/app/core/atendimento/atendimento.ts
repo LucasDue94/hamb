@@ -1,7 +1,6 @@
 import {Usuario} from '../usuario/usuario';
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
 import {Cid} from '../cid/cid';
-import {Paciente} from "../paciente/paciente";
 
 export class Atendimento {
   id: number;
@@ -10,7 +9,6 @@ export class Atendimento {
   dataAtendimento: any;
   cid: Cid;
   conteudo: string;
-  // paciente: Paciente;
 
   constructor(object?: any) {
     if (object) {
@@ -19,10 +17,6 @@ export class Atendimento {
         this.usuario = new Usuario(object['usuario']);
         delete object['usuario'];
       }
-    /*  if (object.hasOwnProperty('paciente')) {
-        this.paciente = new Paciente(object['paciente']);
-        delete object['paciente'];
-      }*/
 
       if (object.hasOwnProperty('registroAtendimento')) {
         this.registroAtendimento = new RegistroAtendimento(object['registroAtendimento']);

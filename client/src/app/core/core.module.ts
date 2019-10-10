@@ -11,6 +11,7 @@ import {AtendimentoService} from './atendimento/atendimento.service';
 import {CidService} from './cid/cid.service';
 import {ConvenioService} from './convenio/convenio.service';
 import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.service';
+import {AlertService} from "./alert/alert.service";
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.servi
     AtendimentoService,
     CidService,
     ConvenioService,
-    PacienteAgendadoService
+    PacienteAgendadoService,
+    AlertService
 ]
 })
 export class CoreModule {}

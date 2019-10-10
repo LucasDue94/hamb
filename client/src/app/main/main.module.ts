@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MainComponent} from './main.component';
 import {RouterModule} from "@angular/router";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {AlertModule} from "../alert/alert.module";
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     CommonModule,
     RouterModule,
     FontAwesomeModule,
+    AlertModule,
   ],
   exports: [
     MainComponent,

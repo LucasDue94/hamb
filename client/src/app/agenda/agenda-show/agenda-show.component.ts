@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 import {Usuario} from "../../core/usuario/usuario";
+import {PacienteAgendadoService} from "../../core/pacienteAgendado/pacienteAgendado.service";
+import {AlertService} from "../../core/alert/alert.service";
 
 
 @Component({
@@ -27,7 +29,7 @@ export class AgendaShowComponent implements OnInit {
   loaded = () => this.spinner = false;
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute, private alertService: AlertService) {
   }
 
   back() {
@@ -65,11 +67,6 @@ export class AgendaShowComponent implements OnInit {
     });
 
     this.pacientes.sort(function (a, b) {
-      if (a.registro == undefined && b.registro != undefined) return 1;
-      else if (b.registro == undefined && a.registro != undefined) return -1;
-    });
-
-    this.pacientes.sort(function (a, b) {
       function wasAtendido(paciente) {
         if (paciente.registro != undefined && paciente.registro.atendimentos != undefined)
           return paciente.registro.atendimentos.length > 0
@@ -78,6 +75,11 @@ export class AgendaShowComponent implements OnInit {
       if (wasAtendido(a) && !wasAtendido(b)) return 1;
       else if (!wasAtendido(a) && wasAtendido(b)) return -1;
 
+    });
+
+    this.pacientes.sort(function (a, b) {
+      if (a.registro == undefined && b.registro != undefined) return 1;
+      else if (b.registro == undefined && a.registro != undefined) return -1;
     });
   }
 
@@ -100,8 +102,12 @@ export class AgendaShowComponent implements OnInit {
     }
   }
 
-  goAtendimento(paciente) {
-    this.router.navigate(['/atendimento', paciente.id]);
+  goAtendimento(pacienteAgendado) {
+    if (pacienteAgendado.registro != undefined && pacienteAgendado.registro.paciente != undefined) {
+      this.router.navigate(['/atendimento', pacienteAgendado.registro.paciente.id]);
+    } else {
+      console.log('Não foi efetivado')
+    }
   }
 
   getMes = () => Agenda.getMes();
@@ -131,6 +137,7 @@ export class AgendaShowComponent implements OnInit {
   }
 
   toogle(button) {
+    this.alertService.send({message: 'deu bom', icon: 'coffee'})
     if (button == this.btnManha) {
       this.render.addClass(this.btnManha.nativeElement, 'btn-active');
       this.render.removeClass(this.btnTarde.nativeElement, 'btn-active');

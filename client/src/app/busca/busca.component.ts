@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PacienteService} from "../core/paciente/paciente.service";
 import {Paciente} from "../core/paciente/paciente";
 import {debounceTime, switchMap} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'busca',
@@ -20,7 +21,9 @@ export class BuscaComponent implements OnInit {
   spinner = false;
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
-  constructor(private render: Renderer2, private pacienteService: PacienteService) {}
+
+  constructor(private render: Renderer2, private pacienteService: PacienteService, private router: Router) {
+  }
 
   ngOnInit() {
     this.loading();
@@ -63,8 +66,7 @@ export class BuscaComponent implements OnInit {
     this.showCard = !this.showCard;
   }
 
-  goAtendimento(atendimentos){
-    console.log(atendimentos);
+  goAtendimento(paciente) {
+    this.router.navigate(['atendimento',paciente.id])
   }
-
 }

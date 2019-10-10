@@ -9,7 +9,6 @@ export class Paciente {
   nomeMae: string;
   contato: string;
   registros: RegistroAtendimento[];
-  atendimentos: Atendimento[];
 
   constructor(object?: any) {
     if (object) {
@@ -19,13 +18,6 @@ export class Paciente {
           return new RegistroAtendimento(obj);
         });
         delete object['registros'];
-      }
-
-      if (object.hasOwnProperty('atendimentos')) {
-        this.atendimentos = object['atendimentos'].map((obj: any) => {
-          return new Atendimento(obj);
-        });
-        delete object['atendimentos'];
       }
 
       for (var prop in object) {
@@ -40,8 +32,6 @@ export class Paciente {
   }
 
   getLastRegistro() {
-
-      const lastIndex = this.atendimentos.length - 1;
-      return this.atendimentos[lastIndex];
+    //TODO pegar último registro caso queira salvar o histórico pela rota da busca
   }
 }

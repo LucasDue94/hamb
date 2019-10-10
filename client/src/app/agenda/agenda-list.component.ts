@@ -3,6 +3,7 @@ import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
+import {AlertService} from "../core/alert/alert.service";
 
 @Component({
   selector: 'agenda-list',
@@ -17,12 +18,13 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   usuarioLogado: Usuario;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute, private alertService: AlertService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
   ngOnInit() {
     this.loading();
+    this.alertService.send({message: 'vem neném', icon: 'baby-carriage'})
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +45,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  back = () => this.router.navigate(['/usuario','list']);
+  back = () => this.router.navigate(['/usuario', 'list']);
 
   isMedico = (crm) => Usuario.isMedico(crm);
 

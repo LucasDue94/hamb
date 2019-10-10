@@ -52,33 +52,13 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.buildForm();
     this.loading();
     this.route.params.subscribe((params: Params) => {
-      const prontuarioProvisorio = params['id'];
-      if (prontuarioProvisorio.length == 7) {
-        this.pacienteService.get(prontuarioProvisorio).subscribe(paciente => {
-          this.paciente = paciente;
-          this.getAtendimentos();
-        })
-      } else {
-
-        this.hasRegistro = false;
-        this.loaded();
-        this.atendimentoForm.disable({emitEvent: true});
-      }
-
-
-      /*   if (registro != 'null') {
-           this.registroAtendimento.get(registro).subscribe(registro => {
-             this.pacienteService.get(registro.paciente.id).subscribe(paciente => {
-               this.paciente = paciente;
-               this.getAtendimentos();
-             })
-           });
-         } else {
-             console.log(this.pacienteAgendado);
-           this.hasRegistro = false;
-           this.loaded();
-           this.atendimentoForm.disable({emitEvent: true});
-         }*/
+      const prontuario = params['id'];
+      this.pacienteService.get(prontuario).subscribe(paciente => {
+        this.paciente = paciente;
+        console.log(paciente);
+        this.getAtendimentos();
+        this.loaded()
+      });
     });
   }
 

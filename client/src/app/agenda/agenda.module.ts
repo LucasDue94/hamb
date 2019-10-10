@@ -9,6 +9,7 @@ import {RouterModule} from "@angular/router";
 import {CoreModule} from '../core/core.module';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {SpinnerModule} from "../spinner/spinner.module";
+import {AlertModule} from "../alert/alert.module";
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {SpinnerModule} from "../spinner/spinner.module";
     RouterModule,
     CoreModule,
     InfiniteScrollModule,
-    SpinnerModule
+    SpinnerModule,
+    AlertModule
   ],
   declarations: [AgendaListComponent, AgendaShowComponent]
 })

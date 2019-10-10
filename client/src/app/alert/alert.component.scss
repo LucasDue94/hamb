@@ -1,0 +1,21 @@
+@import '../../assets/colors';
+
+.container-alert {
+  color: $white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: $danger;
+  min-width: 200px;
+  min-height: 70px;
+  box-shadow: 1px 1px 10px $gray-100;
+  padding:0 8px;
+}
+
+.icon, .message {
+  margin: 5px;
+}
