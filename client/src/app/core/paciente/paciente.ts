@@ -31,7 +31,17 @@ export class Paciente {
     return 'integracao.Paciente : ' + (this.id ? this.id : '(unsaved)');
   }
 
-  getLastRegistro() {
-    //TODO pegar último registro caso queira salvar o histórico pela rota da busca
+  sortRegistro() {
+    this.registros.sort(function (a, b) {
+      if (a.id > b.id)
+        return 1;
+      else
+        return -1
+    })
+  }
+
+  lastRegistro() {
+    this.sortRegistro()
+    return this.registros[this.registros.length - 1];
   }
 }

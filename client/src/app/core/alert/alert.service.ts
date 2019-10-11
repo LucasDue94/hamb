@@ -18,6 +18,5 @@ export class AlertService {
 
   send(params) {
     this.alert = new Alert(params);
-    console.log(this.alert)
   }
 }

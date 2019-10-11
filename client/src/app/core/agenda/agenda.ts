@@ -113,10 +113,26 @@ export class Agenda {
     return stringData;
   }
 
-  static countEfetivados(pacientes: PacienteAgendado[]) {
+  countEfetivados() {
     let total = 0;
-    pacientes.forEach(paciente => {
+    this.pacientes.forEach(paciente => {
       if (paciente.registro != null) total++;
+    });
+    return total;
+  }
+
+  countAgendados() {
+    return this.pacientes.length;
+  }
+
+  countAtendidos() {
+    let total = 0;
+    this.pacientes.forEach(paciente => {
+      if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
+        if (paciente.registro.atendimentos.length > 0) {
+          total++;
+        }
+      }
     });
     return total;
   }

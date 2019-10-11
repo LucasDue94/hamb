@@ -106,7 +106,7 @@ export class AgendaShowComponent implements OnInit {
     if (pacienteAgendado.registro != undefined && pacienteAgendado.registro.paciente != undefined) {
       this.router.navigate(['/atendimento', pacienteAgendado.registro.paciente.id]);
     } else {
-      console.log('Não foi efetivado')
+      this.alertService.send({message: 'O paciente ainda não foi efetivado!', icon: 'exclamation-circle', type: 'warning'});
     }
   }
 
@@ -137,7 +137,6 @@ export class AgendaShowComponent implements OnInit {
   }
 
   toogle(button) {
-    this.alertService.send({message: 'deu bom', icon: 'coffee'})
     if (button == this.btnManha) {
       this.render.addClass(this.btnManha.nativeElement, 'btn-active');
       this.render.removeClass(this.btnTarde.nativeElement, 'btn-active');

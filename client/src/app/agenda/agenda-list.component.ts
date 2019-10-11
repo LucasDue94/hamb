@@ -24,7 +24,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loading();
-    this.alertService.send({message: 'vem neném', icon: 'baby-carriage'})
   }
 
   ngAfterViewInit(): void {
@@ -62,7 +61,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       this.route.params.subscribe(params => {
         this.router.navigate(['/agenda', 'show', this.dateToString(key), params['id']]);
       })
-
     }
   }
 
@@ -70,28 +68,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
 
   getMes = () => Agenda.getMes();
 
-  countEfetivados(dia) {
-    return Agenda.countEfetivados(this.agendas.get(dia).pacientes);
-  }
-
-  countAgendados(dia) {
-    return this.agendas.get(dia).pacientes.length;
-  }
-
-  countAtendidos(dia) {
-    let total = 0;
-    let pacientesAgendados = this.agendas.get(dia).pacientes;
-    pacientesAgendados.forEach(paciente => {
-      if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
-        if (paciente.registro.atendimentos.length > 0) {
-          total++;
-        }
-      }
-    });
-    return total;
-  }
-
   loading = () => this.spinner = true;
+
   loaded = () => this.spinner = false;
 }
 

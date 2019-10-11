@@ -13,6 +13,7 @@ import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado
 import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
 import {RegistroAtendimentoService} from "../core/registroAtendimento/registroAtendimento.service";
+import {AlertService} from "../core/alert/alert.service";
 
 @Component({
   selector: 'atendimento',
@@ -28,19 +29,19 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('status', {static: false}) status;
   atendimentos: Atendimento[];
   paciente: Paciente;
-  pacienteAgendado: PacienteAgendado;
   atendimentoForm: FormGroup;
   usuarioLogado: Usuario;
   activeSearch = false;
   isValidForm = null;
-  max = 1000;
+  max = 10000;
   showCard = false;
   spinner = false;
   messageStatus;
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
-              private pacienteService: PacienteService, private atendimentoService: AtendimentoService, private registroAtendimento: RegistroAtendimentoService,
+              private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
+              private registroAtendimento: RegistroAtendimentoService, private alertService: AlertService,
               private pacienteAgendadoService: PacienteAgendadoService,
               private route: ActivatedRoute,
               private router: Router,
@@ -55,6 +56,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
       const prontuario = params['id'];
       this.pacienteService.get(prontuario).subscribe(paciente => {
         this.paciente = paciente;
+        console.log(this.paciente.lastRegistro());
         console.log(paciente);
         this.getAtendimentos();
         this.loaded()
@@ -112,8 +114,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
     });
-    if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro()});
-    else atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});
+    atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.lastRegistro().id})
     return atendimento;
   }
 
@@ -157,7 +158,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
         if (res.status == 201) {
           this.loading();
           this.updateAtendimentos();
-          this.changeStatus()
+            this.loaded();
+          this.alertService.send({message: 'O histórico foi atualizado', icon: 'check', type: 'success'});
+            this.location.back();
         }
       });
     } else {
@@ -194,17 +197,4 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   loading = () => this.spinner = true;
   loaded = () => this.spinner = false;
   toggle = (status) => this.showCard = status;
-
-  changeStatus() {
-    setTimeout(() => {
-      this.render.removeClass(this.status.nativeElement, 'offStatus');
-      this.render.addClass(this.status.nativeElement, 'onStatus');
-      this.messageStatus = false;
-    }, 300);
-    this.render.addClass(this.status.nativeElement, 'offStatus');
-    this.render.removeClass(this.status.nativeElement, 'onStatus');
-    setTimeout(() => {
-      this.location.back();
-    }, 2300);
-  }
 }
