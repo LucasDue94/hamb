@@ -22,15 +22,12 @@ import {ErrorComponent} from "./error/error.component";
 import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
-import {SpinnerDirective} from './spinner/spinner.directive';
-import { AlertComponent } from './alert/alert.component';
 import {AlertModule} from "./alert/alert.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent,
-    SpinnerDirective
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

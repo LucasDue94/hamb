@@ -26,7 +26,7 @@
     </div>
     <div class="info-container small ">
       <h4 class="label">Convênio</h4>
-      <h1 class="subject">{{pacienteAgendado?.convenio?.fantasia}}</h1>
+      <h1 class="subject">{{paciente.lastRegistro()?.convenio?.fantasia}}</h1>
     </div>
   </section>
   <section class="row">
@@ -36,7 +36,7 @@
     </div>
     <div class="info-container small">
       <h4 class="label">Registro</h4>
-      <h1 class="subject">{{pacienteAgendado?.id}}</h1>
+      <h1 class="subject">{{paciente.lastRegistro()?.id}}</h1>
     </div>
   </section>
 </main>

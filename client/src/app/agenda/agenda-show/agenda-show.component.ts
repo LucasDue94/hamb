@@ -4,8 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 import {Usuario} from "../../core/usuario/usuario";
-import {PacienteAgendadoService} from "../../core/pacienteAgendado/pacienteAgendado.service";
 import {AlertService} from "../../core/alert/alert.service";
+import {SpinnerService} from "../../core/spinner/spinner.service";
 
 
 @Component({
@@ -23,13 +23,10 @@ export class AgendaShowComponent implements OnInit {
   hourMax;
   dataAgenda;
   horario = '';
-  spinner = false;
-
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute, private alertService: AlertService) {
+              private router: Router, private route: ActivatedRoute,
+              private alertService: AlertService, private spinnerService: SpinnerService) {
   }
 
   back() {
@@ -43,14 +40,14 @@ export class AgendaShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading();
+   this.spinnerService.show();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size > 0) {
           this.pacientes = this.getPacientes();
-          this.loaded();
+          this.spinnerService.hide();
           this.sortPacientes();
           this.verificaAgenda();
         } else {
@@ -106,7 +103,11 @@ export class AgendaShowComponent implements OnInit {
     if (pacienteAgendado.registro != undefined && pacienteAgendado.registro.paciente != undefined) {
       this.router.navigate(['/atendimento', pacienteAgendado.registro.paciente.id]);
     } else {
-      this.alertService.send({message: 'O paciente ainda não foi efetivado!', icon: 'exclamation-circle', type: 'warning'});
+      this.alertService.send({
+        message: 'O paciente ainda não foi efetivado!',
+        icon: 'exclamation-circle',
+        type: 'warning'
+      });
     }
   }
 

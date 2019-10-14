@@ -3,6 +3,8 @@ import {UsuarioService} from "../core/usuario/usuario.service";
 import {Usuario} from "../core/usuario/usuario";
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
+import {SpinnerService} from "../core/spinner/spinner.service";
+import {AlertService} from "../core/alert/alert.service";
 
 @Component({
   selector: 'usuario-list',
@@ -20,15 +22,14 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   offset = 0;
   messageStatus;
   spinner = false;
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
 
   constructor(private usuarioService: UsuarioService,
-              private render: Renderer2) {
+              private render: Renderer2, private spinnerService: SpinnerService,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
-    this.loading();
+    this.spinnerService.show();
     this.usuarios = null;
     this.messageStatus = null;
     this.searchControl = new FormControl();
@@ -40,7 +41,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
     this.usuarioService.list(this.max, this.offset).subscribe(
       res => {
         this.usuarios = res;
-        this.loaded();
+        this.spinnerService.hide();
       });
     this.search()
   }
@@ -50,11 +51,11 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
   }
 
   scrollDown() {
-    this.loading();
+    this.spinnerService.show();
     this.offset += 25;
     this.usuarioService.search(this.searchControl.value, this.offset).subscribe(usuarios => {
       usuarios.forEach(usuario => this.usuarios.push(usuario));
-      this.loaded();
+      this.spinnerService.hide();
     });
   }
 
@@ -62,14 +63,14 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(changes => {
-        this.loading();
+        this.spinnerService.show();
         this.offset = 0;
         if (this.usuarios != undefined) this.usuarios.length = 0;
         return this.usuarioService.search(changes, this.offset)
       })
     ).subscribe(res => {
       this.usuarios = res;
-      this.loaded();
+      this.spinnerService.hide();
     });
   }
 
@@ -88,7 +89,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
       const responseOk = 200;
       if (res.status === responseOk) {
         usuario.ativo = !usuario.ativo;
-        this.messageStatus = true;
+        this.alertService.send({message:'O status do usuário foi alterado!',type:'success',icon:'check'})
       }
     });
   }

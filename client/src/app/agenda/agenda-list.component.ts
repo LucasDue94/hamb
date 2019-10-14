@@ -3,7 +3,7 @@ import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
-import {AlertService} from "../core/alert/alert.service";
+import {SpinnerService} from "../core/spinner/spinner.service";
 
 @Component({
   selector: 'agenda-list',
@@ -13,17 +13,16 @@ import {AlertService} from "../core/alert/alert.service";
 export class AgendaListComponent implements OnInit, AfterViewInit {
 
   agendas: Map<string, Agenda>;
-  dias;
-  spinner = false;
   usuarioLogado: Usuario;
+  dias;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private route: ActivatedRoute, private alertService: AlertService) {
+              private router: Router, private route: ActivatedRoute, private spinnerService: SpinnerService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
   ngOnInit() {
-    this.loading();
+    this.spinnerService.show();
   }
 
   ngAfterViewInit(): void {
@@ -31,14 +30,14 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       this.agendaService.list().subscribe((agendas) => {
         this.agendas = Agenda.mergeAgenda(agendas);
         this.dias = Array.from(this.agendas.keys());
-        this.loaded();
+        this.spinnerService.hide()
       });
     } else {
       this.route.params.subscribe((params: Params) => {
         this.agendaService.list('', '', '', params['id']).subscribe((agendas) => {
           this.agendas = Agenda.mergeAgenda(agendas);
           this.dias = Array.from(this.agendas.keys());
-          this.loaded();
+          this.spinnerService.hide();
         });
       });
     }
@@ -67,10 +66,6 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   getToday = () => Agenda.getDay();
 
   getMes = () => Agenda.getMes();
-
-  loading = () => this.spinner = true;
-
-  loaded = () => this.spinner = false;
 }
 
 

@@ -9,11 +9,10 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Location} from '@angular/common';
-import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
-import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
 import {RegistroAtendimentoService} from "../core/registroAtendimento/registroAtendimento.service";
 import {AlertService} from "../core/alert/alert.service";
+import {SpinnerService} from "../core/spinner/spinner.service";
 
 @Component({
   selector: 'atendimento',
@@ -35,38 +34,32 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   isValidForm = null;
   max = 10000;
   showCard = false;
-  spinner = false;
   messageStatus;
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
               private registroAtendimento: RegistroAtendimentoService, private alertService: AlertService,
-              private pacienteAgendadoService: PacienteAgendadoService,
-              private route: ActivatedRoute,
-              private router: Router,
+              private route: ActivatedRoute, private spinnerService: SpinnerService, private router: Router,
               private location: Location) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
   ngOnInit() {
     this.buildForm();
-    this.loading();
+    this.spinnerService.show();
     this.route.params.subscribe((params: Params) => {
       const prontuario = params['id'];
       this.pacienteService.get(prontuario).subscribe(paciente => {
         this.paciente = paciente;
-        console.log(this.paciente.lastRegistro());
-        console.log(paciente);
         this.getAtendimentos();
-        this.loaded()
+        this.spinnerService.hide()
       });
     });
   }
 
   ngAfterViewChecked(): void {
-    if (this.atendimentoForm.disabled)
-      this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
+    if (this.atendimentoForm.disabled) this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
@@ -74,7 +67,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
     this.atendimentos = atendimentos;
-    this.loaded();
+    this.spinnerService.hide();
   });
 
   buildForm() {
@@ -106,7 +99,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.activeSearch = !this.activeSearch;
   }
 
-
   setFields() {
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
@@ -128,7 +120,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   updateAtendimentos() {
     this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
       this.atendimentos = atendimentos;
-      this.loaded();
+      this.spinnerService.hide();
       this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
@@ -156,9 +148,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
       this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
         if (res.status == 201) {
-          this.loading();
+          this.spinnerService.show();
           this.updateAtendimentos();
-            this.loaded();
+            this.spinnerService.hide();
           this.alertService.send({message: 'O histórico foi atualizado', icon: 'check', type: 'success'});
             this.location.back();
         }
@@ -194,7 +186,5 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
   toggle = (status) => this.showCard = status;
 }

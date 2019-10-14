@@ -7,14 +7,12 @@ import {Alert} from "../core/alert/alert";
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.scss']
 })
-export class AlertComponent implements OnInit, OnChanges {
+export class AlertComponent implements OnChanges {
   @Input() alert: Alert;
   @ViewChild('container', {static: false}) containerAlert;
 
   constructor(private alertService: AlertService, private render: Renderer2) {
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.containerAlert != undefined) {
@@ -24,10 +22,7 @@ export class AlertComponent implements OnInit, OnChanges {
       setTimeout(() => {
         this.render.addClass(this.containerAlert.nativeElement, 'hidden');
         this.render.removeClass(this.containerAlert.nativeElement, this.alert.type);
-        console.log(this.containerAlert.nativeElement)
       }, 2500);
     }
   }
-
-
 }
