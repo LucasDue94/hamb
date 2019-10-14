@@ -51,6 +51,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.route.params.subscribe((params: Params) => {
       const prontuario = params['id'];
       this.pacienteService.get(prontuario).subscribe(paciente => {
+        if (paciente.hasOwnProperty('error')) {
+          this.router.navigate(['/error', '404', 'Ops... não encontramos o histórico deste paciente.']);
+        }
         this.paciente = paciente;
         this.getAtendimentos();
         this.spinnerService.hide()
@@ -150,9 +153,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
         if (res.status == 201) {
           this.spinnerService.show();
           this.updateAtendimentos();
-            this.spinnerService.hide();
+          this.spinnerService.hide();
           this.alertService.send({message: 'O histórico foi atualizado', icon: 'check', type: 'success'});
-            this.location.back();
+          this.location.back();
         }
       });
     } else {

@@ -6,7 +6,7 @@ import {BuscaComponent} from "./busca/busca.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent, outlet: 'login'},
-  {path: 'error', component: ErrorComponent},
+  {path: 'error/:cod/:message', component: ErrorComponent},
   {path: 'busca', component: BuscaComponent},
 ];
 

@@ -48,7 +48,7 @@ import {AlertModule} from "./alert/alert.module";
     FastSearchModule,
     PacienteInfoModule,
     AlertModule
-  ],
+],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     AuthGuard

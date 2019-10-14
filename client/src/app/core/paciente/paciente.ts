@@ -1,6 +1,4 @@
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
-import {Atendimento} from "../atendimento/atendimento";
-import {last} from "rxjs/operators";
 
 export class Paciente {
   id: string;
