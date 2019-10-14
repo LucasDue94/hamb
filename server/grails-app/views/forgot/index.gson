@@ -1,0 +1,8 @@
+import hamb.Forgot
+
+model {
+	Iterable<Forgot> forgotList
+}
+
+json tmpl.forgot(forgotList ?: [])
+
