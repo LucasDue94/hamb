@@ -10,15 +10,13 @@ export class ErrorComponent implements OnInit {
 
   @Input() message;
   @Input() cod;
-  messageDefault = 'Desculpe o transtorno, mas você não tem permissão para acessar a página.';
-  codDefault = '403';
+  messageDefault = 'Desculpe o transtorno, ocorreu um erro.';
+  codDefault = '123';
 
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log(params);
       this.cod = params['cod'];
       this.message = params['message'];
     })

@@ -1,7 +1,7 @@
 import {UsuarioCid} from '../usuarioCid/usuarioCid';
 
 export class Cid {
-  id: string;
+  id: number;
   diagnostico: string;
   usuarios: UsuarioCid[];
 
@@ -19,7 +19,6 @@ export class Cid {
         this[prop] = object[prop];
       }
     }
-
   }
 
   toString(): string {

@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -13,6 +13,7 @@ import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimen
 import {RegistroAtendimentoService} from "../core/registroAtendimento/registroAtendimento.service";
 import {AlertService} from "../core/alert/alert.service";
 import {SpinnerService} from "../core/spinner/spinner.service";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'atendimento',
@@ -26,6 +27,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('atendimentoContainer', {static: false}) atendimentoContainer;
   @ViewChild('pacienteCard', {static: false}) pacienteCard;
   @ViewChild('status', {static: false}) status;
+  @ViewChild('form', {static: false}) form;
   atendimentos: Atendimento[];
   paciente: Paciente;
   atendimentoForm: FormGroup;
@@ -34,14 +36,13 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   isValidForm = null;
   max = 10000;
   showCard = false;
-  messageStatus;
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
               private registroAtendimento: RegistroAtendimentoService, private alertService: AlertService,
               private route: ActivatedRoute, private spinnerService: SpinnerService, private router: Router,
-              private location: Location) {
+              private location: Location, private errorService: ErrorService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
@@ -51,9 +52,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.route.params.subscribe((params: Params) => {
       const prontuario = params['id'];
       this.pacienteService.get(prontuario).subscribe(paciente => {
-        if (paciente.hasOwnProperty('error')) {
-          this.router.navigate(['/error', '404', 'Ops... não encontramos o histórico deste paciente.']);
-        }
+        if (this.errorService.hasError(paciente)) this.errorService.sendError(paciente);
         this.paciente = paciente;
         this.getAtendimentos();
         this.spinnerService.hide()
@@ -62,13 +61,13 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.atendimentoForm.disabled) this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
   hasCrm = () => this.usuarioLogado.crm != 'null' && this.usuarioLogado.crm != null && this.usuarioLogado.crm != '';
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
+    if (this.errorService.hasError(atendimentos)) this.errorService.sendError(atendimentos);
     this.atendimentos = atendimentos;
     this.spinnerService.hide();
   });
@@ -122,6 +121,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   updateAtendimentos() {
     this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
+      if (this.errorService.hasError(atendimentos)) this.errorService.sendError(atendimentos);
       this.atendimentos = atendimentos;
       this.spinnerService.hide();
       this.clear()
@@ -150,12 +150,14 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     if (this.isValidForm) {
       this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
-        if (res.status == 201) {
+        if (!this.errorService.hasError(res)) {
           this.spinnerService.show();
           this.updateAtendimentos();
           this.spinnerService.hide();
           this.alertService.send({message: 'O histórico foi atualizado', icon: 'check', type: 'success'});
           this.location.back();
+        } else if (this.errorService.hasError(atendimento)) {
+          this.errorService.sendError(atendimento);
         }
       });
     } else {
@@ -187,6 +189,16 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     if (longString.length > 20) {
       diagnostico.setValue(diagnostico.value.concat('...'));
     }
+  }
+
+  expand() {
+      this.render.addClass(this.form.nativeElement, 'expand-form');
+      this.render.addClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
+  }
+
+  minimize() {
+    this.render.removeClass(this.form.nativeElement, 'expand-form');
+    this.render.removeClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
   }
 
   toggle = (status) => this.showCard = status;

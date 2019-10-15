@@ -1,99 +1,136 @@
 import {Injectable} from '@angular/core';
-import {RegistroAtendimento} from './registroAtendimento';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
-import {AuthService} from "../auth/auth.service";
+import {HeadersHelper} from "../headersHelper";
+import {Observable, of, Subject} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {RegistroAtendimento} from "./registroAtendimento";
+
 
 @Injectable()
-export class RegistroAtendimentoService {
+export class RegistroAtendimentoService extends HeadersHelper {
 
-  private baseUrl = environment.serverUrl;
-  static UNAUTHORIZED = 401;
+    private baseUrl = environment.serverUrl;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      "Cache-Control": "no-cache",
-      "Content-Type": "application/json",
-    })
-  };
-
-  constructor(private http: HttpClient, private authService: AuthService) {
-  }
-
-  list(max?: any, offset?: any): Observable<RegistroAtendimento[]> {
-    let subject = new Subject<RegistroAtendimento[]>();
-    this.http.get(this.baseUrl + `registroAtendimento?offset=` + offset + '&max=' + max, {headers: this.httpOptions.headers})
-      .subscribe((json: any[]) => {
-        subject.next(json.map((propertyName: any) => new RegistroAtendimento(propertyName)))
-      }, error => {
-        if (error.status == RegistroAtendimentoService.UNAUTHORIZED) {
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
-    return subject.asObservable();
-  }
-
-  count() {
-    let quantity: number;
-    return this.http.get<RegistroAtendimento[]>(this.baseUrl + `registroAtendimento/`).pipe(
-      map(
-        data => {
-          quantity = data['total'];
-          return quantity;
-        }
-      )
-    )
-  }
-
-  get(id: number): Observable<RegistroAtendimento> {
-    let subject = new Subject<RegistroAtendimento>();
-    this.http.get(this.baseUrl + `registroAtendimento/` + id, {headers: this.httpOptions.headers})
-      .subscribe((json: any) => {
-        subject.next(new RegistroAtendimento(json));
-      }, error => {
-        if (error.status == RegistroAtendimentoService.UNAUTHORIZED) {
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
-    return subject.asObservable();
-  }
-
-  search(searchTerm, offset?: any, max?): Observable<any[]> {
-    let subject = new Subject<RegistroAtendimento[]>();
-    this.http.get(this.baseUrl + `registroAtendimento/` + '?offset=' + offset + '&max=' + max, {
-      headers: this.httpOptions.headers,
-      params: {termo: searchTerm}
-    }).subscribe((json: any) => {
-      subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
-    }, error => {
-      if (error.status == RegistroAtendimentoService.UNAUTHORIZED) {
-        this.authService.logout(localStorage.getItem('token'))
-      }
-    });
-    return subject.asObservable();
-  }
-
-  save(registroAtendimento: RegistroAtendimento): Observable<RegistroAtendimento> {
-    if (registroAtendimento.id) {
-      return this.http.put<RegistroAtendimento>(this.baseUrl + `registroAtendimento/` + registroAtendimento.id, registroAtendimento, {
-        headers: this.httpOptions.headers,
-        responseType: 'json'
-      });
-    } else {
-      return this.http.post<RegistroAtendimento>(this.baseUrl + `registroAtendimento/`, registroAtendimento, {
-        headers: this.httpOptions.headers,
-        responseType: 'json'
-      });
+    getDefaultHttpOptions() {
+        return new HttpHeaders({
+            "Cache-Control": "no-cache",
+            "Content-Type": "application/json",
+            "X-Auth-Token": localStorage.getItem('token')
+        })
     }
-  }
+
+    constructor(private http: HttpClient) {
+        super()
+    }
+
+    list(max?: any, offset?: any): Observable<any[]> {
+        let subject = new Subject<RegistroAtendimento[]>();
+        this.http.get(this.baseUrl + `registroAtendimento?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
+            .pipe(
+                catchError(error => of({error})
+                )).subscribe((json: any[]) => {
+            if (!json.hasOwnProperty('error')){
+                subject.next(json.map((obj: any) => new RegistroAtendimento(obj)));
+            } else{
+                subject.next(json);
+            }
+        });
+        return subject.asObservable();
+    }
+
+    count() {
+        let quantity: number;
+        return this.http.get<RegistroAtendimento[]>(this.baseUrl + `registroAtendimento/`).pipe(
+            map(
+                data => {
+                    quantity = data['total'];
+                    return quantity;
+                }
+            )
+        )
+    }
+
+    get(id: number): Observable<any> {
+        let subject = new Subject<RegistroAtendimento>();
+        this.http.get(this.baseUrl + `registroAtendimento/` + id, {headers: this.getDefaultHttpOptions()})
+            .pipe(
+                catchError(error => of({error})
+                )).subscribe((json: any) => {
+            if (json.hasOwnProperty('error')) {
+                subject.next(json);
+            } else {
+                subject.next(new RegistroAtendimento(json));
+            }
+        });
+        return subject.asObservable();
+    }
+
+    search(searchTerm, offset?: any, max?): Observable<any[]> {
+        let subject = new Subject<RegistroAtendimento[]>();
+        this.http.get(this.baseUrl + `registroAtendimento/` + '?offset=' + offset + '&max=' + max, {
+            headers: this.getDefaultHttpOptions(),
+            params: {termo: searchTerm}
+        }).pipe(
+            catchError(error => of({error})
+            )).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
+                }
+        });
+        return subject.asObservable();
+    }
+
+    save(registroAtendimento: RegistroAtendimento): Observable<any> {
+        let subject = new Subject<RegistroAtendimento>();
+        if (registroAtendimento.id){
+            this.http.put<RegistroAtendimento>(this.baseUrl + `registroAtendimento/` + registroAtendimento.id, registroAtendimento, {
+                headers: this.getDefaultHttpOptions(),
+                responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
+                }
+            });
+        }else{
+            this.http.post<RegistroAtendimento>(this.baseUrl + `registroAtendimento/`, registroAtendimento, {
+                headers: this.getDefaultHttpOptions(),
+                responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
+                }
+            });
+        }
+        return subject.asObservable()
+    }
 
 
-  destroy(registroAtendimento: RegistroAtendimento): Observable<Object> {
-    return this.http.delete(this.baseUrl + `registroAtendimento/` + registroAtendimento.id, {
-      headers: this.httpOptions.headers,
-      observe: 'response'
-    });
-  }
+    destroy(registroAtendimento: RegistroAtendimento): Observable<any> {
+        let subject = new Subject<RegistroAtendimento>();
+
+        this.http.delete(this.baseUrl + `registroAtendimento/` + registroAtendimento.id, {
+            headers: this.getDefaultHttpOptions(),
+            observe: 'response'
+        }).pipe(
+            catchError(error => of({error}))
+        ).subscribe((json: any) => {
+            if(json.hasOwnProperty('error')){
+                subject.next(json)
+            }else{
+                subject.next(json.map((obj: any) => new RegistroAtendimento(obj)))
+            }
+        });
+        return subject.asObservable()
+    }
 }

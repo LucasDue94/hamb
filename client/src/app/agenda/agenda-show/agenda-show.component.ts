@@ -6,6 +6,7 @@ import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 import {Usuario} from "../../core/usuario/usuario";
 import {AlertService} from "../../core/alert/alert.service";
 import {SpinnerService} from "../../core/spinner/spinner.service";
+import {ErrorService} from "../../core/error/error.service";
 
 
 @Component({
@@ -26,7 +27,8 @@ export class AgendaShowComponent implements OnInit {
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
               private router: Router, private route: ActivatedRoute,
-              private alertService: AlertService, private spinnerService: SpinnerService) {
+              private alertService: AlertService, private spinnerService: SpinnerService,
+              private errorService: ErrorService) {
   }
 
   back() {
@@ -44,6 +46,7 @@ export class AgendaShowComponent implements OnInit {
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
+        if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size > 0) {
           this.pacientes = this.getPacientes();

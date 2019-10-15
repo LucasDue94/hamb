@@ -4,6 +4,7 @@ import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
 import {SpinnerService} from "../core/spinner/spinner.service";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'agenda-list',
@@ -17,7 +18,8 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   dias;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private route: ActivatedRoute, private spinnerService: SpinnerService) {
+              private router: Router, private route: ActivatedRoute,
+              private spinnerService: SpinnerService, private errorService: ErrorService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
@@ -28,6 +30,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (Usuario.isMedico(this.usuarioLogado.crm)) {
       this.agendaService.list().subscribe((agendas) => {
+        if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
         this.agendas = Agenda.mergeAgenda(agendas);
         this.dias = Array.from(this.agendas.keys());
         this.spinnerService.hide()
@@ -35,6 +38,7 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
     } else {
       this.route.params.subscribe((params: Params) => {
         this.agendaService.list('', '', '', params['id']).subscribe((agendas) => {
+          if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
           this.agendas = Agenda.mergeAgenda(agendas);
           this.dias = Array.from(this.agendas.keys());
           this.spinnerService.hide();

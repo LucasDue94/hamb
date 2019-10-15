@@ -1,18 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Agenda} from './agenda';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
-import {AuthService} from "../auth/auth.service";
+import {Observable, of, Subject} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {Agenda} from "./agenda";
 
 
 @Injectable()
 export class AgendaService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
-  static UNAUTHORIZED = 401;
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -22,20 +20,22 @@ export class AgendaService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient) {
     super()
   }
 
-  list(max?: any, offset?: any, data?: any, usuarioId?: number): Observable<Agenda[]> {
+  list(max?: any, offset?: any, data?: any, usuarioId?: number): Observable<any[]> {
     let subject = new Subject<Agenda[]>();
     this.http.get(this.baseUrl + `agenda?offset=` + offset + '&max=' + max + '&data=' + data + '&usuarioId=' + usuarioId, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any[]) => {
-        subject.next(json.map((propertyName: any) => new Agenda(propertyName)))
-      },error => {
-        if(error.status == AgendaService.UNAUTHORIZED){
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any[]) => {
+      if (!json.hasOwnProperty('error')) {
+        subject.next(json.map((obj: any) => new Agenda(obj)));
+      } else {
+        subject.next(json);
+      }
+    });
     return subject.asObservable();
   }
 
@@ -51,16 +51,18 @@ export class AgendaService extends HeadersHelper {
     )
   }
 
-  get(id: number): Observable<Agenda> {
+  get(id: number): Observable<any> {
     let subject = new Subject<Agenda>();
     this.http.get(this.baseUrl + `agenda/` + id, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any) => {
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json);
+      } else {
         subject.next(new Agenda(json));
-      },error => {
-        if(error.status == AgendaService.UNAUTHORIZED){
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
+      }
+    });
     return subject.asObservable();
   }
 
@@ -69,35 +71,66 @@ export class AgendaService extends HeadersHelper {
     this.http.get(this.baseUrl + `agenda/` + '?offset=' + offset + '&max=' + max, {
       headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
-    }).subscribe((json: any) => {
-      subject.next(json.map((obj: any) => new Agenda(obj)))
-    },error => {
-      if(error.status == AgendaService.UNAUTHORIZED){
-        this.authService.logout(localStorage.getItem('token'))
+    }).pipe(
+      catchError(error => of({error})
+      )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Agenda(obj)))
       }
     });
     return subject.asObservable();
   }
 
-  save(agenda: Agenda): Observable<Agenda> {
+  save(agenda: Agenda): Observable<any> {
+    let subject = new Subject<Agenda>();
     if (agenda.id) {
-      return this.http.put<Agenda>(this.baseUrl + `agenda/` + agenda.id, agenda, {
+      this.http.put<Agenda>(this.baseUrl + `agenda/` + agenda.id, agenda, {
         headers: this.getDefaultHttpOptions(),
         responseType: 'json'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+        if (json.hasOwnProperty('error')) {
+          subject.next(json)
+        } else {
+          subject.next(json.map((obj: any) => new Agenda(obj)))
+        }
       });
     } else {
-      return this.http.post<Agenda>(this.baseUrl + `agenda/`, agenda, {
+      this.http.post<Agenda>(this.baseUrl + `agenda/`, agenda, {
         headers: this.getDefaultHttpOptions(),
         responseType: 'json'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+        if (json.hasOwnProperty('error')) {
+          subject.next(json)
+        } else {
+          subject.next(json.map((obj: any) => new Agenda(obj)))
+        }
       });
     }
+    return subject.asObservable()
   }
 
 
-  destroy(agenda: Agenda): Observable<Object> {
-    return this.http.delete(this.baseUrl + `agenda/` + agenda.id, {
+  destroy(agenda: Agenda): Observable<any> {
+    let subject = new Subject<Agenda>();
+
+    this.http.delete(this.baseUrl + `agenda/` + agenda.id, {
       headers: this.getDefaultHttpOptions(),
       observe: 'response'
+    }).pipe(
+      catchError(error => of({error}))
+    ).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Agenda(obj)))
+      }
     });
+    return subject.asObservable()
   }
 }

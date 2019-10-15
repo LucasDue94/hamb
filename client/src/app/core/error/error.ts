@@ -1,12 +1,9 @@
+export class Error {
+  cod: number;
+  message: string;
 
-export class Sala {
-  codigo: string;
-  unidade:string;
-  nome: string;
-
-  constructor (object?: any) {
+  constructor(object?: any) {
     if (object) {
-
       for (var prop in object) {
         this[prop] = object[prop];
       }

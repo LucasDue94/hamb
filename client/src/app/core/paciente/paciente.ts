@@ -1,7 +1,7 @@
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
 
 export class Paciente {
-  id: string;
+  id: number;
   nome: string;
   nascimento: any;
   nomeMae: string;
@@ -22,7 +22,6 @@ export class Paciente {
         this[prop] = object[prop];
       }
     }
-
   }
 
   toString(): string {

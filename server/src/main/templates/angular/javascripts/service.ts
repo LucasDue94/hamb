@@ -23,14 +23,14 @@ export class ${className}Service extends HeadersHelper {
         super()
     }
 
-    list(max?: any, offset?: any): Observable<${className}[]> {
+    list(max?: any, offset?: any): Observable<any[]> {
         let subject = new Subject<${className}[]>();
         this.http.get(this.baseUrl + `${propertyName}?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
             .pipe(
                 catchError(error => of({error})
                 )).subscribe((json: any[]) => {
             if (!json.hasOwnProperty('error')){
-                subject.next(json.map((paciente: any) => new Paciente(paciente)));
+                subject.next(json.map((obj: any) => new ${className}(obj)));
             } else{
                 subject.next(json);
             }
@@ -50,7 +50,7 @@ export class ${className}Service extends HeadersHelper {
         )
     }
 
-    get(id: number): Observable<${className}> {
+    get(id: number): Observable<any> {
         let subject = new Subject<${className}>();
         this.http.get(this.baseUrl + `${propertyName}/` + id, {headers: this.getDefaultHttpOptions()})
             .pipe(
@@ -82,25 +82,54 @@ export class ${className}Service extends HeadersHelper {
         return subject.asObservable();
     }
 
-    save(${propertyName}: ${className}): Observable<${className}> {
+    save(${propertyName}: ${className}): Observable<any> {
+        let subject = new Subject<${className}>();
         if (${propertyName}.id){
-            return this.http.put<${className}>(this.baseUrl + `${propertyName}/` + ${propertyName}.id, ${propertyName}, {
+            this.http.put<${className}>(this.baseUrl + `${propertyName}/` + ${propertyName}.id, ${propertyName}, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new ${className}(obj)))
+                }
             });
         }else{
-            return this.http.post<${className}>(this.baseUrl + `${propertyName}/`, ${propertyName}, {
+            this.http.post<${className}>(this.baseUrl + `${propertyName}/`, ${propertyName}, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new ${className}(obj)))
+                }
             });
         }
+        return subject.asObservable()
     }
 
 
-    destroy(${propertyName}: ${className}): Observable<Object> {
-        return this.http.delete(this.baseUrl + `${propertyName}/` + ${propertyName}.id, {
+    destroy(${propertyName}: ${className}): Observable<any> {
+        let subject = new Subject<${className}>();
+
+        this.http.delete(this.baseUrl + `${propertyName}/` + ${propertyName}.id, {
             headers: this.getDefaultHttpOptions(),
             observe: 'response'
+        }).pipe(
+            catchError(error => of({error}))
+        ).subscribe((json: any) => {
+            if(json.hasOwnProperty('error')){
+                subject.next(json)
+            }else{
+                subject.next(json.map((obj: any) => new ${className}(obj)))
+            }
         });
+        return subject.asObservable()
     }
 }

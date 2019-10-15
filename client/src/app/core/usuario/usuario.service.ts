@@ -1,17 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Usuario} from './usuario';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {Observable, Subject} from "rxjs";
 import {HeadersHelper} from "../headersHelper";
-import {AuthService} from "../auth/auth.service";
+import {Observable, of, Subject} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {Usuario} from "./usuario";
+
 
 @Injectable()
 export class UsuarioService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
-  static UNAUTHORIZED = 401;
-
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -21,65 +20,118 @@ export class UsuarioService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    super();
+  constructor(private http: HttpClient) {
+    super()
   }
 
-  list(max?: any, offset?: any): Observable<Usuario[]> {
+  list(max?: any, offset?: any): Observable<any[]> {
     let subject = new Subject<Usuario[]>();
-
-    this.http.get(this.baseUrl + `usuario?offset=${offset}&max=${max}`, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any[]) => {
-        subject.next(json.map((usuario: any) => new Usuario(usuario)))
-      },error => {
-        if(error.status == UsuarioService.UNAUTHORIZED){
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
-    return subject.asObservable();
-  }
-
-  get(id: number): Observable<Usuario> {
-    let subject = new Subject<Usuario>();
-    this.http.get(this.baseUrl + 'usuario/' + id, {headers:this.getDefaultHttpOptions()})
-      .subscribe((json: any) => {
-        subject.next(new Usuario(json));
-      },error => {
-        if(error.status == UsuarioService.UNAUTHORIZED){
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
-    return subject.asObservable();
-  }
-
-  search(searchTerm, offset?: any, max?): Observable<any[]> {
-    const url = this.baseUrl + 'usuario';
-    let subject = new Subject<Usuario[]>();
-    this.http.get(url + `?offset=${offset}&max=${max}`, {
-      headers:this.getDefaultHttpOptions(),
-      params: {termo: searchTerm}
-    }).subscribe((json: any) => {
-      subject.next(json.map((usuario: any) => new Usuario(usuario)))
-    },error => {
-      if(error.status == UsuarioService.UNAUTHORIZED){
-        this.authService.logout(localStorage.getItem('token'))
+    this.http.get(this.baseUrl + `usuario?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any[]) => {
+      if (!json.hasOwnProperty('error')) {
+        subject.next(json.map((obj: any) => new Usuario(obj)));
+      } else {
+        subject.next(json);
       }
     });
     return subject.asObservable();
   }
 
-  save(usuario: Usuario): Observable<Usuario> {
+  count() {
+    let quantity: number;
+    return this.http.get<Usuario[]>(this.baseUrl + `usuario/`).pipe(
+      map(
+        data => {
+          quantity = data['total'];
+          return quantity;
+        }
+      )
+    )
+  }
+
+  get(id: number): Observable<any> {
+    let subject = new Subject<Usuario>();
+    this.http.get(this.baseUrl + `usuario/` + id, {headers: this.getDefaultHttpOptions()})
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json);
+      } else {
+        subject.next(new Usuario(json));
+      }
+    });
+    return subject.asObservable();
+  }
+
+  search(searchTerm, offset?: any, max?): Observable<any[]> {
+    let subject = new Subject<Usuario[]>();
+    this.http.get(this.baseUrl + `usuario/` + '?offset=' + offset + '&max=' + max, {
+      headers: this.getDefaultHttpOptions(),
+      params: {termo: searchTerm}
+    }).pipe(
+      catchError(error => of({error})
+      )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Usuario(obj)))
+      }
+    });
+    return subject.asObservable();
+  }
+
+  save(usuario: Usuario): Observable<any> {
+    let subject = new Subject<Usuario>();
     if (usuario.id) {
-      return this.http.put<Usuario>(this.baseUrl + 'usuario/' + usuario.id, usuario, {
+      this.http.put<Usuario>(this.baseUrl + `usuario/` + usuario.id, usuario, {
         headers: this.getDefaultHttpOptions(),
         responseType: 'json'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+        if (json.hasOwnProperty('error')) {
+          subject.next(json)
+        } else {
+          subject.next(json.map((obj: any) => new Usuario(obj)))
+        }
       });
     } else {
-      return this.http.post<Usuario>(this.baseUrl + 'usuario', usuario, {
+      this.http.post<Usuario>(this.baseUrl + `usuario/`, usuario, {
         headers: this.getDefaultHttpOptions(),
         responseType: 'json'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+        if (json.hasOwnProperty('error')) {
+          subject.next(json)
+        } else {
+          subject.next(json.map((obj: any) => new Usuario(obj)))
+        }
       });
     }
+    return subject.asObservable()
+  }
+
+
+  destroy(usuario: Usuario): Observable<any> {
+    let subject = new Subject<Usuario>();
+
+    this.http.delete(this.baseUrl + `usuario/` + usuario.id, {
+      headers: this.getDefaultHttpOptions(),
+      observe: 'response'
+    }).pipe(
+      catchError(error => of({error}))
+    ).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Usuario(obj)))
+      }
+    });
+    return subject.asObservable()
   }
 
   onOff(usuario: Usuario): any {
@@ -89,10 +141,4 @@ export class UsuarioService extends HeadersHelper {
     });
   }
 
-  destroy(usuario: Usuario): Observable<Object> {
-    return this.http.delete(this.baseUrl + 'usuario/' + usuario.id, {
-      headers:this.getDefaultHttpOptions(),
-      observe: 'response'
-    });
-  }
 }

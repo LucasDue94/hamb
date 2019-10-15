@@ -1,17 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Atendimento} from './atendimento';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
-import {AuthService} from "../auth/auth.service";
+import {Observable, of, Subject} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {Atendimento} from "./atendimento";
+
 
 @Injectable()
 export class AtendimentoService extends HeadersHelper {
 
   private baseUrl = environment.serverUrl;
-  static UNAUTHORIZED = 401;
 
   getDefaultHttpOptions() {
     return new HttpHeaders({
@@ -21,21 +20,22 @@ export class AtendimentoService extends HeadersHelper {
     })
   }
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    super();
+  constructor(private http: HttpClient) {
+    super()
   }
 
-
-  list(max?: any, offset?: any, codPrt?: any): Observable<Atendimento[]> {
+  list(max?: any, offset?: any, codPrt?: any): Observable<any[]> {
     let subject = new Subject<Atendimento[]>();
     this.http.get(this.baseUrl + `atendimento?offset=` + offset + '&max=' + max + '&codPrt=' + codPrt, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any[]) => {
-        subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
-      }, error => {
-        if (error.status == AtendimentoService.UNAUTHORIZED) {
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any[]) => {
+      if (!json.hasOwnProperty('error')) {
+        subject.next(json.map((obj: any) => new Atendimento(obj)));
+      } else {
+        subject.next(json);
+      }
+    });
     return subject.asObservable();
   }
 
@@ -51,29 +51,18 @@ export class AtendimentoService extends HeadersHelper {
     )
   }
 
-  get(id: number): Observable<Atendimento> {
+  get(id: number): Observable<any> {
     let subject = new Subject<Atendimento>();
     this.http.get(this.baseUrl + `atendimento/` + id, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any) => {
+      .pipe(
+        catchError(error => of({error})
+        )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json);
+      } else {
         subject.next(new Atendimento(json));
-      }, error => {
-        if (error.status == AtendimentoService.UNAUTHORIZED) {
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
-    return subject.asObservable();
-  }
-
-  findAtendimento(registroId: string): Observable<Atendimento[]> {
-    let subject = new Subject<Atendimento[]>();
-    this.http.get(this.baseUrl + `atendimento/findAtendimento/` + registroId, {headers: this.getDefaultHttpOptions()})
-      .subscribe((json: any[]) => {
-        subject.next(json.map((propertyName: any) => new Atendimento(propertyName)))
-      }, error => {
-        if (error.status == AtendimentoService.UNAUTHORIZED) {
-          this.authService.logout(localStorage.getItem('token'))
-        }
-      });
+      }
+    });
     return subject.asObservable();
   }
 
@@ -82,34 +71,60 @@ export class AtendimentoService extends HeadersHelper {
     this.http.get(this.baseUrl + `atendimento/` + '?offset=' + offset + '&max=' + max, {
       headers: this.getDefaultHttpOptions(),
       params: {termo: searchTerm}
-    }).subscribe((json: any) => {
-      subject.next(json.map((obj: any) => new Atendimento(obj)))
-    }, error => {
-      if (error.status == AtendimentoService.UNAUTHORIZED) {
-        this.authService.logout(localStorage.getItem('token'))
+    }).pipe(
+      catchError(error => of({error})
+      )).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Atendimento(obj)))
       }
     });
     return subject.asObservable();
   }
 
   save(atendimento: Atendimento): any {
+    let subject = new Subject<Atendimento>();
     if (atendimento.id) {
-      return this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
+      this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
         headers: this.getDefaultHttpOptions(),
-        responseType: 'json'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+        if (json.hasOwnProperty('error')) {
+          subject.next(json)
+        } else {
+          subject.next(json.map((obj: any) => new Atendimento(obj)))
+        }
       });
     } else {
-      return this.http.post<Atendimento>(this.baseUrl + `atendimento/`, atendimento, {
+      this.http.post<Atendimento>(this.baseUrl + `atendimento/`, atendimento, {
         headers: this.getDefaultHttpOptions(),
-        observe: 'response'
+      }).pipe(
+        catchError(error => of({error}))
+      ).subscribe((json: any) => {
+          subject.next(json);
       });
     }
+    return subject.asObservable()
   }
 
-  destroy(atendimento: Atendimento): Observable<Object> {
-    return this.http.delete(this.baseUrl + `atendimento/` + atendimento.id, {
+
+  destroy(atendimento: Atendimento): Observable<any> {
+    let subject = new Subject<Atendimento>();
+
+    this.http.delete(this.baseUrl + `atendimento/` + atendimento.id, {
       headers: this.getDefaultHttpOptions(),
       observe: 'response'
+    }).pipe(
+      catchError(error => of({error}))
+    ).subscribe((json: any) => {
+      if (json.hasOwnProperty('error')) {
+        subject.next(json)
+      } else {
+        subject.next(json.map((obj: any) => new Atendimento(obj)))
+      }
     });
+    return subject.asObservable()
   }
 }
