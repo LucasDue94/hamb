@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Cid} from "../core/cid/cid";
 import {CidService} from "../core/cid/cid.service";
 import {Paciente} from "../core/paciente/paciente";
@@ -28,6 +28,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('pacienteCard', {static: false}) pacienteCard;
   @ViewChild('status', {static: false}) status;
   @ViewChild('form', {static: false}) form;
+  @ViewChild('textArea', {static: false}) textArea;
   atendimentos: Atendimento[];
   paciente: Paciente;
   atendimentoForm: FormGroup;
@@ -192,8 +193,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   }
 
   expand() {
-      this.render.addClass(this.form.nativeElement, 'expand-form');
-      this.render.addClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
+    this.render.addClass(this.form.nativeElement, 'expand-form');
+    this.render.addClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
+    console.log(this.textArea);
   }
 
   minimize() {

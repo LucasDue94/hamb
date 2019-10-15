@@ -20,13 +20,9 @@ export class AppComponent extends Authentic implements DoCheck {
   }
 
   ngDoCheck(): void {
-    this.isLogged = localStorage.getItem('token') != null;
+    this.isLogged = this.auth.isLogged();
     this.currentRoute = this.route.url;
   }
 
   checkPermission: (permission: string) => boolean;
-
-  logout() {
-    this.auth.logout(localStorage.getItem('token'));
-  }
 }

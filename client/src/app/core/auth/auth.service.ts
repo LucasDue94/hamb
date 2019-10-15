@@ -32,7 +32,6 @@ export class AuthService extends HeadersHelper {
     return this.http.post(url, data, {headers: this.getDefaultHttpOptions(), responseType: 'json'});
   }
 
-
   logout(auth) {
     const url = this.baseUrl + 'logout';
     if (auth != null) this.token = auth;
@@ -58,4 +57,6 @@ export class AuthService extends HeadersHelper {
   hasPermission(value) {
     return localStorage.getItem('roles').includes(value) || localStorage.getItem('roles').includes('ROLE_ADMIN');
   }
+
+  isLogged = () => localStorage.getItem('token') != null
 }
