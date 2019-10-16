@@ -13,10 +13,11 @@ export class MenuComponent extends Authentic implements OnInit {
     super()
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   isMedico = () => Usuario.isMedico(localStorage.getItem('crm'));
-
+  getUserId = () => localStorage.getItem('id');
   checkPermission: (permission: string) => boolean;
 
 }

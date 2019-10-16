@@ -79,8 +79,4 @@ export class LoginComponent implements OnInit {
       this.messageError = 'Preencha o login e a senha!';
     }
   }
-
-  go(){
-    this.router.navigate(['busca'])
-  }
 }

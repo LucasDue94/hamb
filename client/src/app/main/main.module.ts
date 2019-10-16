@@ -5,6 +5,9 @@ import {RouterModule} from "@angular/router";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AlertModule} from "../alert/alert.module";
 import {SpinnerModule} from "../spinner/spinner.module";
+import {MenuModule} from "../menu/menu.module";
+import {HeaderModule} from "../header/header.module";
+import {MainRoutingModule} from "./main-routing.module";
 
 
 @NgModule({
@@ -17,6 +20,9 @@ import {SpinnerModule} from "../spinner/spinner.module";
     FontAwesomeModule,
     AlertModule,
     SpinnerModule,
+    MenuModule,
+    HeaderModule,
+    MainRoutingModule
   ],
   exports: [
     MainComponent,

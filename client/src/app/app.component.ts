@@ -11,18 +11,22 @@ import {AuthService} from "./core/auth/auth.service";
 export class AppComponent extends Authentic implements DoCheck {
 
   isLogged = false;
-  currentRoute;
   currentUser;
 
-  constructor(private route: Router, private auth: AuthService) {
+  constructor(private router: Router, private auth: AuthService) {
     super();
     this.currentUser = localStorage;
   }
 
-  ngDoCheck(): void {
+  ngOnInit(){
     this.isLogged = this.auth.isLogged();
-    this.currentRoute = this.route.url;
+    if(!this.isLogged) this.router.navigate(['login'])
   }
 
-  checkPermission: (permission: string) => boolean;
+  ngDoCheck(): void {
+    this.isLogged = this.auth.isLogged();
+    console.log(this.router.url)
+  }
+
+checkPermission: (permission: string) => boolean;
 }

@@ -29,7 +29,7 @@
 </section>
 <form *ngIf="hasCrm()" class="atendimento-form" [formGroup]="atendimentoForm "
       (ngSubmit)="save()" #form>
-  <textarea (focusin)="expand()" (mouseout)="minimize()"  *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
+  <textarea (focusin)="expand()" (focusout)="minimize()"  *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
             formControlName="conteudo"
             placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control historico-field" #textArea></textarea>
   <div class="none"
