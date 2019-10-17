@@ -5,7 +5,7 @@ import {RedefineSenhaComponent} from "./redefine-senha.component";
 
 
 const redefinePassRoutes: Routes = [
-  { path: 'redefinicaodesenha/:id', canActivate: [AuthGuard], component: RedefineSenhaComponent, data: {pemissao: 'sempermissao'} }
+  { path: 'redefinicaodesenha/:id/:hash', canActivate: [AuthGuard], component: RedefineSenhaComponent, data: {pemissao: 'sempermissao'} }
 ];
 
 @NgModule({

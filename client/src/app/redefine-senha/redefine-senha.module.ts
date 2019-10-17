@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RedefineSenhaRoutingModule } from './redefine-senha-routing.module';
+import {RedefineSenhaComponent} from "./redefine-senha.component";
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    RedefineSenhaComponent
+  ],
   imports: [
     CommonModule,
     RedefineSenhaRoutingModule

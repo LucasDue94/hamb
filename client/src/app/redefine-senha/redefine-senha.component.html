@@ -7,7 +7,7 @@
       </div>
       <h3 class="system-description">Redefinição de senha</h3>
     </section>
-    <section class="bottom" [formGroup]="redefinePass" (ngSubmit)="save()">
+    <section class="bottom" [formGroup]="redefinePass" (ngSubmit)="update()">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
         <input class="login-form-control" formControlName="senha" placeholder="Nova senha" type="password">

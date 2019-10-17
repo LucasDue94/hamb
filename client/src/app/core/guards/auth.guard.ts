@@ -5,7 +5,7 @@ import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  publicRoutes = ['/forgot', '/redefinicaodesenha/c5d6d5780cc8ce2c03647de4fb1e3ea0052e998f'];
+  publicRoutes = ['/forgot', '/redefinicaodesenha/131/b5b72799d570a63b5b04d9b6dcc0947bffffafec'];
 
   constructor(private loginService: AuthService, private router: Router) {
   }
