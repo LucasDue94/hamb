@@ -1,12 +1,12 @@
 <main class="menu-container">
   <aside class="menu">
-    <a *ngIf="checkPermission('ROLE_ADMIN')" [routerLink]="['usuario']" class="menu-item">
+    <a *ngIf="checkPermission('ROLE_ADMIN')" [routerLink]="['/usuario']" class="menu-item">
       <fa-icon [icon]="['fas','user']"></fa-icon>
     </a>
     <a *ngIf="isMedico()"  [routerLink]="['/agenda','list',getUserId()]" class="menu-item">
       <fa-icon [icon]="['fas','calendar-alt']"></fa-icon>
     </a>
-    <a [routerLink]="['busca']" class="menu-item">
+    <a [routerLink]="['/busca']" class="menu-item">
       <fa-icon [icon]="['fas','search']"></fa-icon>
     </a>
   </aside>

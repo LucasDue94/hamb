@@ -83,7 +83,7 @@ export class UsuarioService extends HeadersHelper {
     return subject.asObservable();
   }
 
-  save(usuario: Usuario): Observable<any> {
+  save(usuario: Usuario): any {
     let subject = new Subject<Usuario>();
     if (usuario.id) {
       this.http.put<Usuario>(this.baseUrl + `usuario/` + usuario.id, usuario, {
@@ -92,11 +92,7 @@ export class UsuarioService extends HeadersHelper {
       }).pipe(
         catchError(error => of({error}))
       ).subscribe((json: any) => {
-        if (json.hasOwnProperty('error')) {
           subject.next(json)
-        } else {
-          subject.next(json.map((obj: any) => new Usuario(obj)))
-        }
       });
     } else {
       this.http.post<Usuario>(this.baseUrl + `usuario/`, usuario, {
@@ -107,8 +103,6 @@ export class UsuarioService extends HeadersHelper {
       ).subscribe((json: any) => {
         if (json.hasOwnProperty('error')) {
           subject.next(json)
-        } else {
-          subject.next(json.map((obj: any) => new Usuario(obj)))
         }
       });
     }

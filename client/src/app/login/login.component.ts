@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('perfil', res['perfil']);
             localStorage.setItem('roles', res['roles']);
           }
-
           if (this.currentUser.crm == null) {
             this.router.navigate(['/usuario']);
           } else {

@@ -8,6 +8,8 @@ import {SpinnerModule} from "../spinner/spinner.module";
 import {MenuModule} from "../menu/menu.module";
 import {HeaderModule} from "../header/header.module";
 import {MainRoutingModule} from "./main-routing.module";
+import {AgendaRoutingModule} from "../agenda/agenda-routing.module";
+import {UsuarioRoutingModule} from "../usuario/usuario-routing.module";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import {MainRoutingModule} from "./main-routing.module";
     SpinnerModule,
     MenuModule,
     HeaderModule,
-    MainRoutingModule
+    MainRoutingModule,
+    AgendaRoutingModule,
+    UsuarioRoutingModule
   ],
   exports: [
     MainComponent,

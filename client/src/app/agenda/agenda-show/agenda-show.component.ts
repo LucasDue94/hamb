@@ -42,7 +42,7 @@ export class AgendaShowComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.spinnerService.show();
+    this.spinnerService.show();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
@@ -54,7 +54,7 @@ export class AgendaShowComponent implements OnInit {
           this.sortPacientes();
           this.verificaAgenda();
         } else {
-          this.router.navigate(['/agenda', 'list']);
+          this.router.navigate(['/agenda', 'list', localStorage.getItem('id')]);
         }
       })
     });

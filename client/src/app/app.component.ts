@@ -18,15 +18,14 @@ export class AppComponent extends Authentic implements DoCheck {
     this.currentUser = localStorage;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.isLogged = this.auth.isLogged();
-    if(!this.isLogged) this.router.navigate(['login'])
+    if (!this.isLogged) this.router.navigate(['login'])
   }
 
   ngDoCheck(): void {
     this.isLogged = this.auth.isLogged();
-    console.log(this.router.url)
   }
 
-checkPermission: (permission: string) => boolean;
+  checkPermission: (permission: string) => boolean;
 }
