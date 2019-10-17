@@ -1,6 +1,6 @@
-import {Component, DoCheck} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {Authentic} from "./authentic";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "./core/auth/auth.service";
 
 @Component({
@@ -8,22 +8,29 @@ import {AuthService} from "./core/auth/auth.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent extends Authentic implements DoCheck {
+export class AppComponent extends Authentic implements DoCheck, OnInit {
 
   isLogged = false;
   currentRoute;
   currentUser;
-  publicUrl = false;
+  publicUrlForgot = false;
+  publicUrlRedefinicaoSenha = false;
 
-  constructor(private route: Router, private auth: AuthService) {
+  constructor(private router: Router, private auth: AuthService, private route: ActivatedRoute) {
     super();
     this.currentUser = localStorage;
   }
+  ngOnInit(){
+
+  }
 
   ngDoCheck(): void {
+
     this.isLogged = localStorage.getItem('token') != null;
-    this.publicUrl = this.route.url === '/forgot';
-    this.currentRoute = this.route.url;
+    this.publicUrlForgot = this.router.url === '/forgot';
+    this.publicUrlRedefinicaoSenha = this.router.url === '/redefinicaodesenha/9558b021af16aab7207bfdd92a9a82f874581302';
+
+    this.currentRoute = this.router.url;
   }
 
   checkPermission: (permission: string) => boolean;

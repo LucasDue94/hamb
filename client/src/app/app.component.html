@@ -1,6 +1,6 @@
 
 <app-header *ngIf="isLogged"></app-header>
 <app-menu *ngIf="isLogged"></app-menu>
-<app-main *ngIf="isLogged || publicUrl"></app-main>
+<app-main *ngIf="isLogged || publicUrlForgot || publicUrlRedefinicaoSenha"></app-main>
 
-<router-outlet name="login" *ngIf="!isLogged && !publicUrl"></router-outlet>
+<router-outlet name="login" *ngIf="!isLogged && !publicUrlForgot && !publicUrlRedefinicaoSenha"></router-outlet>

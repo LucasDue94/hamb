@@ -23,8 +23,10 @@ import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
 import {SpinnerDirective} from './spinner/spinner.directive';
-import { ForgotComponent } from './forgot/forgot.component';
+import {ForgotComponent} from './forgot/forgot.component';
 import {ForgotModule} from "./forgot/forgot.module";
+import { RedefineSenhaComponent } from './redefine-senha/redefine-senha.component';
+import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import {ForgotModule} from "./forgot/forgot.module";
     ErrorComponent,
     SpinnerDirective,
     ForgotComponent,
+    RedefineSenhaComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,13 +49,14 @@ import {ForgotModule} from "./forgot/forgot.module";
     AgendaModule,
     AtendimentoModule,
     BuscaModule,
+    RedefineSenhaModule,
     UsuarioModule,
     PerfectScrollbarModule,
     ReactiveFormsModule,
     LoginModule,
     FastSearchModule,
     PacienteInfoModule
-],
+  ],
   providers: [
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     AuthGuard

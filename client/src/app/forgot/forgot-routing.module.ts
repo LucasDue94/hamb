@@ -6,6 +6,7 @@ import {ForgotComponent} from "./forgot.component";
 
 const forgotRoute: Routes = [
   { path: 'forgot', canActivate: [AuthGuard], component: ForgotComponent, data: {pemissao: 'sempermissao'} },
+
 ];
 
 @NgModule({
