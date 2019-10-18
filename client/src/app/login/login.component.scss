@@ -1,6 +1,12 @@
 @import "../../assets/colors";
 @import "../../fonts/manjari";
 
+* {
+  ::selection {
+    background-color: transparent;
+  }
+}
+
 .login-container {
   position: relative;
   display: flex;
@@ -10,7 +16,7 @@
 
   & .label-forgot {
     position: relative;
-    top:-25px;
+    top: -25px;
     font-size: 12px;
     margin-bottom: 150px;
   }
@@ -90,7 +96,6 @@
       align-items: center;
       height: 35px;
       width: 250px;
-      //z-index: 99;
 
       & {
         margin-bottom: 30px;
@@ -200,7 +205,6 @@
 
 .valid {
   display: none;
-
 }
 
 .forget-pass {
@@ -221,7 +225,6 @@
       font-weight: 400;
       cursor: pointer;
     }
-
   }
 
   &:hover {
@@ -231,6 +234,22 @@
       transition: 1s;
       color: $blue-default;
     }
+  }
+}
+
+.system-state-title {
+  padding: 8px;
+  width: 370px;
+  margin-bottom: 15px;
+
+  & {
+    text-align: center;
+    background-color: $white;
+    font-size: 25px;
+    color: $gray-80;
+    border: 1px solid $gray-50;
+    border-left: none;
+    border-right: none;
   }
 }
 

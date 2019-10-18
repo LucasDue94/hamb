@@ -18,7 +18,7 @@ abstract class CidService {
 
             def criteria = Cid.createCriteria()
             return criteria.list(args) {
-                createAlias 'suarios', 'u', JoinType.LEFT_OUTER_JOIN
+                createAlias 'usuarios', 'u', JoinType.LEFT_OUTER_JOIN
 
                 if (termo != null && !termo.isEmpty()) {
                     or {

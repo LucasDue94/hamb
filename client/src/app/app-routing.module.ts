@@ -13,7 +13,6 @@ const routes: Routes = [
   {path: 'main', component: MainComponent},
   {path: 'forgot', component: ForgotComponent},
   {path: 'redefinesenha/:id/:hash', component: RedefineSenhaComponent}
-
 ];
 
 @NgModule({

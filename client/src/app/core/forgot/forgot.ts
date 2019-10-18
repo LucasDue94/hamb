@@ -1,29 +1,27 @@
-import { Usuario } from '../usuario/usuario';
+import {Usuario} from '../usuario/usuario';
 
 export class Forgot {
-    id: number;
+  id: number;
 
-    token: string;
+  token: string;
   senhaAlterada: boolean;
   validade: any;
   usuario: Usuario;
 
-    constructor (object?: any) {
-      if (object) {
-        
-        if (object.hasOwnProperty('usuario')) {
-          this.usuario = new Usuario(object['usuario']);
+  constructor(object?: any) {
+    if (object) {
+      if (object.hasOwnProperty('usuario')) {
+        this.usuario = new Usuario(object['usuario']);
         delete object['usuario'];
-        }
-        
-        for (var prop in object) {
-          this[prop] = object[prop];
-        }
       }
 
+      for (var prop in object) {
+        this[prop] = object[prop];
+      }
     }
+  }
 
-    toString(): string {
-      return 'hamb.Forgot : ' + (this.id ? this.id : '(unsaved)');
-    }
+  toString(): string {
+    return 'hamb.Forgot : ' + (this.id ? this.id : '(unsaved)');
+  }
 }

@@ -24,6 +24,7 @@ import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
 import {AlertModule} from "./alert/alert.module";
 import {ForgotModule} from "./forgot/forgot.module";
+import {RedefineSenhaComponent} from "./redefine-senha/redefine-senha.component";
 import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
 
 @NgModule({

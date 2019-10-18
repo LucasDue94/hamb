@@ -13,8 +13,7 @@ import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.servi
 import {AlertService} from "./alert/alert.service";
 import {ErrorService} from "./error/error.service";
 import {PerfilService} from './perfil/perfil.service';
-import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
-import { ForgotService } from './forgot/forgot.service';
+import {ForgotService} from './forgot/forgot.service';
 
 @NgModule({
   declarations: [],
@@ -26,7 +25,6 @@ import { ForgotService } from './forgot/forgot.service';
     UsuarioService,
     PacienteService,
     RegistroAtendimentoService,
-    RedefineSenhaService,
     AuthService,
     AgendaService,
     AtendimentoService,

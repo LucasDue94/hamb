@@ -1,27 +1,43 @@
 <main class="container">
+  <h3 class="system-state-title">Redefinição de senha</h3>
   <section class="login-container">
     <section class="top">
-      <div class="system-name" [routerLink]="['/']">
+      <img class="img-login" src="../../images/heart.png">
+      <div class="system-name">
         <h1 class="bold">Amb</h1>
         <h1 class="thin">cor</h1>
       </div>
-      <h3 class="system-description">Redefinição de senha</h3>
+      <h3 class="system-description">Sistema de atendimento ambulatorial</h3>
     </section>
-    <section class="bottom" [formGroup]="redefinePass" (ngSubmit)="update()">
+    <section class="bottom" [formGroup]="form">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
-        <input class="login-form-control" formControlName="senha" placeholder="Nova senha" type="password">
-      </div>
-      <div>
+        <fa-icon *ngIf="visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye']"></fa-icon>
+        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon"
+                 [icon]="['fas','eye-slash']"></fa-icon>
+        <input class="login-form-control" [type]="'password'" formControlName="senha" placeholder="Nova senha"
+               #password>
       </div>
       <div class="login-form-group">
-        <fa-icon  class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
-        <button class="button-login" (click)="update()">Cadastrar</button>
-        <div [ngClass]="[ this.error ? 'invalid': 'valid']">
-          {{messageError}}
-          <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
-        </div>
+        <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
+        <fa-icon *ngIf="visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye']"></fa-icon>
+        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon"
+                 [icon]="['fas','eye-slash']"></fa-icon>
+        <input class="login-form-control" [type]="'password'" formControlName="confirmacaoSenha"
+               placeholder="Confirmar senha" #confirmPassword>
+      </div>
+      <div class="login-form-group">
+        <fa-icon class="login-icon send-i con" [icon]="['fas','paper-plane']"></fa-icon>
+        <button class="button-login" (click)="update()">Salvar</button>
+      </div>
+      <div class="valid"  #errorContainer>
+        As senhas não conferem
+        <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
+      </div>
+      <div *ngIf="capsOn">
+        <p>Atenção: capslock ativo</p>
       </div>
     </section>
   </section>
 </main>
+
