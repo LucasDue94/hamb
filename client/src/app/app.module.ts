@@ -38,7 +38,6 @@ import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
     HttpClientModule,
     FontAwesomeModule,
     ForgotModule,
-    RedefineSenhaModule,
     HeaderModule,
     MenuModule,
     MainModule,

@@ -5,6 +5,8 @@ import { ForgotRoutingModule } from './forgot-routing.module';
 import {CoreModule} from "../core/core.module";
 import {RouterModule} from "@angular/router";
 import {ForgotComponent} from "./forgot.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import {ForgotComponent} from "./forgot.component";
     CommonModule,
     CoreModule,
     RouterModule,
-    ForgotRoutingModule
+    ForgotRoutingModule,
+    ReactiveFormsModule,
+    FontAwesomeModule
   ]
 })
 export class ForgotModule { }

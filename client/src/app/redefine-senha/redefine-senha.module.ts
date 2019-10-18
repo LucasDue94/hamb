@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { RedefineSenhaRoutingModule } from './redefine-senha-routing.module';
 import {RedefineSenhaComponent} from "./redefine-senha.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import {RedefineSenhaComponent} from "./redefine-senha.component";
   ],
   imports: [
     CommonModule,
-    RedefineSenhaRoutingModule
+    RedefineSenhaRoutingModule,
+    ReactiveFormsModule,
+    FontAwesomeModule
   ]
 })
 export class RedefineSenhaModule { }

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ForgotService} from "../core/forgot/forgot.service";
-import {Forgot} from "../core/forgot/forgot";
 import {RedefineSenhaService} from "../core/redefineSenha/redefine-senha.service";
 
 @Component({
@@ -11,7 +10,6 @@ import {RedefineSenhaService} from "../core/redefineSenha/redefine-senha.service
 })
 export class ForgotComponent implements OnInit {
   forgot: FormGroup;
-  usuario = new Forgot();
 
   constructor(private forgotService: ForgotService, private redefineSenhaService: RedefineSenhaService) {
     this.forgot = new FormGroup({
@@ -23,8 +21,6 @@ export class ForgotComponent implements OnInit {
   }
 
   save() {
-    this.forgotService.save(this.forgot.value).subscribe(res => {
-
-    });
+    this.forgotService.save(this.forgot.value).subscribe(res => {});
   }
 }

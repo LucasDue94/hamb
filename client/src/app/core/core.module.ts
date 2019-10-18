@@ -11,6 +11,7 @@ import {AtendimentoService} from './atendimento/atendimento.service';
 import {CidService} from './cid/cid.service';
 import {ConvenioService} from './convenio/convenio.service';
 import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.service';
+import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.servi
     UsuarioService,
     PacienteService,
     RegistroAtendimentoService,
+    RedefineSenhaService,
     AuthService,
     AgendaService,
     SalaService,

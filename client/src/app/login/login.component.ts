@@ -1,8 +1,8 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../core/auth/auth.service";
 import {Router} from "@angular/router";
 import {Agenda} from "../core/agenda/agenda";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'login',

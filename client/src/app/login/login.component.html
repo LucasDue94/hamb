@@ -8,7 +8,7 @@
       </div>
       <h3 class="system-description">Sistema de atendimento ambulatorial</h3>
     </section>
-    <section [formGroup]="loginForm" class="bottom">
+    <section [formGroup]="loginForm" (ngSubmit)="login()" class="bottom">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','user']"></fa-icon>
         <input class="login-form-control" formControlName="login" placeholder="login" type="text">

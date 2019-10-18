@@ -25,7 +25,6 @@ export class AppComponent extends Authentic implements DoCheck, OnInit {
   }
 
   ngDoCheck(): void {
-
     this.isLogged = localStorage.getItem('token') != null;
     this.publicUrlForgot = this.router.url === '/forgot';
     this.publicUrlRedefinicaoSenha = this.router.url === '/redefinicaodesenha/131/b5b72799d570a63b5b04d9b6dcc0947bffffafec';
