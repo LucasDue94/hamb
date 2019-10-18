@@ -1,15 +1,12 @@
 import {RegistroAtendimento} from '../registroAtendimento/registroAtendimento';
-import {Atendimento} from "../atendimento/atendimento";
 
 export class Paciente {
-  id: string;
+  id: number;
   nome: string;
   nascimento: any;
   nomeMae: string;
   contato: string;
   registros: RegistroAtendimento[];
-  atendimentos: Atendimento[];
-  atendimento: Atendimento;
 
   constructor(object?: any) {
     if (object) {
@@ -21,31 +18,27 @@ export class Paciente {
         delete object['registros'];
       }
 
-      if (object.hasOwnProperty('atendimento')) {
-        this.atendimento = new Atendimento(object['atendimento']);
-        delete object['atendimento'];
-      }
-
-      if (object.hasOwnProperty('atendimentos')) {
-        this.atendimentos = object['atendimentos'].map((obj: any) => {
-          return new Atendimento(obj);
-        });
-        delete object['atendimentos'];
-      }
-
       for (var prop in object) {
         this[prop] = object[prop];
       }
     }
-
   }
 
   toString(): string {
     return 'integracao.Paciente : ' + (this.id ? this.id : '(unsaved)');
   }
 
-  getLastRegistro() {
-    const lastIndex = this.atendimentos.length - 1;
-    return this.atendimentos[lastIndex].registroAtendimento;
+  sortRegistro() {
+    this.registros.sort(function (a, b) {
+      if (a.id > b.id)
+        return 1;
+      else
+        return -1
+    })
+  }
+
+  lastRegistro() {
+    this.sortRegistro()
+    return this.registros[this.registros.length - 1];
   }
 }

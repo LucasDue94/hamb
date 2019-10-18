@@ -3,6 +3,8 @@ import {AgendaService} from "../core/agenda/agenda.service";
 import {Agenda} from "../core/agenda/agenda";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
+import {SpinnerService} from "../core/spinner/spinner.service";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'agenda-list',
@@ -12,38 +14,40 @@ import {Usuario} from "../core/usuario/usuario";
 export class AgendaListComponent implements OnInit, AfterViewInit {
 
   agendas: Map<string, Agenda>;
-  dias;
-  spinner = false;
   usuarioLogado: Usuario;
+  dias;
 
   constructor(private render: Renderer2, private agendaService: AgendaService,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute,
+              private spinnerService: SpinnerService, private errorService: ErrorService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
   ngOnInit() {
-    this.loading();
+    this.spinnerService.show();
   }
 
   ngAfterViewInit(): void {
     if (Usuario.isMedico(this.usuarioLogado.crm)) {
       this.agendaService.list().subscribe((agendas) => {
+        if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
         this.agendas = Agenda.mergeAgenda(agendas);
         this.dias = Array.from(this.agendas.keys());
-        this.loaded();
+        this.spinnerService.hide()
       });
     } else {
       this.route.params.subscribe((params: Params) => {
         this.agendaService.list('', '', '', params['id']).subscribe((agendas) => {
+          if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
           this.agendas = Agenda.mergeAgenda(agendas);
           this.dias = Array.from(this.agendas.keys());
-          this.loaded();
+          this.spinnerService.hide();
         });
       });
     }
   }
 
-  back = () => this.router.navigate(['/usuario','list']);
+  back = () => this.router.navigate(['/usuario', 'list']);
 
   isMedico = (crm) => Usuario.isMedico(crm);
 
@@ -60,37 +64,12 @@ export class AgendaListComponent implements OnInit, AfterViewInit {
       this.route.params.subscribe(params => {
         this.router.navigate(['/agenda', 'show', this.dateToString(key), params['id']]);
       })
-
     }
   }
 
   getToday = () => Agenda.getDay();
 
   getMes = () => Agenda.getMes();
-
-  countEfetivados(dia) {
-    return Agenda.countEfetivados(this.agendas.get(dia).pacientes);
-  }
-
-  countAgendados(dia) {
-    return this.agendas.get(dia).pacientes.length;
-  }
-
-  countAtendidos(dia) {
-    let total = 0;
-    let pacientesAgendados = this.agendas.get(dia).pacientes;
-    pacientesAgendados.forEach(paciente => {
-      if (paciente.registro != undefined && paciente.registro.atendimentos != undefined) {
-        if (paciente.registro.atendimentos.length > 0) {
-          total++;
-        }
-      }
-    });
-    return total;
-  }
-
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
 }
 
 

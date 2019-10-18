@@ -4,6 +4,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Agenda} from "../../core/agenda/agenda";
 import {PacienteAgendado} from "../../core/pacienteAgendado/pacienteAgendado";
 import {Usuario} from "../../core/usuario/usuario";
+import {AlertService} from "../../core/alert/alert.service";
+import {SpinnerService} from "../../core/spinner/spinner.service";
+import {ErrorService} from "../../core/error/error.service";
 
 
 @Component({
@@ -21,13 +24,11 @@ export class AgendaShowComponent implements OnInit {
   hourMax;
   dataAgenda;
   horario = '';
-  spinner = false;
-
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
 
   constructor(private agendaService: AgendaService, private render: Renderer2,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute,
+              private alertService: AlertService, private spinnerService: SpinnerService,
+              private errorService: ErrorService) {
   }
 
   back() {
@@ -41,18 +42,19 @@ export class AgendaShowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading();
+    this.spinnerService.show();
     this.route.params.subscribe((res) => {
       this.dataAgenda = res.data;
       this.agendaService.list('', '', this.dataAgenda, res.id).subscribe(agendas => {
+        if (this.errorService.hasError(agendas)) this.errorService.sendError(agendas);
         this.agendas = Agenda.mergeAgenda(agendas);
         if (this.agendas.size > 0) {
           this.pacientes = this.getPacientes();
-          this.loaded();
+          this.spinnerService.hide();
           this.sortPacientes();
           this.verificaAgenda();
         } else {
-          this.router.navigate(['/agenda', 'list']);
+          this.router.navigate(['/agenda', 'list', localStorage.getItem('id')]);
         }
       })
     });
@@ -65,11 +67,6 @@ export class AgendaShowComponent implements OnInit {
     });
 
     this.pacientes.sort(function (a, b) {
-      if (a.registro == undefined && b.registro != undefined) return 1;
-      else if (b.registro == undefined && a.registro != undefined) return -1;
-    });
-
-    this.pacientes.sort(function (a, b) {
       function wasAtendido(paciente) {
         if (paciente.registro != undefined && paciente.registro.atendimentos != undefined)
           return paciente.registro.atendimentos.length > 0
@@ -78,6 +75,11 @@ export class AgendaShowComponent implements OnInit {
       if (wasAtendido(a) && !wasAtendido(b)) return 1;
       else if (!wasAtendido(a) && wasAtendido(b)) return -1;
 
+    });
+
+    this.pacientes.sort(function (a, b) {
+      if (a.registro == undefined && b.registro != undefined) return 1;
+      else if (b.registro == undefined && a.registro != undefined) return -1;
     });
   }
 
@@ -100,16 +102,24 @@ export class AgendaShowComponent implements OnInit {
     }
   }
 
-  goAtendimento(paciente) {
-    if (paciente.registro != undefined) this.router.navigate(['/atendimento', paciente.registro.id]);
-    else this.router.navigate(['/atendimento', 'null'])
+  goAtendimento(pacienteAgendado) {
+    if (pacienteAgendado.registro != undefined && pacienteAgendado.registro.paciente != undefined) {
+      this.router.navigate(['/atendimento', pacienteAgendado.registro.paciente.id]);
+    } else {
+      this.alertService.send({
+        message: 'O paciente ainda não foi efetivado!',
+        icon: 'exclamation-circle',
+        type: 'warning'
+      });
+    }
   }
 
   getMes = () => Agenda.getMes();
 
-  getDay(){
+  getDay() {
     return new Date(this.dataAgenda).getUTCDate()
   }
+
   getPacientes() {
     if (this.agendas != undefined) {
       let keys = this.agendas.keys();

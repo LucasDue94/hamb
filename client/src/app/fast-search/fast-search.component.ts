@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'fast-search',
@@ -31,7 +32,7 @@ export class FastSearchComponent implements OnInit {
   offset = 0;
   spinner = false;
 
-  constructor(private render: Renderer2) {
+  constructor(private errorService: ErrorService) {
   }
 
   ngOnInit() {
@@ -42,9 +43,9 @@ export class FastSearchComponent implements OnInit {
       searchControl: this.searchControl
     });
 
-    this.service.list(this.max, this.offset).subscribe(
-      res => {
-        this.dataArray = res;
+    this.service.list(this.max, this.offset).subscribe(res => {
+      if (this.errorService.hasError(res)) this.errorService.sendError(res);
+      this.dataArray = res;
         this.loaded();
       });
     this.search()
@@ -65,6 +66,7 @@ export class FastSearchComponent implements OnInit {
         return this.service.search(changes, this.offset)
       })
     ).subscribe(res => {
+      if (this.errorService.hasError(res)) this.errorService.sendError(res);
       this.dataArray = res;
       this.loaded();
     });
@@ -74,6 +76,7 @@ export class FastSearchComponent implements OnInit {
     this.loading();
     this.offset += 25;
     this.service.search(this.searchControl.value, this.offset, this.max).subscribe(data => {
+      if (this.errorService.hasError(data)) this.errorService.sendError(data);
       data.forEach(d => this.dataArray.push(d));
       this.loaded();
     });

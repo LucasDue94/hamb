@@ -3,8 +3,6 @@
 export class Perfil {
   id: number;
 
-  
-
   constructor (object?: any) {
     if (object) {
       

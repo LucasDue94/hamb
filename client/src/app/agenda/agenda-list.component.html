@@ -19,9 +19,9 @@
         [ngStyle]="{'color': dia < getToday() ? '#A9ABAE' : dia > getToday()? '#5A5B5B' : dia == getToday() ? '#2B517E' : '#A9ABAE'}"
         class="day">{{dia}}</h1>
       <div class="informations">
-        <p>Atendidos:{{countAtendidos(dia)}}</p>
-        <p>Efetivados:{{countEfetivados(dia)}}</p>
-        <p>Agendados:{{countAgendados(dia)}}</p>
+        <p>Atendidos:{{this.agendas.get(dia).countAtendidos()}}</p>
+        <p>Efetivados:{{ this.agendas.get(dia).countEfetivados()}}</p>
+        <p>Agendados:{{this.agendas.get(dia).countAgendados()}}</p>
       </div>
   </section>
   <div class="withoutData" *ngIf="agendas?.size == 0">
@@ -29,5 +29,3 @@
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
 </section>
-<spinner *ngIf="spinner"></spinner>
-

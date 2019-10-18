@@ -1,30 +1,30 @@
-import {AfterViewInit, Component, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {SpinnerService} from "../core/spinner/spinner.service";
+
 
 @Component({
   selector: 'spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit, AfterViewInit {
+export class SpinnerComponent implements DoCheck, AfterViewInit {
 
-  @Input('fullScreen') fullScreen = true;
+
+  private status;
   @Input('width') width: string;
   @Input('height') height: string;
   @ViewChild('spinnerContainer', {static: false}) spinnerContainer;
-  spinnerComponent;
-  root;
 
-  constructor(private render: Renderer2) {
+  constructor(private render: Renderer2, private spinnerService: SpinnerService) {
   }
 
-  ngOnInit() {
+  ngDoCheck() {
+    this.spinnerService.listen().subscribe(res => this.status = res);
+    if (this.height != undefined) this.status = true;
+
   }
 
   ngAfterViewInit(): void {
-    this.root = document.getElementsByTagName('app-root')[0];
-    this.spinnerComponent = this.render.parentNode(this.spinnerContainer.nativeElement);
-    if (this.fullScreen) this.render.appendChild(this.root, this.spinnerComponent);
-    if (this.width != undefined) this.render.setStyle(this.spinnerContainer.nativeElement, 'width', this.width);
     if (this.height != undefined) {
       this.render.setStyle(this.spinnerContainer.nativeElement, 'height', this.height);
       this.render.setStyle(this.spinnerContainer.nativeElement, 'bottom', '0');

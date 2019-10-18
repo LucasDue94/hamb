@@ -1,16 +1,17 @@
 import {Injectable} from '@angular/core';
-import {Convenio} from './convenio';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment.prod";
-import {Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
 import {HeadersHelper} from "../headersHelper";
+import {Observable, of, Subject} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {Convenio} from "./convenio";
 
 
 @Injectable()
-export class ConvenioService extends  HeadersHelper{
+export class ConvenioService extends HeadersHelper {
 
     private baseUrl = environment.serverUrl;
+
     getDefaultHttpOptions() {
         return new HttpHeaders({
             "Cache-Control": "no-cache",
@@ -23,12 +24,18 @@ export class ConvenioService extends  HeadersHelper{
         super()
     }
 
-    list(max?: any, offset?: any): Observable<Convenio[]> {
+    list(max?: any, offset?: any): Observable<any[]> {
         let subject = new Subject<Convenio[]>();
         this.http.get(this.baseUrl + `convenio?offset=` + offset + '&max=' + max, {headers: this.getDefaultHttpOptions()})
-            .subscribe((json: any[]) => {
-                subject.next(json.map((propertyName: any) => new Convenio(propertyName)))
-            });
+            .pipe(
+                catchError(error => of({error})
+                )).subscribe((json: any[]) => {
+            if (!json.hasOwnProperty('error')){
+                subject.next(json.map((obj: any) => new Convenio(obj)));
+            } else{
+                subject.next(json);
+            }
+        });
         return subject.asObservable();
     }
 
@@ -44,12 +51,18 @@ export class ConvenioService extends  HeadersHelper{
         )
     }
 
-    get(id: number): Observable<Convenio> {
+    get(id: number): Observable<any> {
         let subject = new Subject<Convenio>();
         this.http.get(this.baseUrl + `convenio/` + id, {headers: this.getDefaultHttpOptions()})
-            .subscribe((json: any) => {
+            .pipe(
+                catchError(error => of({error})
+                )).subscribe((json: any) => {
+            if (json.hasOwnProperty('error')) {
+                subject.next(json);
+            } else {
                 subject.next(new Convenio(json));
-            });
+            }
+        });
         return subject.asObservable();
     }
 
@@ -58,31 +71,66 @@ export class ConvenioService extends  HeadersHelper{
         this.http.get(this.baseUrl + `convenio/` + '?offset=' + offset + '&max=' + max, {
             headers: this.getDefaultHttpOptions(),
             params: {termo: searchTerm}
-        }).subscribe((json: any) => {
-            subject.next(json.map((obj: any) => new Convenio(obj)))
+        }).pipe(
+            catchError(error => of({error})
+            )).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new Convenio(obj)))
+                }
         });
         return subject.asObservable();
     }
 
-    save(convenio: Convenio): Observable<Convenio> {
-        if (convenio.id) {
-            return this.http.put<Convenio>(this.baseUrl + `convenio/` + convenio.id, convenio, {
+    save(convenio: Convenio): Observable<any> {
+        let subject = new Subject<Convenio>();
+        if (convenio.id){
+            this.http.put<Convenio>(this.baseUrl + `convenio/` + convenio.id, convenio, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new Convenio(obj)))
+                }
             });
-        } else {
-            return this.http.post<Convenio>(this.baseUrl + `convenio/`, convenio, {
+        }else{
+            this.http.post<Convenio>(this.baseUrl + `convenio/`, convenio, {
                 headers: this.getDefaultHttpOptions(),
                 responseType: 'json'
+            }).pipe(
+                catchError(error => of({error}))
+            ).subscribe((json: any) => {
+                if(json.hasOwnProperty('error')){
+                    subject.next(json)
+                }else{
+                    subject.next(json.map((obj: any) => new Convenio(obj)))
+                }
             });
         }
+        return subject.asObservable()
     }
 
 
-    destroy(convenio: Convenio): Observable<Object> {
-        return this.http.delete(this.baseUrl + `convenio/` + convenio.id, {
+    destroy(convenio: Convenio): Observable<any> {
+        let subject = new Subject<Convenio>();
+
+        this.http.delete(this.baseUrl + `convenio/` + convenio.id, {
             headers: this.getDefaultHttpOptions(),
             observe: 'response'
+        }).pipe(
+            catchError(error => of({error}))
+        ).subscribe((json: any) => {
+            if(json.hasOwnProperty('error')){
+                subject.next(json)
+            }else{
+                subject.next(json.map((obj: any) => new Convenio(obj)))
+            }
         });
+        return subject.asObservable()
     }
 }

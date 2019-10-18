@@ -6,12 +6,13 @@ import {PacienteService} from './paciente/paciente.service';
 import {RegistroAtendimentoService} from './registroAtendimento/registroAtendimento.service';
 import {AuthService} from "./auth/auth.service";
 import {AgendaService} from './agenda/agenda.service';
-import {SalaService} from './sala/sala.service';
 import {AtendimentoService} from './atendimento/atendimento.service';
 import {CidService} from './cid/cid.service';
 import {ConvenioService} from './convenio/convenio.service';
 import {PacienteAgendadoService} from './pacienteAgendado/pacienteAgendado.service';
-import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
+import {AlertService} from "./alert/alert.service";
+import {ErrorService} from "./error/error.service";
+import {PerfilService} from './perfil/perfil.service';
 
 @NgModule({
   declarations: [],
@@ -23,14 +24,15 @@ import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
     UsuarioService,
     PacienteService,
     RegistroAtendimentoService,
-    RedefineSenhaService,
     AuthService,
     AgendaService,
-    SalaService,
     AtendimentoService,
     CidService,
     ConvenioService,
-    PacienteAgendadoService
+    PacienteAgendadoService,
+    AlertService,
+    ErrorService,
+    PerfilService
 ]
 })
 export class CoreModule {}

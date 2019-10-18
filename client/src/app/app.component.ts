@@ -1,6 +1,6 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck} from '@angular/core';
 import {Authentic} from "./authentic";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "./core/auth/auth.service";
 
 @Component({
@@ -8,33 +8,24 @@ import {AuthService} from "./core/auth/auth.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent extends Authentic implements DoCheck, OnInit {
+export class AppComponent extends Authentic implements DoCheck {
 
   isLogged = false;
-  currentRoute;
   currentUser;
-  publicUrlForgot = false;
-  publicUrlRedefinicaoSenha = false;
 
-  constructor(private router: Router, private auth: AuthService, private route: ActivatedRoute) {
+  constructor(private router: Router, private auth: AuthService) {
     super();
     this.currentUser = localStorage;
   }
-  ngOnInit(){
 
+  ngOnInit() {
+    this.isLogged = this.auth.isLogged();
+    if (!this.isLogged) this.router.navigate(['login'])
   }
 
   ngDoCheck(): void {
-    this.isLogged = localStorage.getItem('token') != null;
-    this.publicUrlForgot = this.router.url === '/forgot';
-    this.publicUrlRedefinicaoSenha = this.router.url === '/redefinicaodesenha/131/b5b72799d570a63b5b04d9b6dcc0947bffffafec';
-
-    this.currentRoute = this.router.url;
+    this.isLogged = this.auth.isLogged();
   }
 
   checkPermission: (permission: string) => boolean;
-
-  logout() {
-    this.auth.logout(localStorage.getItem('token'));
-  }
 }

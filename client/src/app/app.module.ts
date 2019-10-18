@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
-import {LocationStrategy, PathLocationStrategy} from "@angular/common";
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {HeaderModule} from "./header/header.module";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {MenuModule} from "./menu/menu.module";
@@ -22,22 +22,18 @@ import {ErrorComponent} from "./error/error.component";
 import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
-import {SpinnerDirective} from './spinner/spinner.directive';
-import {ForgotModule} from "./forgot/forgot.module";
-import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
+import {AlertModule} from "./alert/alert.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent,
-    SpinnerDirective
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
-    ForgotModule,
     HeaderModule,
     MenuModule,
     MainModule,
@@ -45,16 +41,16 @@ import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
     AgendaModule,
     AtendimentoModule,
     BuscaModule,
-    RedefineSenhaModule,
     UsuarioModule,
     PerfectScrollbarModule,
     ReactiveFormsModule,
     LoginModule,
     FastSearchModule,
-    PacienteInfoModule
-  ],
+    PacienteInfoModule,
+    AlertModule
+],
   providers: [
-    {provide: LocationStrategy, useClass: PathLocationStrategy},
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     AuthGuard
   ],
   bootstrap: [AppComponent]

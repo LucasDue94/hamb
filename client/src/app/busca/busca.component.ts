@@ -3,6 +3,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {PacienteService} from "../core/paciente/paciente.service";
 import {Paciente} from "../core/paciente/paciente";
 import {debounceTime, switchMap} from "rxjs/operators";
+import {Router} from "@angular/router";
+import {SpinnerService} from "../core/spinner/spinner.service";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'busca',
@@ -17,28 +20,30 @@ export class BuscaComponent implements OnInit {
   max = 15;
   showCard = false;
   currentPaciente;
-  spinner = false;
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
-  constructor(private render: Renderer2, private pacienteService: PacienteService) {}
+
+  constructor(private render: Renderer2, private pacienteService: PacienteService,
+              private router: Router, private spinnerService: SpinnerService,
+              private errorService: ErrorService) {
+  }
 
   ngOnInit() {
-    this.loading();
+    this.spinnerService.show();
     this.searchControl = new FormControl();
     this.searchControl.setValue('');
     this.searchForm = new FormGroup({
       searchControl: this.searchControl
     });
-    this.loaded();
+    this.spinnerService.hide();
   }
 
 
   scrollDown() {
-    this.loading();
+    this.spinnerService.show();
     this.offset += 15;
     this.pacienteService.search(this.searchControl.value, this.offset, this.max).subscribe(pacientes => {
+      if (this.errorService.hasError(pacientes)) this.errorService.sendError(pacientes);
       pacientes.forEach(paciente => this.pacientes.push(paciente));
-      this.loaded();
+      this.spinnerService.hide();
     });
   }
 
@@ -46,14 +51,15 @@ export class BuscaComponent implements OnInit {
     this.searchControl.valueChanges.pipe(
       debounceTime(1000),
       switchMap(changes => {
-        this.loading();
+        this.spinnerService.show();
         this.offset = 0;
         if (this.pacientes != undefined) this.pacientes.length = 0;
         return this.pacienteService.search(changes, this.offset, this.max)
       })
     ).subscribe(res => {
+      if (this.errorService.hasError(res)) this.errorService.sendError(res);
       this.pacientes = res;
-      this.loaded();
+      this.spinnerService.hide();
     });
   }
 
@@ -62,4 +68,7 @@ export class BuscaComponent implements OnInit {
     this.showCard = !this.showCard;
   }
 
+  goAtendimento(paciente) {
+    this.router.navigate(['atendimento', paciente.id])
+  }
 }

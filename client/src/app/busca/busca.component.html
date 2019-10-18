@@ -1,4 +1,3 @@
-<spinner *ngIf="spinner"></spinner>
 <nav class="nav-container">
   <a [routerLink]="['/usuario','list']" class="back" [ngStyle]="{'visibility': 'hidden'}">
     <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
@@ -30,7 +29,7 @@
           <section>
             <fa-icon (click)="toogle(paciente)"  class="icon login"
                      [icon]="['fas','eye']"></fa-icon>
-            <fa-icon [routerLink]="['/atendimento',paciente.getLastRegistro().id]" class="icon"
+            <fa-icon (click)="goAtendimento(paciente)" class="icon"
                      [icon]="['fas','book-medical']"></fa-icon>
           </section>
           <paciente-info id="{{paciente.id}}" *ngIf="showCard && paciente == this.currentPaciente"

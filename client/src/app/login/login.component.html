@@ -8,7 +8,7 @@
       </div>
       <h3 class="system-description">Sistema de atendimento ambulatorial</h3>
     </section>
-    <section [formGroup]="loginForm" (ngSubmit)="login()" class="bottom">
+    <section [formGroup]="loginForm" class="bottom">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','user']"></fa-icon>
         <input class="login-form-control" formControlName="login" placeholder="login" type="text">
@@ -20,16 +20,17 @@
                  [icon]="['fas','eye-slash']"></fa-icon>
         <input class="login-form-control" [type]="'password'" formControlName="senha" placeholder="senha" #password>
       </div>
-      <div>
-        <a class="label-forgot"  href="#" [routerLink]="['/forgot']">Esqueceu a senha ?</a>
-      </div>
-      <div class="login-form-group">
+      <div class="login-form-group login-submit">
         <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <button (click)="login()" class="button-login">Entrar</button>
         <div [ngClass]="[ this.error ? 'invalid': 'valid']">
           {{messageError}}
           <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
         </div>
+      </div>
+      <div class="forget-pass">
+        <a [routerLink]="'/error'" class="recovery-pass">Redefinir senha</a>
+        <fa-icon class="recovery-icon" [icon]="['fas','question-circle']"></fa-icon>
       </div>
     </section>
   </section>

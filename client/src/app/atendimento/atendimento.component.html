@@ -9,7 +9,7 @@
       <fa-icon class="icon" [icon]="['fas','info-circle']"></fa-icon>
       <p>{{paciente?.nome}}</p>
     </div>
-    <paciente-info *ngIf="showCard" class="show" [pacienteAgendado]="pacienteAgendado"
+    <paciente-info *ngIf="showCard" class="show"
                    [paciente]="paciente" #pacienteCard></paciente-info>
   </section>
 </nav>
@@ -23,15 +23,15 @@
     </footer>
   </article>
   <div class="withoutData" *ngIf="atendimentos?.length == 0 || !hasRegistro">
-    {{!this.hasRegistro ?  'O paciente ainda não foi efetivado, portanto, não possui um registro.': 'O paciente ainda não possui atendimentos.'}}
+    {{!this.hasRegistro ? 'O paciente ainda não foi efetivado, portanto, não possui um registro.' : 'O paciente ainda não possui atendimentos.'}}
     <fa-icon class="icon" [icon]="['fas','frown']" size="2x"></fa-icon>
   </div>
 </section>
-<form *ngIf="hasCrm()" class="atendimento-form" [formGroup]="atendimentoForm"
-      (ngSubmit)="save()">
-  <textarea *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
+<form *ngIf="hasCrm()" class="atendimento-form" [formGroup]="atendimentoForm "
+      (ngSubmit)="save()" #form>
+  <textarea (focusin)="expand()" (focusout)="minimize()"  *ngIf="!atendimentoForm.disabled" (input)="updateConteudo()"
             formControlName="conteudo"
-            placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control"></textarea>
+            placeholder="-- Escreva aqui o histórico deste atendimento --" class="form-control historico-field" #textArea></textarea>
   <div class="none"
        [ngClass]="[getControl('conteudo').invalid && getControl('conteudo').dirty ? 'errors historico-errors':'none']"
        #conteudo>
@@ -57,8 +57,3 @@
                  [widthField]="['1','3']"></fast-search>
   </div>
 </form>
-<spinner [fullScreen]="false" *ngIf="spinner"></spinner>
-<div class="offStatus" #status>
-  <h1 class="title-status">Histórico atualizado</h1>
-  <fa-icon class="icon" [icon]="['fas','check']"></fa-icon>
-</div>

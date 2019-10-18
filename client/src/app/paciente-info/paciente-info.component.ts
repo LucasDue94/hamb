@@ -11,7 +11,6 @@ import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 export class PacienteInfoComponent implements OnInit {
 
   @Input() paciente: Paciente;
-  @Input() pacienteAgendado: PacienteAgendado;
 
   constructor() {}
 

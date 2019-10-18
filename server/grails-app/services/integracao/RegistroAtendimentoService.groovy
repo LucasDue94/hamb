@@ -3,16 +3,16 @@ package integracao
 import grails.gorm.services.Service
 
 @Service(RegistroAtendimento)
-interface RegistroAtendimentoService {
+abstract class RegistroAtendimentoService {
 
-    RegistroAtendimento get(Serializable id)
+    abstract RegistroAtendimento get(Serializable id)
 
-    List<RegistroAtendimento> list(Map args)
+    abstract List<RegistroAtendimento> list(Map args)
 
-    Long count()
+    abstract Long count()
 
-    void delete(Serializable id)
+    abstract void delete(Serializable id)
 
-    RegistroAtendimento save(RegistroAtendimento registroAtendimento)
+    abstract RegistroAtendimento save(RegistroAtendimento registroAtendimento)
 
 }

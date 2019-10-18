@@ -1,21 +1,15 @@
 
-
 export class Sala {
-    id: number;
+  codigo: string;
+  unidade:string;
+  nome: string;
 
-    
+  constructor (object?: any) {
+    if (object) {
 
-    constructor (object?: any) {
-      if (object) {
-        
-        for (var prop in object) {
-          this[prop] = object[prop];
-        }
+      for (var prop in object) {
+        this[prop] = object[prop];
       }
-
     }
-
-    toString(): string {
-      return 'integracao.Sala : ' + (this.id ? this.id : '(unsaved)');
-    }
+  }
 }

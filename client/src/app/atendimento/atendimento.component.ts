@@ -9,9 +9,11 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Usuario} from "../core/usuario/usuario";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Location} from '@angular/common';
-import {PacienteAgendadoService} from "../core/pacienteAgendado/pacienteAgendado.service";
-import {PacienteAgendado} from "../core/pacienteAgendado/pacienteAgendado";
 import {RegistroAtendimento} from "../core/registroAtendimento/registroAtendimento";
+import {RegistroAtendimentoService} from "../core/registroAtendimento/registroAtendimento.service";
+import {AlertService} from "../core/alert/alert.service";
+import {SpinnerService} from "../core/spinner/spinner.service";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'atendimento',
@@ -25,63 +27,51 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   @ViewChild('atendimentoContainer', {static: false}) atendimentoContainer;
   @ViewChild('pacienteCard', {static: false}) pacienteCard;
   @ViewChild('status', {static: false}) status;
+  @ViewChild('form', {static: false}) form;
+  @ViewChild('textArea', {static: false}) textArea;
   atendimentos: Atendimento[];
   paciente: Paciente;
-  pacienteAgendado: PacienteAgendado;
   atendimentoForm: FormGroup;
   usuarioLogado: Usuario;
   activeSearch = false;
   isValidForm = null;
-  max = 1000;
+  max = 10000;
   showCard = false;
-  spinner = false;
-  messageStatus;
   hasRegistro = true;
 
   constructor(private render: Renderer2, private cidService: CidService,
               private pacienteService: PacienteService, private atendimentoService: AtendimentoService,
-              private pacienteAgendadoService: PacienteAgendadoService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private location: Location) {
+              private registroAtendimento: RegistroAtendimentoService, private alertService: AlertService,
+              private route: ActivatedRoute, private spinnerService: SpinnerService, private router: Router,
+              private location: Location, private errorService: ErrorService) {
     this.usuarioLogado = new Usuario({id: localStorage.id, crm: localStorage.crm, nome: localStorage.nome});
   }
 
-  //TODO fazer o scroll reverso
-
   ngOnInit() {
     this.buildForm();
-    this.loading();
+    this.spinnerService.show();
     this.route.params.subscribe((params: Params) => {
-      const id = params['id'];
-
-      if (id != 'null') {
-        this.pacienteAgendadoService.get(id).subscribe(pacienteAgendado => {
-          this.pacienteAgendado = pacienteAgendado;
-          this.pacienteService.get(this.pacienteAgendado.registro.paciente.id).subscribe(paciente => {
-            this.paciente = paciente;
-            this.getAtendimentos();
-          })
-        });
-      } else {
-        this.hasRegistro = false;
-        this.loaded();
-        this.atendimentoForm.disable({emitEvent: true});
-      }
+      const prontuario = params['id'];
+      this.pacienteService.get(prontuario).subscribe(paciente => {
+        console.log(paciente);
+        if (this.errorService.hasError(paciente)) this.errorService.sendError(paciente);
+        this.paciente = paciente;
+        this.getAtendimentos();
+        this.spinnerService.hide()
+      });
     });
   }
 
   ngAfterViewChecked(): void {
-    if (this.atendimentoForm.disabled)
-      this.messageStatus = 'Este paciente ainda não foi efetivado,ou seja, ele não possui registro';
     this.atendimentoContainer.nativeElement.scrollTop = this.atendimentoContainer.nativeElement.scrollHeight;
   }
 
   hasCrm = () => this.usuarioLogado.crm != 'null' && this.usuarioLogado.crm != null && this.usuarioLogado.crm != '';
 
   getAtendimentos = () => this.atendimentoService.list(this.max, '', this.paciente.id).subscribe(atendimentos => {
+    if (this.errorService.hasError(atendimentos)) this.errorService.sendError(atendimentos);
     this.atendimentos = atendimentos;
-    this.loaded();
+    this.spinnerService.hide();
   });
 
   buildForm() {
@@ -113,17 +103,14 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.activeSearch = !this.activeSearch;
   }
 
-
   setFields() {
     let atendimento = new Atendimento();
     atendimento.usuario = this.usuarioLogado;
     atendimento.conteudo = this.atendimentoForm.get('conteudo').value;
-    atendimento.paciente = new Paciente({id: this.paciente.id});
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
     });
-    if (this.pacienteAgendado == undefined) atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.getLastRegistro().id});
-    else atendimento.registroAtendimento = new RegistroAtendimento({id: this.pacienteAgendado.registro.id});
+    atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.lastRegistro().id})
     return atendimento;
   }
 
@@ -136,8 +123,9 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   updateAtendimentos() {
     this.atendimentoService.list('', '', this.paciente.id).subscribe(atendimentos => {
+      if (this.errorService.hasError(atendimentos)) this.errorService.sendError(atendimentos);
       this.atendimentos = atendimentos;
-      this.loaded();
+      this.spinnerService.hide();
       this.clear()
     });
     const r = this.router.config.find(r => r.path == 'atendimento/:id');
@@ -147,8 +135,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   checkField = (field) => field != null && field != '' && field != undefined;
 
   validate = (atendimento: Atendimento) => this.checkField(atendimento.usuario.id) &&
-    this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento) &&
-    this.checkField(atendimento.paciente.id);
+    this.atendimentoForm.valid && this.checkField(atendimento.registroAtendimento);
 
   clear() {
     this.atendimentoForm.reset();
@@ -165,10 +152,14 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     if (this.isValidForm) {
       this.removeErrors();
       this.atendimentoService.save(atendimento).subscribe(res => {
-        if (res.status == 201) {
-          this.loading();
+        if (!this.errorService.hasError(res)) {
+          this.spinnerService.show();
           this.updateAtendimentos();
-          this.changeStatus()
+          this.spinnerService.hide();
+          this.alertService.send({message: 'O histórico foi atualizado', icon: 'check', type: 'success'});
+          this.location.back();
+        } else if (this.errorService.hasError(atendimento)) {
+          this.errorService.sendError(atendimento);
         }
       });
     } else {
@@ -202,20 +193,16 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  loading = () => this.spinner = true;
-  loaded = () => this.spinner = false;
-  toggle = (status) => this.showCard = status;
-
-  changeStatus() {
-    setTimeout(() => {
-      this.render.removeClass(this.status.nativeElement, 'offStatus');
-      this.render.addClass(this.status.nativeElement, 'onStatus');
-      this.messageStatus = false;
-    }, 300);
-    this.render.addClass(this.status.nativeElement, 'offStatus');
-    this.render.removeClass(this.status.nativeElement, 'onStatus');
-    setTimeout(() => {
-      this.location.back();
-    }, 2300);
+  expand() {
+    this.render.addClass(this.form.nativeElement, 'expand-form');
+    this.render.addClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
+    console.log(this.textArea);
   }
+
+  minimize() {
+    this.render.removeClass(this.form.nativeElement, 'expand-form');
+    this.render.removeClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
+  }
+
+  toggle = (status) => this.showCard = status;
 }
