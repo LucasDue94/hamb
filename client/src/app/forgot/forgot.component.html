@@ -1,26 +1,25 @@
 <main class="container">
   <section class="login-container">
     <section class="top">
-      <div class="system-name" [routerLink]="['/']">
+        <img class="img-login" src="../../images/heart.png">
+      <div class="system-name">
         <h1 class="bold">Amb</h1>
         <h1 class="thin">cor</h1>
       </div>
       <h3 class="system-description">Recuperação de senha</h3>
     </section>
-    <section class="bottom" [formGroup]="forgot" (ngSubmit)="save()">
+    <section class="bottom" [formGroup]="forgot">
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','envelope']"></fa-icon>
         <input class="login-form-control" formControlName="email" placeholder="email@email.com" type="email">
       </div>
-      <div>
-      </div>
       <div class="login-form-group">
         <fa-icon  class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <button class="button-login" (click)="save()">Enviar</button>
-        <div [ngClass]="[ this.error ? 'invalid': 'valid']">
-          {{messageError}}
-          <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
-        </div>
+      </div>
+      <div class="login-form-group">
+        <fa-icon  class="login-icon send-icon" [icon]="['fas','arrow-left']"></fa-icon>
+        <button class="button-login btn-back" [routerLink]="['/']" >Voltar</button>
       </div>
     </section>
   </section>

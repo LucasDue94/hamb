@@ -1,7 +1,8 @@
 import {Component, DoCheck} from '@angular/core';
 import {Authentic} from "./authentic";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "./core/auth/auth.service";
+import {AlertService} from "./core/alert/alert.service";
 
 @Component({
   selector: 'app-root',
@@ -11,20 +12,20 @@ import {AuthService} from "./core/auth/auth.service";
 export class AppComponent extends Authentic implements DoCheck {
 
   isLogged = false;
+  alert;
   currentUser;
 
-  constructor(private router: Router, private auth: AuthService, private route: ActivatedRoute) {
+  constructor(private router: Router, private auth: AuthService, private alertService: AlertService) {
     super();
     this.currentUser = localStorage;
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.url)
     this.isLogged = this.auth.isLogged();
   }
 
   ngDoCheck(): void {
-    console.log(this.route.snapshot.url)
+    this.alertService.receive().subscribe(res=> this.alert = res);
     this.isLogged = this.auth.isLogged();
   }
 

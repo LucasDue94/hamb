@@ -14,6 +14,7 @@ import {AlertService} from "./alert/alert.service";
 import {ErrorService} from "./error/error.service";
 import {PerfilService} from './perfil/perfil.service';
 import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
+import { ForgotService } from './forgot/forgot.service';
 
 @NgModule({
   declarations: [],
@@ -34,7 +35,8 @@ import {RedefineSenhaService} from "./redefineSenha/redefine-senha.service";
     PacienteAgendadoService,
     AlertService,
     ErrorService,
-    PerfilService
+    PerfilService,
+    ForgotService
 ]
 })
 export class CoreModule {}

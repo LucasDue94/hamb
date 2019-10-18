@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ForgotService} from "../core/forgot/forgot.service";
-import {RedefineSenhaService} from "../core/redefineSenha/redefine-senha.service";
+import {AlertService} from "../core/alert/alert.service";
+import {ErrorService} from "../core/error/error.service";
+import {Router} from "@angular/router";
+import {Forgot} from "../core/forgot/forgot";
 
 @Component({
   selector: 'app-forgot',
@@ -11,16 +14,32 @@ import {RedefineSenhaService} from "../core/redefineSenha/redefine-senha.service
 export class ForgotComponent implements OnInit {
   forgot: FormGroup;
 
-  constructor(private forgotService: ForgotService, private redefineSenhaService: RedefineSenhaService) {
+  constructor(private forgotService: ForgotService, private alertService: AlertService,
+              private errorService: ErrorService, private router: Router) {
+  }
+
+  ngOnInit() {
     this.forgot = new FormGroup({
       email: new FormControl('', Validators.required)
     });
   }
 
-  ngOnInit() {
-  }
-
   save() {
-    this.forgotService.save(this.forgot.value).subscribe(res => {});
+    this.forgotService.save(this.forgot.value).subscribe(res => {
+      if (this.errorService.hasError(res)) {
+        this.alertService.send({
+          message: 'Desculpe... não encontramos este e-mail.',
+          type: 'error',
+          icon: 'sad-tear'
+        });
+      } else {
+        this.router.navigate(['/']);
+        this.alertService.send({
+          message: 'Email enviado.',
+          type: 'success',
+          icon: 'check'
+        });
+      }
+    });
   }
 }
