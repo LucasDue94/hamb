@@ -1,0 +1,7 @@
+import hamb.Senha
+
+model {
+	Senha senha
+}
+
+json g.render(senha, [resolveTemplate: false])

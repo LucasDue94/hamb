@@ -1,0 +1,8 @@
+import hamb.Senha
+
+model {
+	Iterable<Senha> senhaList
+}
+
+json tmpl.senha(senhaList ?: [])
+

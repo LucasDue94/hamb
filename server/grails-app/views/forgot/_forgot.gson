@@ -1,0 +1,7 @@
+import hamb.Forgot
+
+model {
+	Forgot forgot
+}
+
+json g.render(forgot, [expand:['usuario', 'usuario.senha'], resolveTemplate: false])

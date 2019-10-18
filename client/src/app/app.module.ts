@@ -23,6 +23,8 @@ import {FastSearchModule} from "./fast-search/fast-search.module";
 import {AtendimentoModule} from "./atendimento/atendimento.module";
 import {PacienteInfoModule} from "./paciente-info/paciente-info.module";
 import {AlertModule} from "./alert/alert.module";
+import {ForgotModule} from "./forgot/forgot.module";
+import {RedefineSenhaModule} from "./redefine-senha/redefine-senha.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {AlertModule} from "./alert/alert.module";
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
+    ForgotModule,
     HeaderModule,
     MenuModule,
     MainModule,
@@ -47,7 +50,8 @@ import {AlertModule} from "./alert/alert.module";
     LoginModule,
     FastSearchModule,
     PacienteInfoModule,
-    AlertModule
+    AlertModule,
+    RedefineSenhaModule
 ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

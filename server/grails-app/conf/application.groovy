@@ -33,6 +33,21 @@ grails.plugin.springsecurity.rest.token.storage.gorm.usernamePropertyName = 'log
 
 grails.plugin.springsecurity.filterChain.chainMap = [
         [pattern: '/application', filters: 'none'],
+        [pattern: "/forgot/**", filters: 'none'],
+        [pattern: "/redefinicaodesenha/**", filters: 'none'],
         [pattern: '/api/**', filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'],
         [pattern: '/**', filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter']
 ]
+
+
+grails {
+    mail {
+        host = "smtp.hospitaldocoracao-al.com.br"
+        port = 587
+        username = "franklin.farias@hospitaldocoracao-al.com.br"
+        password = "Ti_hcor2019"
+        props = ["mail.smtp.auth":"true",
+                "mail.smtp.starttls.enable":"true",
+                 "mail.smtp.port":"587"]
+    }
+}
