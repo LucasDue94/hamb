@@ -4,4 +4,4 @@ model {
 	Forgot forgot
 }
 
-json g.render(forgot, [resolveTemplate: false])
+json g.render(forgot, [expand:['usuario', 'usuario.senha'], resolveTemplate: false])

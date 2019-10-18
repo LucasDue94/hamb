@@ -33,7 +33,8 @@ grails.plugin.springsecurity.rest.token.storage.gorm.usernamePropertyName = 'log
 
 grails.plugin.springsecurity.filterChain.chainMap = [
         [pattern: '/application', filters: 'none'],
-        [pattern: '/forgot', filters: 'none'],
+        [pattern: "/forgot/**", filters: 'none'],
+        [pattern: "/redefinicaodesenha/**", filters: 'none'],
         [pattern: '/api/**', filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'],
         [pattern: '/**', filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter']
 ]

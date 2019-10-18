@@ -30,6 +30,9 @@ class ForgotController {
     @Transactional
     def save() {
         JSONObject form = null
+        final long FIVE_MIN = 0 /*5l * 60l * 1000l*/
+        final Date now = new Date()
+        final Date lastFiveMin = new Date(now.time - FIVE_MIN)
 
         try {
             form = JSON.parse request.reader.text
@@ -53,21 +56,19 @@ class ForgotController {
             return
         }
 
+        def pastForgotQuery = Forgot.where {
+            dateCreated >= lastFiveMin
+            usuario == forgot.usuario
+        }
+
+
+        if (pastForgotQuery.find() != null) {
+            respond forgot.errors
+            return
+        }
+
         try {
-
-            def now = new Date()
-            def tempoRestante = forgot.validade.getTime() - now.getTime()
-            def limitSend = tempoRestante - 3300000
-
-            if (limitSend < 299999) {
-                forgotService.save(forgot)
-                sendMail {
-                    to forgot.usuario.email
-                    from "franklin.farias@hospitaldocoracao-al.com.br"
-                    subject "AmbCor - Redefinir de senha"
-                    text 'http://localhost:4200/redefinicaosenha'
-                }
-            }
+            forgotService.save(forgot)
         } catch (ValidationException e) {
             respond forgot.errors
             return
@@ -75,6 +76,7 @@ class ForgotController {
 
         respond forgot, [status: CREATED, view: "show"]
     }
+
 
     @Transactional
     def update(Forgot forgot) {
@@ -89,7 +91,6 @@ class ForgotController {
         }
 
         try {
-            forgotService.save(forgot)
         } catch (ValidationException e) {
             respond forgot.errors
             return
@@ -97,6 +98,7 @@ class ForgotController {
 
         respond forgot, [status: OK, view: "show"]
     }
+
 
     @Transactional
     def delete(Long id) {

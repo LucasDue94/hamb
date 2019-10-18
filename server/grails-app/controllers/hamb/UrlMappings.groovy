@@ -14,6 +14,9 @@ class UrlMappings {
         "500"(view: '/error')
         "404"(view: '/notFound')
 
+
+        get "/forgot/$id/$token(.$format)?"(controller: "forgot", action: "show")
+        put "/forgot/$id/$token(.$format)?"(controller: "forgot", action: "update")
         put "/usuario/onOff/$id(.$format)?"(controller: "usuario", action: "onOff")
     }
 }
