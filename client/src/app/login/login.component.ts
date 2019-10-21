@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../core/auth/auth.service";
 import {Router} from "@angular/router";
@@ -11,9 +11,11 @@ import {Agenda} from "../core/agenda/agenda";
 })
 export class LoginComponent implements OnInit {
   @ViewChild('password', {static: false}) password;
-  @Output() getData: EventEmitter<any> = new EventEmitter();
+  @ViewChild('errorContainer', {static: false}) errorContainer;
   visible = false;
-  loginForm: FormGroup;
+  capsOn;
+  numLock = true;
+  loginForm;
   error = false;
   currentUser;
   messageError = '';
@@ -22,29 +24,36 @@ export class LoginComponent implements OnInit {
     senha: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private render: Renderer2) {}
+
+  ngOnInit() {
     this.loginForm = new FormGroup({
       login: new FormControl('', Validators.required),
       senha: new FormControl('', Validators.required)
     });
   }
 
-  ngOnInit() {
+
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    this.capsOn = event.getModifierState('CapsLock');
+    this.numLock = event.getModifierState('NumLock');
+    if (event.key == "Enter") this.login();
   }
 
-  @HostListener('window:keyup', ['$event']) keyEnterEvent(event: KeyboardEvent) {
-    if (event.key == "Enter") {
-      this.login();
-    }
-  }
 
   showPass() {
     this.visible = !this.visible;
-    if (this.visible) {
-      this.password.nativeElement.type = 'text';
-    } else {
-      this.password.nativeElement.type = 'password';
-    }
+    this.password.nativeElement = this.visible ? 'text' : 'password';
+  }
+
+
+  showErrors() {
+    this.render.removeClass(this.errorContainer.nativeElement, 'valid');
+    this.render.addClass(this.errorContainer.nativeElement, 'invalid');
+    setTimeout(() => {
+      this.render.removeClass(this.errorContainer.nativeElement, 'invalid');
+      this.render.addClass(this.errorContainer.nativeElement, 'valid');
+    }, 2000);
   }
 
   login() {
@@ -72,10 +81,12 @@ export class LoginComponent implements OnInit {
         error => {
           this.error = true;
           this.messageError = 'Usuário ou senha iválida!';
+          this.showErrors();
         });
     } else {
       this.error = true;
-      this.messageError = 'Preencha o login e a senha!';
+      this.messageError = 'Login e senha em branco!';
+      this.showErrors()
     }
   }
 }

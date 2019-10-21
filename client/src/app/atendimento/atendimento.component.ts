@@ -53,7 +53,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     this.route.params.subscribe((params: Params) => {
       const prontuario = params['id'];
       this.pacienteService.get(prontuario).subscribe(paciente => {
-        console.log(paciente);
         if (this.errorService.hasError(paciente)) this.errorService.sendError(paciente);
         this.paciente = paciente;
         this.getAtendimentos();
@@ -196,7 +195,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
   expand() {
     this.render.addClass(this.form.nativeElement, 'expand-form');
     this.render.addClass(this.atendimentoContainer.nativeElement, 'container-atendimento-hidden');
-    console.log(this.textArea);
   }
 
   minimize() {

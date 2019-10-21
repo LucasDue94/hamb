@@ -1,2 +1,23 @@
 @import "~src/styles";
 @import "~src/app/login/login.component";
+@import "~src/app/error/error.component";
+
+.error-container{
+  z-index: 3;
+}
+.error-content {
+  width: 350px;
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-between;
+  width: 380px;
+  padding: 20px 0;
+
+  .link{
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}
