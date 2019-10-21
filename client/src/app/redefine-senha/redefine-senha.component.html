@@ -1,4 +1,4 @@
-<main class="container">
+<main *ngIf="!linkExpired" class="container">
   <h3 class="system-state-title">Redefinição de senha</h3>
   <section class="login-container">
     <section class="top">
@@ -40,3 +40,15 @@
   </section>
 </main>
 
+<section *ngIf="linkExpired" class="error-container">
+  <section class="error-content">
+    <h3 class="message">Parece que seu link expirou...</h3>
+    <div>
+      <fa-icon class="icon" [icon]="['fas','sad-tear']"></fa-icon>
+    </div>
+  </section>
+  <div class="links-container">
+    <a class="link" [routerLink]="['/']">Ir para o login</a>
+    <a class="link" [routerLink]="['/forgot']">Enviar novo link</a>
+  </div>
+</section>

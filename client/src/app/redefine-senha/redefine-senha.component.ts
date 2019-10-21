@@ -20,10 +20,11 @@ export class RedefineSenhaComponent implements OnInit {
   form: FormGroup;
   forgot = new Forgot();
   capsOn;
-  numLock;
+  numLock = true;
   forgotId;
   hash: string;
   error = false;
+  linkExpired = true;
 
 
   constructor(private route: ActivatedRoute, private forgotService: ForgotService,
