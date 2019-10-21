@@ -18,7 +18,6 @@ abstract class CidService {
 
             def criteria = Cid.createCriteria()
             return criteria.list(args) {
-                createAlias 'usuarios', 'u', JoinType.LEFT_OUTER_JOIN
 
                 if (termo != null && !termo.isEmpty()) {
                     or {
@@ -26,6 +25,7 @@ abstract class CidService {
                         ilike 'diagnostico', "%${termo}%"
                     }
                 } else {
+                    createAlias 'usuarios', 'u', JoinType.LEFT_OUTER_JOIN
                     or {
                         eq 'u.usuario', usuario
                         isNull 'u.usuario'

@@ -181,13 +181,23 @@
 }
 
 .invalid {
+  text-align: center;
   border-radius: 5px;
+  width: 240px;
+  justify-content: center;
   position: absolute;
   padding: 5px;
   bottom: 5px;
+  z-index: 2;
   background-color: $light-danger;
   color: $white;
   animation: invalid-login 500ms;
+  box-shadow: 1px 1px 5px $gray-100;
+
+
+  .icon-sad {
+    margin-left: 5px;
+  }
 
   @keyframes invalid-login {
     0% {
@@ -201,6 +211,28 @@
       bottom: 20px;
     }
   }
+}
+
+.capsLockOn, .numLockOff {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 240px;
+  padding: 5px;
+  background-color: $warning;
+  color: $white;
+  margin-top: 7px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px $gray-100;
+
+}
+
+.container-alerts {
+  position: absolute;
+  display: flex;
+  height: 50px;
+  flex-direction: column;
+  bottom: 0;
 }
 
 .valid {

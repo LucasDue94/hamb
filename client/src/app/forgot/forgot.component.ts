@@ -12,7 +12,6 @@ import {Router} from "@angular/router";
 })
 export class ForgotComponent implements OnInit {
   forgot: FormGroup;
-
   constructor(private forgotService: ForgotService, private alertService: AlertService,
               private errorService: ErrorService, private router: Router) {
   }
@@ -23,15 +22,12 @@ export class ForgotComponent implements OnInit {
     });
   }
 
-  @HostListener('window:keyup', ['$event']) keyEnterEvent(event: KeyboardEvent) {
-    if (event.key == "Enter") {
-      this.save();
-    }
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    if (event.key == "Enter") this.save();
   }
 
   save() {
     this.forgotService.save(this.forgot.value).subscribe(res => {
-      console.log(res)
       if (this.errorService.hasError(res)) {
         this.alertService.send({
           message: 'Desculpe... não encontramos este e-mail.',

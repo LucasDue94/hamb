@@ -94,7 +94,6 @@ export class ForgotService extends HeadersHelper {
           subject.next(json)
       });
     } else {
-      console.log(forgot)
       this.http.post<Forgot>(this.baseUrl + `forgot/`, forgot, {
         headers: this.getDefaultHttpOptions(),
       }).pipe(

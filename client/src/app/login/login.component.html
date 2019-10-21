@@ -15,18 +15,26 @@
       </div>
       <div class="login-form-group">
         <fa-icon class="login-icon" [icon]="['fas','lock']"></fa-icon>
-        <fa-icon *ngIf="visible" (click)="showPass()" class="login-icon eye-icon" [icon]="['fas','eye']"></fa-icon>
-        <fa-icon *ngIf="!visible" (click)="showPass()" class="login-icon eye-icon"
-                 [icon]="['fas','eye-slash']"></fa-icon>
-        <input class="login-form-control" [type]="'password'" formControlName="senha" placeholder="senha" #password>
+        <fa-icon (click)="showPass()" class="login-icon eye-icon"
+                 [icon]="['fas', visible ? 'eye': 'eye-slash']"></fa-icon>
+        <input [type]="[visible ? 'text': 'password']" class="login-form-control" formControlName="senha"
+               placeholder="senha" #password>
       </div>
       <div class="login-form-group login-submit">
         <fa-icon (click)="login()" class="login-icon send-icon" [icon]="['fas','paper-plane']"></fa-icon>
         <button (click)="login()" class="button-login">Entrar</button>
-        <div [ngClass]="[ this.error ? 'invalid': 'valid']">
+        <div class="valid" #errorContainer>
           {{messageError}}
-          <fa-icon class="icon" [icon]="['fas','frown']"></fa-icon>
+          <fa-icon class="icon-sad" [icon]="['fas','frown']"></fa-icon>
         </div>
+        <section class="container-alerts">
+          <div *ngIf="capsOn" [ngClass]="capsOn ? 'capsLockOn':''">
+            <p>Atenção: CapsLock ativo</p>
+          </div>
+          <div *ngIf="!numLock" [ngClass]="!numLock ? 'numLockOff':''">
+            <p>Atenção: O teclado numérico está desligado</p>
+          </div>
+        </section>
       </div>
       <div class="forget-pass">
         <a [routerLink]="'/forgot'" class="recovery-pass">Redefinir senha</a>

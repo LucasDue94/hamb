@@ -16,10 +16,11 @@ export class RedefineSenhaComponent implements OnInit {
   @ViewChild('password', {static: false}) password;
   @ViewChild('confirmPassword', {static: false}) confirmPassword;
   @ViewChild('errorContainer', {static: false}) errorContainer;
-  visible = false;
+  @ViewChild('capsLockContainer', {static: false}) capsLockContainer;
   form: FormGroup;
   forgot = new Forgot();
-  capsOn = false;
+  capsOn;
+  numLock;
   forgotId;
   hash: string;
   error = false;
@@ -38,7 +39,6 @@ export class RedefineSenhaComponent implements OnInit {
       token: new FormControl('', Validators.required)
     });
     this.forgot.usuario = new Usuario({senha: this.form.controls['senha'].value});
-    this.route.params.subscribe(res => console.log(res));
     this.hash = this.route.snapshot.paramMap.get('hash');
     this.forgotId = +this.route.snapshot.paramMap.get('id');
     this.form.controls['token'].setValue(this.hash);
@@ -52,31 +52,23 @@ export class RedefineSenhaComponent implements OnInit {
     return this.forgot;
   }
 
-  @HostListener('window:keyup', ['$event']) keyEnterEvent(event: KeyboardEvent) {
-    if (event.key == "Enter") {
-      this.update();
-    }
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    this.numLock = event.getModifierState('NumLock');
+    this.capsOn = event.getModifierState('CapsLock');
+    if (event.key == "Enter") this.update();
   }
 
-  @HostListener('window:keyup', ['$event']) keyCapsLock(event: KeyboardEvent) {
-    if (event.key == 'CapsLock') {
-      this.capsOn = !this.capsOn;
-      console.log(this.capsOn)
-    }
-  }
 
-  showError(){
-    this.render.removeClass(this.errorContainer.nativeElement,'valid');
-    this.render.addClass(this.errorContainer.nativeElement,'invalid');
-  }
-
-  hideError(){
-   this.render.removeClass(this.errorContainer.nativeElement,'invalid');
-   this.render.addClass(this.errorContainer.nativeElement,'valid');
+  showErrors() {
+    this.render.removeClass(this.errorContainer.nativeElement, 'valid');
+    this.render.addClass(this.errorContainer.nativeElement, 'invalid');
+    setTimeout(() => {
+      this.render.removeClass(this.errorContainer.nativeElement, 'invalid');
+      this.render.addClass(this.errorContainer.nativeElement, 'valid');
+    }, 2000);
   }
 
   update() {
-    this.hideError()
     if (this.checkPass()) {
       this.forgotService.save(this.getParams()).subscribe(res => {
         if (this.errorService.hasError(res)) {
@@ -97,24 +89,9 @@ export class RedefineSenhaComponent implements OnInit {
         }
       });
     } else {
-      this.showError();
-      setTimeout(()=>{
-        this.hideError()
-      },2000);
+      this.showErrors();
     }
   }
 
   checkPass = () => this.form.controls['senha'].value === this.form.controls['confirmacaoSenha'].value;
-
-
-  showPass() {
-    this.visible = !this.visible;
-    if (this.visible) {
-      this.password.nativeElement.type = 'text';
-      this.confirmPassword.nativeElement.type = 'text';
-    } else {
-      this.password.nativeElement.type = 'password';
-      this.confirmPassword.nativeElement.type = 'password';
-    }
-  }
 }
