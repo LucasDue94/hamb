@@ -30,7 +30,7 @@ class ForgotController {
     @Transactional
     def save() {
         JSONObject form = null
-        final long FIVE_MIN =  5l * 60l * 1000l
+        final long FIVE_MIN = 5l * 60l * 1000l
         final Date now = new Date()
         final Date lastFiveMin = new Date(now.time - FIVE_MIN)
 
@@ -91,7 +91,7 @@ class ForgotController {
         }
 
         try {
-            forgot.senhaAlterada = true
+            forgotService.save(forgot)
         } catch (ValidationException e) {
             respond forgot.errors
             return

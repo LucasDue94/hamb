@@ -16,6 +16,11 @@ abstract class ForgotService {
     abstract void delete(Serializable id)
 
     Forgot save(Forgot forgot) {
+
+        if (forgot.token != null) {
+            forgot.senhaAlterada = true
+        }
+
         forgot.save flush: true
 
         sendMail {
