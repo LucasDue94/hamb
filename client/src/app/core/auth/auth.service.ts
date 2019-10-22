@@ -55,7 +55,10 @@ export class AuthService extends HeadersHelper {
   }
 
   hasPermission(value) {
-    return localStorage.getItem('roles').includes(value) || localStorage.getItem('roles').includes('ROLE_ADMIN');
+    if (localStorage.getItem('roles') == null)
+      return false;
+
+      return localStorage.getItem('roles').includes(value) || localStorage.getItem('roles').includes('ROLE_ADMIN');
   }
 
   isLogged = () => localStorage.getItem('token') != null

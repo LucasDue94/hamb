@@ -219,6 +219,7 @@ $nav-height: 35px;
     border: 1px solid $gray-100;
 
     .options {
+      text-align: left;
       align-items: center;
       justify-content: center;
     }
@@ -371,4 +372,12 @@ $nav-height: 35px;
 .offStatus {
   color: transparent;
   display: none;
+}
+
+.disable {
+  color: $gray-70 !important;
+
+  * {
+    cursor: not-allowed;
+  }
 }

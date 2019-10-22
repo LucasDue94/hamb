@@ -5,6 +5,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, switchMap} from "rxjs/operators";
 import {SpinnerService} from "../core/spinner/spinner.service";
 import {AlertService} from "../core/alert/alert.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'usuario-list',
@@ -25,7 +26,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
 
   constructor(private usuarioService: UsuarioService,
               private render: Renderer2, private spinnerService: SpinnerService,
-              private alertService: AlertService) {
+              private alertService: AlertService, private router: Router) {
   }
 
   ngOnInit() {
@@ -66,7 +67,7 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
         this.spinnerService.show();
         this.offset = 0;
         if (this.usuarios != undefined) this.usuarios.length = 0;
-        return this.usuarioService.search(changes, this.offset)
+        return this.usuarioService.search(changes, this.offset, this.max)
       })
     ).subscribe(res => {
       this.usuarios = res;
@@ -89,8 +90,14 @@ export class UsuarioListComponent implements OnInit, AfterViewChecked {
       const responseOk = 200;
       if (res.status === responseOk) {
         usuario.ativo = !usuario.ativo;
-        this.alertService.send({message:'O status do usuário foi alterado!',type:'success',icon:'check'})
+        this.alertService.send({message: 'O status do usuário foi alterado!', type: 'success', icon: 'check'})
       }
     });
   }
+
+  goAgenda(usuario){
+    this.router.navigate(['/agenda','list',usuario.id]);
+  }
+
+  isMedico = (usuario) => usuario.crm != null
 }

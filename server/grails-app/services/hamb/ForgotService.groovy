@@ -17,9 +17,8 @@ abstract class ForgotService {
 
     Forgot save(Forgot forgot) {
 
-        if (forgot.token != null) {
+        if (forgot.usuario.isDirty('senha'))
             forgot.senhaAlterada = true
-        }
 
         forgot.save flush: true
 
@@ -27,6 +26,7 @@ abstract class ForgotService {
             to forgot.usuario.email
             from "franklin.farias@hospitaldocoracao-al.com.br"
             subject "AmbCor - Redefinição de senha"
+//            text "http://dev.hcal.lan/ambcor/#/redefinesenha/$forgot.id/$forgot.token"
             text "http://localhost:4200/#/redefinesenha/$forgot.id/$forgot.token"
         }
 

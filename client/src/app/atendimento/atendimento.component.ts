@@ -109,7 +109,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
     atendimento.cid = new Cid({
       id: this.atendimentoForm.get('cid').get('id').value,
     });
-    atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.lastRegistro().id})
+    atendimento.registroAtendimento = new RegistroAtendimento({id: this.paciente.lastRegistro().id});
     return atendimento;
   }
 
@@ -147,6 +147,7 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   save() {
     const atendimento = this.setFields();
+    console.log(atendimento);
     this.isValidForm = this.validate(atendimento);
     if (this.isValidForm) {
       this.removeErrors();

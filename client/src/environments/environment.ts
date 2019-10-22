@@ -7,6 +7,12 @@ export const environment = {
   apiUrl:'http://localhost:8080/api/'
 };
 
+/*export const environment = {
+  production: false,
+  serverUrl: 'http://dev.hcal.lan:8080/ambcor/',
+  apiUrl:'http://dev.hcal.lan:8080/ambcor/api/'
+};*/
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -4,6 +4,7 @@ import {ForgotService} from "../core/forgot/forgot.service";
 import {AlertService} from "../core/alert/alert.service";
 import {ErrorService} from "../core/error/error.service";
 import {Router} from "@angular/router";
+import {Alert} from "../core/alert/alert";
 
 @Component({
   selector: 'app-forgot',
@@ -12,6 +13,7 @@ import {Router} from "@angular/router";
 })
 export class ForgotComponent implements OnInit {
   forgot: FormGroup;
+
   constructor(private forgotService: ForgotService, private alertService: AlertService,
               private errorService: ErrorService, private router: Router) {
   }
@@ -29,11 +31,20 @@ export class ForgotComponent implements OnInit {
   save() {
     this.forgotService.save(this.forgot.value).subscribe(res => {
       if (this.errorService.hasError(res)) {
-        this.alertService.send({
-          message: 'Desculpe... não encontramos este e-mail.',
-          type: 'error',
-          icon: 'sad-tear'
-        });
+      console.log(res);
+        if (res.error.status == 403) {
+          this.alertService.send({
+            message: 'Verifique sua caixa de e-mail.',
+            type: 'warning',
+            icon: 'info-circle'
+          });
+        } else {
+          this.alertService.send({
+            message: 'Desculpe... não encontramos este e-mail.',
+            type: 'error',
+            icon: 'sad-tear'
+          });
+        }
       } else {
         this.router.navigate(['/']);
         this.alertService.send({

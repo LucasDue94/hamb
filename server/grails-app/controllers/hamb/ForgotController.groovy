@@ -63,7 +63,7 @@ class ForgotController {
 
 
         if (pastForgotQuery.find() != null) {
-            respond forgot.errors
+           render  status: FORBIDDEN
             return
         }
 

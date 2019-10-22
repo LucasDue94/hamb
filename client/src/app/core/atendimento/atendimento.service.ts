@@ -85,6 +85,7 @@ export class AtendimentoService extends HeadersHelper {
 
   save(atendimento: Atendimento): any {
     let subject = new Subject<Atendimento>();
+    console.log(atendimento)
     if (atendimento.id) {
       this.http.put<Atendimento>(this.baseUrl + `atendimento/` + atendimento.id, atendimento, {
         headers: this.getDefaultHttpOptions(),
