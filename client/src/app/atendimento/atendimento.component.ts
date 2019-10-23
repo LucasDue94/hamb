@@ -147,7 +147,6 @@ export class AtendimentoComponent implements OnInit, AfterViewChecked {
 
   save() {
     const atendimento = this.setFields();
-    console.log(atendimento);
     this.isValidForm = this.validate(atendimento);
     if (this.isValidForm) {
       this.removeErrors();

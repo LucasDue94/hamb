@@ -6,6 +6,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SpinnerService} from "../core/spinner/spinner.service";
 import {AlertService} from "../core/alert/alert.service";
 import {Location} from "@angular/common";
+import {ErrorService} from "../core/error/error.service";
 
 @Component({
   selector: 'usuario-edit',
@@ -34,7 +35,7 @@ export class UsuarioEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               private usuarioService: UsuarioService, private render: Renderer2,
               private spinnerService: SpinnerService, private alertService: AlertService,
-              private location: Location) {
+              private location: Location, private errorService: ErrorService) {
 
     this.searchControl = new FormControl();
     this.searchForm = new FormGroup({
@@ -103,8 +104,12 @@ export class UsuarioEditComponent implements OnInit {
     this.validateForm();
     if (this.validateArray.isValid) {
       this.usuarioService.save(this.usuario).subscribe(res => {
-        this.alertService.send({message: 'Usuário alterado com sucesso', type: 'success', icon: 'check'});
-        this.location.back()
+        if (!this.errorService.hasError(res)) {
+          this.alertService.send({message: 'Usuário alterado com sucesso', type: 'success', icon: 'check'});
+          this.location.back()
+        }else{
+          this.alertService.send({message: 'Ocorreu um erro ao salvar estas alterações.', type: 'error', icon: 'frown'});
+        }
       });
     }
   }

@@ -28,7 +28,7 @@
         <span class="td">{{usuario.crm}}</span>
         <div class="td options">
           <fa-icon [routerLink]="['/usuario','edit',usuario.id]" class="icon login" [icon]="['fas','edit']"></fa-icon>
-          <fa-icon [ngClass]="{'disable':!isMedico(usuario)}" (click)=" isMedico(usuario)? goAgenda(usuario):''"
+          <fa-icon [ngClass]="{'disable cursor-not-allow':!isMedico(usuario)}" (click)=" isMedico(usuario)? goAgenda(usuario):''"
                    class="icon" [icon]="['fas','calendar-alt']"></fa-icon>
           <fa-icon (click)="onOff(usuario)" class="icon" [icon]="['fas','power-off']"></fa-icon>
         </div>

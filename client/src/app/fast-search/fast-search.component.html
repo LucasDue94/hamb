@@ -12,7 +12,7 @@
            [ngStyle]="{'height':height}" class="content-default">
     <main class="table" infinite-scroll>
       <section *ngIf="dataArray!=null" class="tbody">
-        <div *ngFor="let data of dataArray;" class="row" [ngClass]="{'disable' : !data?.ativo}">
+        <div *ngFor="let data of dataArray;" class="row">
         <span (click)="emitData(data)" *ngFor="let field of fields; index as i" [ngStyle]="{'flex': widthField[i]}"
               class="td">{{data[field]}}</span>
         </div>

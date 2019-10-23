@@ -376,8 +376,11 @@ $nav-height: 35px;
 
 .disable {
   color: $gray-70 !important;
+}
 
+.cursor-not-allow {
   * {
     cursor: not-allowed;
   }
+
 }

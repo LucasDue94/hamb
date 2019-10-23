@@ -29,30 +29,37 @@ export class ForgotComponent implements OnInit {
   }
 
   save() {
-    this.forgotService.save(this.forgot.value).subscribe(res => {
-      if (this.errorService.hasError(res)) {
-      console.log(res);
-        if (res.error.status == 403) {
-          this.alertService.send({
-            message: 'Verifique sua caixa de e-mail.',
-            type: 'warning',
-            icon: 'info-circle'
-          });
+    if (this.forgot.controls['email'].value != '') {
+      this.forgotService.save(this.forgot.value).subscribe(res => {
+        if (this.errorService.hasError(res)) {
+          if (res.error.status == 403) {
+            this.alertService.send({
+              message: 'Verifique sua caixa de e-mail.',
+              type: 'warning',
+              icon: 'info-circle'
+            });
+          } else {
+            this.alertService.send({
+              message: 'Desculpe... não encontramos este e-mail.',
+              type: 'error',
+              icon: 'sad-tear'
+            });
+          }
         } else {
+          this.router.navigate(['/']);
           this.alertService.send({
-            message: 'Desculpe... não encontramos este e-mail.',
-            type: 'error',
-            icon: 'sad-tear'
+            message: 'Email enviado.',
+            type: 'success',
+            icon: 'check'
           });
         }
-      } else {
-        this.router.navigate(['/']);
-        this.alertService.send({
-          message: 'Email enviado.',
-          type: 'success',
-          icon: 'check'
-        });
-      }
-    });
+      });
+    } else {
+      this.alertService.send({
+        message: 'O e-mail não pode ser vazio.',
+        type: 'error',
+        icon: 'frown'
+      });
+    }
   }
 }
